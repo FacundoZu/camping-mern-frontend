@@ -27,8 +27,8 @@ export default function Header() {
   }
 
   return (
-    <header className='flex items-center max-w-screen w-4/5 mx-auto p-2 sticky top-0 z-50 animate-fade-top'>
-      <div className='flex items-center gap-6 justify-between w-full p-3 bg-white rounded-xl px-8'>
+    <header className='fixed w-full p-2 z-50'>
+      <div className='flex items-center gap-6 sticky top-0 justify-between w-5/6 mx-auto p-3 bg-white rounded-xl animate-fade-top'>
         <Link to="/">
           <h1 className='font-bold text-sm sm:text-xl flex items-center'>
             <RiLeafFill className='text-lime-600 justify-center mr-1 h-8 w-8' />

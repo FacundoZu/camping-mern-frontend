@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Peticion } from '../../../helpers/Peticion';
 import { Global } from '../../../helpers/Global';
-import { PiUsersThreeFill, PiToiletBold } from "react-icons/pi";
-import { MdOutlineBedroomChild } from "react-icons/md";
-import { FaCalendarAlt } from "react-icons/fa";
+import { 
+    PiUsersThreeFill, 
+    PiToiletBold, 
+    PiStarFill,
+    PiMapPinFill
+} from "react-icons/pi";
+import { 
+    MdOutlineBedroomChild, 
+    MdArrowBack,
+    MdShare,
+    MdFavorite,
+    MdFavoriteBorder
+} from "react-icons/md";
+import { FaCalendarAlt, FaCheckCircle } from "react-icons/fa";
+import { BsCurrencyDollar } from "react-icons/bs";
 import ComentariosList from '../../../components/utils/cabañas/ComentariosList.jsx';
 import { CalendarioReservas } from '../../../components/utils/cabañas/CalendarioReservas.jsx';
 import { CabañaSwiper } from '../../../components/utils/cabañas/CabañaSwiper.jsx';
@@ -16,6 +28,7 @@ import useAuth from '../../../hooks/useAuth';
 export const Cabaña = () => {
     const { id } = useParams();
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
     const { auth } = useAuth();
 
     const [cabaña, setCabaña] = useState(null);
@@ -23,7 +36,8 @@ export const Cabaña = () => {
     const [comentarios, setComentarios] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
+    const [isFavorite, setIsFavorite] = useState(false);
+
     // Estado para reserva
     const [reservaData, setReservaData] = useState({
         fechaInicio: searchParams.get('checkIn'),
@@ -31,14 +45,13 @@ export const Cabaña = () => {
         precioTotal: 0,
         showModal: false
     });
-    
+
     // Estado para modales
     const [modal, setModal] = useState({
         show: false,
         title: '',
         message: ''
     });
-    const [showCalModal, setShowCalModal] = useState(false);
 
     const fetchData = async () => {
         if (!id) {
@@ -104,7 +117,7 @@ export const Cabaña = () => {
 
         try {
             const { datos } = await Peticion(
-                `${Global.url}reservation/getUserReservations/${auth.id}/${cabaña._id}`, 
+                `${Global.url}reservation/getUserReservations/${auth.id}/${cabaña._id}`,
                 "GET"
             );
 
@@ -117,7 +130,7 @@ export const Cabaña = () => {
                 return;
             }
 
-            const reservaPasada = datos.reservas.some(reserva => 
+            const reservaPasada = datos.reservas.some(reserva =>
                 new Date(reserva.fechaFinal) < new Date()
             );
 
@@ -155,88 +168,260 @@ export const Cabaña = () => {
         }
     };
 
-    if (loading) return <div className="text-center text-gray-500 text-xl py-8">Cargando información...</div>;
-    if (!cabaña) return <div className="text-center text-gray-500">No se encontró la cabaña.</div>;
+    const handleUpdateReview = async (reviewId, updatedData) => {
+        try {
+            const result = await Peticion(`${Global.url}reviews/updateReview/${reviewId}`, "PUT", {
+                rating: updatedData.rating,
+                comment: updatedData.comment,
+            });
+
+            if (result.datos?.success) {
+                setComentarios(prev => 
+                    prev.map(comment => 
+                        comment._id === reviewId 
+                            ? { ...comment, rating: updatedData.rating, comments: [{ text: updatedData.comment }] }
+                            : comment
+                    )
+                );
+                setModal({
+                    show: true,
+                    title: 'Éxito',
+                    message: 'Tu reseña ha sido actualizada correctamente.'
+                });
+            }
+        } catch (err) {
+            console.error("Error al actualizar reseña:", err);
+            setModal({
+                show: true,
+                title: 'Error',
+                message: 'No se pudo actualizar la reseña. Intenta nuevamente.'
+            });
+        }
+    };
+
+    const handleToggleFavorite = () => {
+        setIsFavorite(!isFavorite);
+        // Aquí puedes agregar la lógica para guardar en favoritos
+    };
+
+    const handleShare = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: cabaña.descripcion,
+                text: `¡Mira esta increíble cabaña! ${cabaña.descripcion}`,
+                url: window.location.href,
+            });
+        } else {
+            navigator.clipboard.writeText(window.location.href);
+            setModal({
+                show: true,
+                title: 'Enlace copiado',
+                message: 'El enlace ha sido copiado al portapapeles.'
+            });
+        }
+    };
+
+    const calculateAverageRating = () => {
+        if (!comentarios.length) return 0;
+        const total = comentarios.reduce((sum, comment) => sum + comment.rating, 0);
+        return (total / comentarios.length).toFixed(1);
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-lime-500 mx-auto mb-4"></div>
+                    <p className="text-gray-600 text-lg">Cargando información de la cabaña...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error || !cabaña) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center bg-white p-8 rounded-2xl shadow-lg max-w-md mx-4">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl text-red-500">⚠️</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
+                    <p className="text-gray-600 mb-6">{error || "No se encontró la cabaña."}</p>
+                    <button
+                        onClick={() => navigate('/cabañas')}
+                        className="bg-lime-500 hover:bg-lime-600 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                    >
+                        Ver todas las cabañas
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="container mx-auto p-6 max-w-screen-xl">
-            <section className="bg-white rounded-lg shadow-md overflow-hidden">
-                <CabañaSwiper cabaña={cabaña} />
-                <h1 className="text-2xl font-semibold text-center pt-12">{cabaña.descripcion}</h1>
-                <div className="p-4 max-w-5xl mx-auto">
-                    {cabaña.servicios && (
-                        <div className="mt-6">
-                            <div className="flex flex-wrap">
-                                {cabaña.servicios.map(servicio => (
-                                    servicio.estado === 'Habilitado' && (
-                                        <div key={servicio._id} className="grid grid-rows-3 gap-0 p-4 bg-white m-auto h-44 w-60">
-                                            <img src={servicio.imagen} alt={servicio.nombre} className="w-12 h-12 mx-auto mb-2 object-cover" />
-                                            <p className="text-base text-gray-700 font-medium text-center my-auto">
+        <div className="min-h-screen bg-gray-50">
+            <div className="container mx-auto px-4 py-6 max-w-7xl">
+                {/* Hero Section */}
+                <section className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+                    <CabañaSwiper cabaña={cabaña} />
+                    
+                    <div className="p-6 lg:p-8">
+                        {/* Título y rating */}
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
+                            <div className="flex-1">
+                                <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
+                                    {cabaña.descripcion}
+                                </h1>
+                                
+                                <div className="flex items-center gap-4 flex-wrap mb-4">
+                                    {comentarios.length > 0 && (
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-1">
+                                                <PiStarFill className="text-yellow-400" />
+                                                <span className="font-semibold text-gray-800">
+                                                    {calculateAverageRating()}
+                                                </span>
+                                            </div>
+                                            <span className="text-gray-600">
+                                                ({comentarios.length} {comentarios.length === 1 ? 'reseña' : 'reseñas'})
+                                            </span>
+                                        </div>
+                                    )}
+                                    
+                                    {cabaña.ubicacion && (
+                                        <div className="flex items-center gap-2 text-gray-600">
+                                            <PiMapPinFill className="text-lime-500" />
+                                            <span>{cabaña.ubicacion}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Precio destacado */}
+                            <div className="bg-gradient-to-r from-lime-50 to-green-50 p-6 rounded-2xl border border-lime-200 text-center lg:text-right min-w-max">
+                                <div className="flex items-center justify-center lg:justify-end gap-1 mb-1">
+                                    <BsCurrencyDollar className="text-2xl text-lime-600" />
+                                    <span className="text-3xl font-bold text-gray-900">
+                                        {cabaña.precio?.toLocaleString()}
+                                    </span>
+                                </div>
+                                <p className="text-gray-600 text-sm">por noche</p>
+                                {cabaña.minimoDias > 1 && (
+                                    <p className="text-xs text-lime-600 mt-1 font-medium">
+                                        Mínimo {cabaña.minimoDias} noches
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Características principales */}
+                        <div className="grid grid-cols-3 gap-4 mb-8">
+                            <div className="bg-gray-50 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                                <PiUsersThreeFill className="text-3xl text-lime-600 mx-auto mb-2" />
+                                <p className="font-semibold text-gray-800">{cabaña.cantidadPersonas}</p>
+                                <p className="text-sm text-gray-600">Personas</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                                <MdOutlineBedroomChild className="text-3xl text-lime-600 mx-auto mb-2" />
+                                <p className="font-semibold text-gray-800">{cabaña.cantidadHabitaciones}</p>
+                                <p className="text-sm text-gray-600">Habitaciones</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                                <PiToiletBold className="text-3xl text-lime-600 mx-auto mb-2" />
+                                <p className="font-semibold text-gray-800">{cabaña.cantidadBaños}</p>
+                                <p className="text-sm text-gray-600">Baños</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Servicios */}
+                {cabaña.servicios && cabaña.servicios.some(s => s.estado === 'Habilitado') && (
+                    <section className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                            Servicios incluidos
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {cabaña.servicios.map(servicio => (
+                                servicio.estado === 'Habilitado' && (
+                                    <div 
+                                        key={servicio._id} 
+                                        className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 hover:shadow-md transition-all duration-200 hover:scale-105"
+                                    >
+                                        <div className="flex flex-col items-center text-center h-full">
+                                            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                                                <img 
+                                                    src={servicio.imagen} 
+                                                    alt={servicio.nombre} 
+                                                    className="w-10 h-10 object-contain" 
+                                                />
+                                            </div>
+                                            <h3 className="font-semibold text-gray-800 mb-2 text-lg">
                                                 {servicio.nombre}
-                                            </p>
-                                            <p className="text-sm text-gray-400 font-medium text-center leading-snug mt-1">
+                                            </h3>
+                                            <p className="text-sm text-gray-600 leading-relaxed">
                                                 {servicio.descripcion}
                                             </p>
                                         </div>
-                                    )
-                                ))}
+                                    </div>
+                                )
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Layout responsivo para calendario y comentarios */}
+                <div className="3 gap-8">
+                    {/* Calendario de reservas */}
+                    <div className="lg:col-span-2">
+                        <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="p-2 bg-lime-100 rounded-lg">
+                                    <FaCalendarAlt className="text-lime-600 text-xl" />
+                                </div>
+                                <h2 className="text-2xl font-bold text-gray-900">
+                                    Disponibilidad y reservas
+                                </h2>
                             </div>
-                            <div className='flex flex-wrap gap-4 mt-4 mx-10'>
-                                <div className="flex items-center gap-2 bg-slate-50 rounded-lg p-3 flex-1 border border-lime-300">
-                                    <PiUsersThreeFill className="text-2xl text-lime-600" />
-                                    <p className="text-gray-700">{cabaña.cantidadPersonas} Personas</p>
-                                </div>
-                                <div className="flex items-center gap-2 bg-slate-50 rounded-lg p-3 flex-1 border border-lime-300">
-                                    <MdOutlineBedroomChild className="text-2xl text-lime-600" />
-                                    <p className="text-gray-700">{cabaña.cantidadHabitaciones} Habitaciones</p>
-                                </div>
-                                <div className="flex items-center gap-2 bg-slate-50 rounded-lg p-3 flex-1 border border-lime-300">
-                                    <PiToiletBold className="text-2xl text-lime-600" />
-                                    <p className="text-gray-700">{cabaña.cantidadBaños} Baños</p>
+                            
+                            <div className="hidden sm:block">
+                                <CalendarioReservas
+                                    reservas={reservas}
+                                    onReservar={handleReservar}
+                                    precioPorNoche={cabaña.precio}
+                                    minimoDias={cabaña.minimoDias}
+                                />
+                            </div>
+                            
+                            {/* Versión móvil del calendario */}
+                            <div className="sm:hidden">
+                                <div className="bg-gradient-to-r from-lime-50 to-green-50 rounded-xl p-6 text-center border border-lime-200">
+                                    <FaCalendarAlt className="text-3xl text-lime-500 mx-auto mb-4" />
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                                        Reserva desde tu computadora
+                                    </h3>
+                                    <p className="text-gray-600 text-sm">
+                                        Para una mejor experiencia de reserva, te recomendamos usar la versión de escritorio.
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    )}
-
-                    <div className="min-h-screen items-center justify-center bg-gray-100 hidden sm:inline">
-                        <CalendarioReservas 
-                            reservas={reservas} 
-                            onReservar={handleReservar} 
-                            precioPorNoche={cabaña.precio} 
-                            minimoDias={cabaña.minimoDias} 
-                        />
-                    </div>
-                    
-                    <div className='sm:hidden mt-4'>
-                        <button 
-                            onClick={() => setShowCalModal(true)} 
-                            className='flex items-center m-auto bg-lime-400 hover:bg-lime-600 p-3 rounded-lg text-center'
-                        >
-                            <FaCalendarAlt className='mr-2' />
-                            Ver calendario de reservas
-                        </button>
-                        <CalendarioModal 
-                            isOpen={showCalModal} 
-                            onClose={() => setShowCalModal(false)} 
-                            reservas={reservas} 
-                            onReservar={handleReservar} 
-                            precioPorNoche={cabaña.precio} 
-                        />
-                    </div>
-
-                    <div className='mt-4'>
-                        <ComentariosList
-                            reviews={comentarios}
-                            onAddReview={handleAddReview}
-                            userId={auth?.id}
-                        />
                     </div>
                 </div>
-            </section>
 
+                {/* Sección de comentarios */}
+                <ComentariosList
+                    reviews={comentarios}
+                    onAddReview={handleAddReview}
+                    onUpdateReview={handleUpdateReview}
+                    userId={auth?.id}
+                />
+            </div>
+
+            {/* Modales */}
             <ReservaInfo
                 isOpen={reservaData.showModal}
-                onClose={() => setReservaData(prev => ({...prev, showModal: false}))}
+                onClose={() => setReservaData(prev => ({ ...prev, showModal: false }))}
                 cabaña={cabaña}
                 auth={auth}
                 fechaInicio={reservaData.fechaInicio}
@@ -246,7 +431,7 @@ export const Cabaña = () => {
 
             <Modal
                 isOpen={modal.show}
-                onClose={() => setModal(prev => ({...prev, show: false}))}
+                onClose={() => setModal(prev => ({ ...prev, show: false }))}
                 title={modal.title}
                 message={modal.message}
             />

@@ -339,8 +339,8 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
                                             return { ...prev, servicios: serviciosSeleccionados };
                                         });
                                     }}
-                                    className={`cursor-pointer rounded-lg p-1 border-[1px] transition 
-                        ${isSelected ? "border-gray-600 shadow-md scale-105" : "border-transparent hover:border-gray-400"}
+                                    className={`cursor-pointer rounded-lg p-2 border-[1px] transition 
+                        ${isSelected ? "border-gray-300 shadow-md scale-105" : "border-transparent hover:shadow-md hover:scale-105"}
                     `}
                                 >
                                     <img
@@ -350,6 +350,7 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
                             ${isSelected ? "opacity-100" : "opacity-70 hover:opacity-90"}
                         `}
                                     />
+                                    <p className="text-center text-xs font-medium">{servicio.nombre}</p>
                                 </div>
                             );
                         })}

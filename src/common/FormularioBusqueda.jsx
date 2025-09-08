@@ -6,6 +6,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { formatDate } from "../helpers/ParseDate";
 import { es } from 'date-fns/locale';
+import { FaSearch } from "react-icons/fa";
 
 const FormularioBusqueda = () => {
     const navigate = useNavigate();
@@ -90,15 +91,15 @@ const FormularioBusqueda = () => {
     }, []);
 
     return (
-        <div className="flex relative z-10 text-center items-center justify-center my-auto pb-10 h-full bg-cover bg-center px-4 sm:px-6 lg:px-8 w-full">
-            <div className="w-full max-w-5xl text-center">
+        <div className="flex relative text-center items-center justify-center my-auto pb-10 h-full px-4 sm:px-6 lg:px-8 w-full">
+            <div className="w-full max-w-5xl text-center backdrop-blur-[4px] py-4">
                 <h1 className="flex flex-col sm:flex-row items-center justify-center font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-6 sm:mb-8">
                     <RiLeafFill className="text-lime-600 text-5xl sm:text-6xl lg:text-7xl mr-0 sm:mr-2 mb-2 sm:mb-0" />
                     <span className="text-white">Camping</span>
                     <span className="text-lime-400 ml-0 sm:ml-2">Cachi</span>
                 </h1>
 
-                <section className="rounded-2xl sm:rounded-xl p-4 shadow-lg backdrop-blur-[4px] relative w-full max-w-[57rem] mx-auto">
+                <section className="rounded-2xl sm:rounded-xl p-4 relative w-full max-w-[57rem] mx-auto">
                     <form onSubmit={handleSubmit} className="w-full">
                         <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
                             {/* Fechas */}
@@ -216,9 +217,10 @@ const FormularioBusqueda = () => {
 
                             <button
                                 type="submit"
-                                className="px-4 sm:px-6 py-2 text-sm sm:text-base font-bold bg-lime-600 text-white rounded-md transition-all duration-150 ease-in-out hover:bg-lime-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-lime-400 focus:shadow-md active:bg-lime-800 active:shadow-inner active:text-white/80 w-full md:w-auto flex items-center justify-center"
+                                // on hover, que el texto desaparezca y se valla al medio
+                                className="flex items-center justify-center px-4 py-[0.6rem] rounded-md text-white bg-lime-600 hover:bg-lime-700 transition duration-200"
                             >
-                                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <FaSearch className="w-5 h-5 mr-2 text-white" />
                                 Buscar
                             </button>
                         </div>
