@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Peticion } from '../../../helpers/Peticion';
 import { Global } from '../../../helpers/Global';
-import { 
-    PiUsersThreeFill, 
-    PiToiletBold, 
+import {
+    PiUsersThreeFill,
+    PiToiletBold,
     PiStarFill,
     PiMapPinFill
 } from "react-icons/pi";
-import { 
-    MdOutlineBedroomChild, 
+import {
+    MdOutlineBedroomChild,
     MdArrowBack,
     MdShare,
     MdFavorite,
@@ -176,9 +176,9 @@ export const Cabaña = () => {
             });
 
             if (result.datos?.success) {
-                setComentarios(prev => 
-                    prev.map(comment => 
-                        comment._id === reviewId 
+                setComentarios(prev =>
+                    prev.map(comment =>
+                        comment._id === reviewId
                             ? { ...comment, rating: updatedData.rating, comments: [{ text: updatedData.comment }] }
                             : comment
                     )
@@ -195,28 +195,6 @@ export const Cabaña = () => {
                 show: true,
                 title: 'Error',
                 message: 'No se pudo actualizar la reseña. Intenta nuevamente.'
-            });
-        }
-    };
-
-    const handleToggleFavorite = () => {
-        setIsFavorite(!isFavorite);
-        // Aquí puedes agregar la lógica para guardar en favoritos
-    };
-
-    const handleShare = () => {
-        if (navigator.share) {
-            navigator.share({
-                title: cabaña.descripcion,
-                text: `¡Mira esta increíble cabaña! ${cabaña.descripcion}`,
-                url: window.location.href,
-            });
-        } else {
-            navigator.clipboard.writeText(window.location.href);
-            setModal({
-                show: true,
-                title: 'Enlace copiado',
-                message: 'El enlace ha sido copiado al portapapeles.'
             });
         }
     };
@@ -263,8 +241,9 @@ export const Cabaña = () => {
             <div className="container mx-auto px-4 py-6 max-w-7xl">
                 {/* Hero Section */}
                 <section className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+
                     <CabañaSwiper cabaña={cabaña} />
-                    
+
                     <div className="p-6 lg:p-8">
                         {/* Título y rating */}
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
@@ -272,7 +251,7 @@ export const Cabaña = () => {
                                 <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
                                     {cabaña.descripcion}
                                 </h1>
-                                
+
                                 <div className="flex items-center gap-4 flex-wrap mb-4">
                                     {comentarios.length > 0 && (
                                         <div className="flex items-center gap-2">
@@ -287,7 +266,7 @@ export const Cabaña = () => {
                                             </span>
                                         </div>
                                     )}
-                                    
+
                                     {cabaña.ubicacion && (
                                         <div className="flex items-center gap-2 text-gray-600">
                                             <PiMapPinFill className="text-lime-500" />
@@ -344,16 +323,16 @@ export const Cabaña = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {cabaña.servicios.map(servicio => (
                                 servicio.estado === 'Habilitado' && (
-                                    <div 
-                                        key={servicio._id} 
+                                    <div
+                                        key={servicio._id}
                                         className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 hover:shadow-md transition-all duration-200 hover:scale-105"
                                     >
                                         <div className="flex flex-col items-center text-center h-full">
                                             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm">
-                                                <img 
-                                                    src={servicio.imagen} 
-                                                    alt={servicio.nombre} 
-                                                    className="w-10 h-10 object-contain" 
+                                                <img
+                                                    src={servicio.imagen}
+                                                    alt={servicio.nombre}
+                                                    className="w-10 h-10 object-contain"
                                                 />
                                             </div>
                                             <h3 className="font-semibold text-gray-800 mb-2 text-lg">
@@ -375,36 +354,12 @@ export const Cabaña = () => {
                     {/* Calendario de reservas */}
                     <div className="lg:col-span-2">
                         <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-2 bg-lime-100 rounded-lg">
-                                    <FaCalendarAlt className="text-lime-600 text-xl" />
-                                </div>
-                                <h2 className="text-2xl font-bold text-gray-900">
-                                    Disponibilidad y reservas
-                                </h2>
-                            </div>
-                            
-                            <div className="hidden sm:block">
-                                <CalendarioReservas
-                                    reservas={reservas}
-                                    onReservar={handleReservar}
-                                    precioPorNoche={cabaña.precio}
-                                    minimoDias={cabaña.minimoDias}
-                                />
-                            </div>
-                            
-                            {/* Versión móvil del calendario */}
-                            <div className="sm:hidden">
-                                <div className="bg-gradient-to-r from-lime-50 to-green-50 rounded-xl p-6 text-center border border-lime-200">
-                                    <FaCalendarAlt className="text-3xl text-lime-500 mx-auto mb-4" />
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                                        Reserva desde tu computadora
-                                    </h3>
-                                    <p className="text-gray-600 text-sm">
-                                        Para una mejor experiencia de reserva, te recomendamos usar la versión de escritorio.
-                                    </p>
-                                </div>
-                            </div>
+                            <CalendarioReservas
+                                reservas={reservas}
+                                onReservar={handleReservar}
+                                precioPorNoche={cabaña.precio}
+                                minimoDias={cabaña.minimoDias}
+                            />
                         </div>
                     </div>
                 </div>
