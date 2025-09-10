@@ -15,14 +15,14 @@ const Modal = ({ isOpen, onClose, title, message, onConfirm, showConfirmButton =
           {showConfirmButton && (
             <button
               onClick={onConfirm}
-              className="bg-lime-600 text-white py-2 px-6 rounded-md hover:bg-lime-700 transition duration-200"
+              className="botton-submit"
             >
               Confirmar Reserva
             </button>
           )}
           <button
             onClick={onClose}
-            className="bg-lime-600 text-white py-2 px-6 rounded-md hover:bg-lime-700 transition duration-200"
+            className="botton-submit"
           >
             Cerrar
           </button>

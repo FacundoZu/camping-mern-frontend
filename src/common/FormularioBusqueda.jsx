@@ -217,8 +217,7 @@ const FormularioBusqueda = () => {
 
                             <button
                                 type="submit"
-                                // on hover, que el texto desaparezca y se valla al medio
-                                className="flex items-center justify-center px-4 py-[0.6rem] rounded-md text-white bg-lime-600 hover:bg-lime-700 transition duration-200"
+                                className="flex items-center justify-center px-6 py-[0.6rem] bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white font-bold rounded-xl transition-all duration-200"
                             >
                                 <FaSearch className="w-5 h-5 mr-2 text-white" />
                                 Buscar

@@ -142,7 +142,7 @@ export const Cabañas = () => {
     }, []);
 
     return (
-        <div className="flex flex-col lg:flex-row my-6 mx-6 md:mx-24 gap-6">
+        <div className="flex flex-col lg:flex-row my-8 pt-24 mx-6 md:mx-24 gap-6">
             <div className="lg:w-1/4 w-full self-start bg-white p-4 rounded-lg shadow-md">
                 <Buscador
                     setFiltros={setFiltros}
