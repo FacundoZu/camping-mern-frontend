@@ -123,33 +123,13 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
   };
 
   const handleReservar = async () => {
-    if (!auth?.id) {
-      toast.error("Debes iniciar sesión para realizar una reserva.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      return;
-    }
-
     if (fechaInicioSeleccionada && fechaFinSeleccionada && !hayConflicto) {
       setIsLoading(true);
       try {
-        const response = await onReservar({
+        await onReservar({
           fechaInicio: fechaInicioSeleccionada.toISOString(),
           fechaFinal: fechaFinSeleccionada.toISOString(),
         });
-
-        if (response?.datos?.status === "success") {
-          toast.success("¡Reserva realizada con éxito!", {
-            position: "top-right",
-            autoClose: 3000,
-          });
-          setFechaInicioSeleccionada(null);
-          setFechaFinSeleccionada(null);
-          setHayConflicto(false);
-        } else {
-          throw new Error("Error en la respuesta del servidor");
-        }
       } catch (error) {
         toast.error("Error al realizar la reserva. Intenta nuevamente.", {
           position: "top-right",

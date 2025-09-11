@@ -107,14 +107,7 @@ const ReservaInfo = ({
     };
 
     const handlePayment = async () => {
-        const error = validateForm();
-        if (error) {
-            alert(error);
-            return;
-        }
-    
         setIsProcessing(true);
-    
         try {
             // 1. Crear reserva temporal en el backend
             const reservaResponse = await Peticion(`${Global.url}reservation/tempReservation`, 'POST', {
@@ -124,13 +117,11 @@ const ReservaInfo = ({
                 precioTotal,
                 guestInfo: isGuest ? guestInfo : null
             });
-    
+
             if (reservaResponse.datos.status !== "success") {
                 throw new Error(reservaResponse.datos.message || "Error al crear reserva temporal");
             }
-    
-            const tempId = reservaResponse.datos.tempId;
-    
+
             // 2. Crear preferencia de pago en el backend
             const mpResponse = await Peticion(`${Global.url}MP/create-preference`, 'POST', {
                 items: [{
@@ -144,61 +135,20 @@ const ReservaInfo = ({
                     email: guestInfo.email,
                     phone: { number: guestInfo.telefono.replace(/\D/g, '').slice(-10) }
                 },
-                back_urls: {
-                    success: `http://localhost:5173/reserva-exitosa`,
-                    failure: `http://localhost:5173/reserva-fallida`,
-                    pending: `http://localhost:5173/reserva-pendiente`
-                },
-                external_reference: tempId
+                external_reference: reservaResponse.datos.tempId,
             });
-    
+
             // 3. Si Mercado Pago devolvió la URL de pago → abrir en nueva pestaña
             if (mpResponse.datos.init_point) {
-                window.open(mpResponse.datos.init_point, "_blank");
-    
-                // 4. Iniciar polling para verificar el estado del pago
-                let attempts = 0; // para evitar bucles infinitos
-                const interval = setInterval(async () => {
-                    try {
-                        attempts++;
-    
-                        const statusResponse = await Peticion(`${Global.url}MP/status/${tempId}`, "GET");
-                        console.log(statusResponse);
-                        if (statusResponse.status === "success") {
-                            if (statusResponse.estado === "approved") {
-                                clearInterval(interval);
-                                setIsProcessing(false);
-                                window.location.href = "/reserva-exitosa";
-                            } else if (statusResponse.estado === "rejected") {
-                                clearInterval(interval);
-                                setIsProcessing(false);
-                                window.location.href = "/reserva-fallida";
-                            }
-                        }
-    
-                        // Si pasaron 20 intentos (~1 min) y no hay respuesta, cancelamos
-                        if (attempts >= 20) {
-                            clearInterval(interval);
-                            setIsProcessing(false);
-                            alert("El pago aún está pendiente. Verifica tu email o vuelve más tarde.");
-                            window.location.href = "/";
-                        }
-                    } catch (err) {
-                        console.error("Error consultando estado de pago:", err);
-                    }
-                }, 3000); // Cada 3 segundos
-    
+                window.location.href = mpResponse.datos.init_point;
             } else {
                 throw new Error("No se recibió URL de pago de Mercado Pago");
             }
-    
         } catch (error) {
-            console.error("Error en el proceso de pago:", error);
-            alert(`Error: ${error.message}`);
+            alert(`Error en el proceso de pago`);
             setIsProcessing(false);
         }
     };
-    
 
     const formatDate = (date) => {
         return new Date(date).toLocaleDateString('es-ES', {
