@@ -32,10 +32,14 @@
   background-color: #d4d4d4;
 }
 
+
 .menu-perfil-item {
   @apply text-slate-700 p-3 font-medium text-sm flex items-center hover:bg-slate-200 rounded-md duration-300 transition-all;
 }
 
+.menu-item {
+  @apply text-slate-700 px-3 font-medium text-sm flex items-center hover:bg-slate-200 rounded-md duration-300 transition-all;
+}
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -80,8 +84,7 @@
 /* Cambiar color y tamaño de las flechas */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #65a30d !important;
-  /* Azul Tailwind */
+  color: #84cc16 !important;
   font-weight: bold;
   transition: color 0.3s ease;
 }
@@ -89,27 +92,24 @@
 /* Cambia el color al pasar el mouse */
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  color: #65a30d !important;
-  /* Azul más oscuro */
+  color: #91e118 !important;
+  transform: scale(1.2);
+  transition: all 0.3s ease;
 }
 
 .swiper-pagination-bullet {
-  background-color: #cbd5e1 !important;
-  /* Gris Tailwind slate-300 */
+  background-color: #cbd5e1;
   opacity: 0.6;
   width: 10px;
   height: 10px;
-  margin: 0 6px !important;
+  margin: 12px 6px 0 6px;
   transition: all 0.3s ease;
   border-radius: 9999px;
-  /* Puntos redondeados */
 }
 
 /* Punto activo */
 .swiper-pagination-bullet-active {
-  background-color: #65a30d !important;
-  /* Azul Tailwind blue-600 */
+  background-color: #84cc16 !important;
   opacity: 1;
   transform: scale(1.3);
-  /* Efecto de agrandado */
 }

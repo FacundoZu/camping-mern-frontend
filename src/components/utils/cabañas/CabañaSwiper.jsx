@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Thumbs, EffectFade } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/thumbs';
-import 'swiper/css/effect-fade';
 
 export const CabañaSwiper = ({ cabaña }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -46,7 +41,7 @@ export const CabañaSwiper = ({ cabaña }) => {
                         <div className="relative w-full h-full">
                             <img 
                                 src={imagen} 
-                                className='absolute  object-cover transition-opacity duration-500 rounded-lg'
+                                className='absolute object-cover transition-opacity duration-500 rounded-lg'
                                 alt={index === 0 ? "Imagen principal de la cabaña" : `Imagen adicional ${index}`}
                             />
                         </div>

@@ -10,7 +10,7 @@ import { FaStar } from "react-icons/fa";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { PiToiletBold } from "react-icons/pi";
 
-export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, servicios }) => {
+export const Buscador = ({ setFiltros, cabañas, filtros, servicios }) => {
 
     const { formulario, cambiado, setFormulario } = useForm({
         checkIn: filtros.checkIn || "",
@@ -90,8 +90,8 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
     };
 
     const actualizarOpcionesDinamicas = () => {
-        if (todasLasCabañas) {
-            let cabañasFiltradas = todasLasCabañas;
+        if (cabañas) {
+            let cabañasFiltradas = cabañas;
 
             const totalPersonas = parseInt(formulario.adultos) + parseInt(formulario.ninos);
             if (totalPersonas > 0) {
@@ -124,8 +124,8 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
         }));
 
         if ((name === "adultos" || name === "ninos") && value === "0") {
-            const habitaciones = [...new Set(todasLasCabañas.map((c) => c.cantidadHabitaciones))];
-            const baños = [...new Set(todasLasCabañas.map((c) => c.cantidadBaños))];
+            const habitaciones = [...new Set(cabañas.map((c) => c.cantidadHabitaciones))];
+            const baños = [...new Set(cabañas.map((c) => c.cantidadBaños))];
 
             setOpcionesHabitaciones(habitaciones.sort((a, b) => a - b));
             setOpcionesBaños(baños.sort((a, b) => a - b));
@@ -135,8 +135,8 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
     };
 
     useEffect(() => {
-        if (todasLasCabañas) {
-            const capacidades = [...new Set(todasLasCabañas.map((c) => c.cantidadPersonas))];
+        if (cabañas) {
+            const capacidades = [...new Set(cabañas.map((c) => c.cantidadPersonas))];
             const habitaciones = [...new Set((cabañas || []).map((c) => c.cantidadHabitaciones))];
             const baños = [...new Set((cabañas || []).map((c) => c.cantidadBaños))];
 
@@ -144,7 +144,7 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
             setOpcionesHabitaciones(habitaciones.sort((a, b) => a - b));
             setOpcionesBaños(baños.sort((a, b) => a - b));
         }
-    }, [cabañas, todasLasCabañas]);
+    }, [cabañas]);
 
 
     useEffect(() => {
@@ -206,8 +206,51 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
                     </div>
                 )}
 
-                {/* Select Adultos */}
-                <div className="flex flex-col">
+                <div className="flex justify-between items-center">
+                    <span className="text-sm sm:text-base">Adultos</span>
+                    <div className="flex items-center space-x-3">
+                        <button
+                            type="button"
+                            onClick={() => manejarCambios({ target: { name: "adultos", value: parseInt(formulario.adultos) - 1 } })}
+                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-md text-sm sm:text-base disabled:opacity-50"
+                            disabled={formulario.adultos <= 1}
+                        >
+                            -
+                        </button>
+                        <span className="text-sm sm:text-base w-6 text-center">{formulario.adultos}</span>
+                        <button
+                            type="button"
+                            onClick={() => manejarCambios({ target: { name: "adultos", value: parseInt(formulario.adultos) + 1 } })}
+                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-md text-sm sm:text-base"
+                        >
+                            +
+                        </button>
+                    </div>
+                </div>
+
+                <div className="flex justify-between items-center">
+                    <span className="text-sm sm:text-base">Niños</span>
+                    <div className="flex items-center space-x-3">
+                        <button
+                            type="button"
+                            onClick={() => manejarCambios({ target: { name: "ninos", value: parseInt(formulario.ninos) - 1 } })}
+                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-md text-sm sm:text-base disabled:opacity-50"
+                            disabled={formulario.ninos <= 1}
+                        >
+                            -
+                        </button>
+                        <span className="text-sm sm:text-base w-6 text-center">{formulario.ninos}</span>
+                        <button
+                            type="button"
+                            onClick={() => manejarCambios({ target: { name: "ninos", value: parseInt(formulario.ninos) + 1 } })}
+                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-md text-sm sm:text-base"
+                        >
+                            +
+                        </button>
+                    </div>
+                </div>
+
+                {/* <div className="flex flex-col">
                     <label htmlFor="adultos" className="text-sm font-medium mb-1 mx-auto">
                         Adultos
                     </label>
@@ -225,8 +268,6 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
                         ))}
                     </select>
                 </div>
-
-                {/* Select Niños */}
                 <div className="flex flex-col">
                     <label htmlFor="ninos" className="text-sm font-medium mb-1 mx-auto">
                         Niños
@@ -244,7 +285,7 @@ export const Buscador = ({ setFiltros, todasLasCabañas, cabañas, filtros, serv
                             </option>
                         ))}
                     </select>
-                </div>
+                </div> */}
 
                 {/* Select Habitaciones */}
                 <div className="flex items-center border border-gray-300 rounded-md">

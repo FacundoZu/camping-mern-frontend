@@ -224,13 +224,13 @@ export const AdminDashboard = () => {
           <p className="text-3xl">{estadisticas.reservasTotales}</p>
         </div>
       </div>
-
-      <div className="mt-8">
+      
+      {/* <div className="mt-8">
         <h3 className="text-xl font-semibold mb-4">Gráfico de Cabañas por Estado</h3>
         <div style={{ height: '300px' }}>
           <Bar data={dataCabañasEstado} options={opcionesGrafico} />
         </div>
-      </div>
+      </div> */}
 
       <hr className='my-4'/>
 

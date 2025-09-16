@@ -3,6 +3,9 @@ import { Global } from '../helpers/Global';
 import { Peticion } from '../helpers/Peticion';
 import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Thumbs, EffectFade } from 'swiper/modules';
+
 export const Actividades = () => {
     const [actividades, setActividades] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,7 +15,7 @@ export const Actividades = () => {
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                const response = await Peticion(Global.url + "activity/getAllActivities", "GET", null, false, 'include');
+                const response = await Peticion(Global.url + "activity/getActivities", "GET", null, false, 'include');
                 if (!response.datos) {
                     throw new Error('Error al obtener actividades');
                 }
@@ -39,52 +42,56 @@ export const Actividades = () => {
             <div className="relative w-full min-h-[500px] bg-gray-100 flex items-center justify-center">
                 <div className="text-center">
                     <div className="h-10 bg-gray-300 rounded-lg w-48 mx-auto mb-6 animate-pulse"></div>
-                    <div className="h-4 bg-gray-300 rounded w-64 mx-auto animate-pulse"></div>
+                    <div className="h-4 bg-gray-300 rounded w-64 mx-auto animate-pulse aspect-video"></div>
                 </div>
             </div>
         );
     }
 
-    const enabledActivities = actividades.filter(a => a.estado === 'Habilitado');
-
     return (
         <div id="eventos" className="relative w-full px-4 sm:px-6 lg:px-12 xl:px-20 py-6 sm:py-8">
             {/* Título principal */}
             <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold inline-flex items-center">
-                            Experiencias en la Naturaleza
-                        </h2>
-                        <p className="mt-3 text-gray-500">Selecciona una actividad para ver más información</p>
-                    </div>
-            {enabledActivities.length > 0 ? (
-                <div
-                    ref={containerRef}
-                    className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+                <h2 className="text-4xl font-bold inline-flex items-center">
+                    Experiencias en la Naturaleza
+                </h2>
+                <p className="mt-3 text-gray-500">Selecciona una actividad para ver más información</p>
+            </div>
+            {actividades.length > 0 ? (
+                <Swiper
+                    modules={[Navigation, Pagination, Thumbs, EffectFade]}
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    pagination={{ clickable: true }}
+                    navigation
+                    className="h-[350px] md:h-[700px] overflow-hidden w-11/12"
                 >
-                    {enabledActivities.map((actividad, index) => (
-                        <div key={index} onClick={() => openPopup(actividad)} className="relative cursor-pointer hover:scale-105 transition-all duration-300">
-                            {/* Imagen responsive */}
+                    {actividades.map((actividad, index) => (
+                        <SwiperSlide
+                            key={index}
+                            onClick={() => openPopup(actividad)}
+                            className="relative cursor-pointer group overflow-hidden rounded-2xl"
+                        >
                             <img
-                                className="w-full h-56 sm:h-64 md:h-72 lg:h-80 object-cover rounded-lg overflow-hidden"
+                                className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 aspect-video"
                                 src={actividad.imagen}
                                 alt={actividad.titulo}
                                 loading="lazy"
                             />
 
-                            {/* Contenido */}
-                            <div className="absolute bottom-0 p-4 w-full rounded-b-lg sm:p-5 md:p-6 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1">
+                            <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 sm:p-6 md:px-8 md:py-14 transition-all duration-500 group-hover:from-black/90 group-hover:via-black/60">
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-extrabold text-white mb-2 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
                                     {actividad.titulo}
                                 </h3>
-                                <p className="text-gray-200 text-xs sm:text-sm md:text-base line-clamp-2">
+                                <p className="text-gray-200 text-xs sm:text-sm md:text-base line-clamp-2 transform translate-y-2 group-hover:translate-y-0 transition-all duration-700 delay-100">
                                     {actividad.descripcion.length > 100
-                                        ? actividad.descripcion.substring(0, 100) + '...'
+                                        ? actividad.descripcion.substring(0, 100) + "..."
                                         : actividad.descripcion}
                                 </p>
                             </div>
-                        </div>
+                        </SwiperSlide>
                     ))}
-                </div>
+                </Swiper>
             ) : (
                 <div className="text-center py-12">
                     <div className="text-gray-400 mb-4">

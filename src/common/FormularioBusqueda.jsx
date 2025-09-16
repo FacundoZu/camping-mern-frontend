@@ -91,7 +91,7 @@ const FormularioBusqueda = () => {
     }, []);
 
     return (
-        <div className="flex relative text-center items-center justify-center my-auto pb-10 h-full px-4 sm:px-6 lg:px-8 w-full">
+        <div id="reservar" className="flex relative text-center items-center justify-center my-auto pb-10 h-full px-4 sm:px-6 lg:px-8 w-full">
             <div className="w-full max-w-5xl text-center backdrop-blur-[4px] py-4">
                 <h1 className="flex flex-col sm:flex-row items-center justify-center font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-6 sm:mb-8">
                     <RiLeafFill className="text-lime-600 text-5xl sm:text-6xl lg:text-7xl mr-0 sm:mr-2 mb-2 sm:mb-0" />

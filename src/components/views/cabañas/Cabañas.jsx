@@ -9,7 +9,6 @@ export const Cabañas = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [cabañas, setCabañas] = useState([]);
-    const [todasLasCabañas, setTodasLasCabañas] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [servicios, setServicios] = useState([]);
 
@@ -42,7 +41,7 @@ export const Cabañas = () => {
     // Obtener cabañas filtradas desde la API
     const obtenerCabañas = async () => {
         setCargando(true);
-        let url = Global.url + "cabin/getCabins";
+        let url = Global.url + "cabin/getActiveCabins";
 
         const paramsPeticion = {
             checkIn: filtros.checkIn,
@@ -59,7 +58,7 @@ export const Cabañas = () => {
                 const cabañasConRatings = await Promise.all(
                     datos.cabins.map(async (cabaña) => {
                         try {
-                            if (cabaña.comentarios?.length > 0 && cabaña.estado === "Disponible") {
+                            if (cabaña.comentarios?.length > 0) {
                                 const reviewsUrl = `${Global.url}reviews/getReviewsByCabin/${cabaña._id}`;
                                 const reviewsResponse = await Peticion(reviewsUrl, "GET", "", false, "include");
 
@@ -90,7 +89,6 @@ export const Cabañas = () => {
                 // 🔹 Filtrar por disponibilidad y por puntuación mínima
                 const cabañasFiltradas = cabañasConRatings.filter(
                     (cabaña) =>
-                        cabaña.estado === "Disponible" &&
                         cabaña.promedioRating >= Number(filtros.estrellas || 0)
                 );
 
@@ -100,20 +98,6 @@ export const Cabañas = () => {
             console.error("Error obteniendo cabañas:", error);
         } finally {
             setCargando(false);
-        }
-    };
-
-
-    // Obtener todas las cabañas (para opciones dinámicas)
-    const obtenerTodasLasCabañas = async () => {
-        let url = Global.url + "cabin/getCabins";
-        try {
-            const { datos } = await Peticion(url, "GET", null, false);
-            if (datos && datos.cabins) {
-                setTodasLasCabañas(datos.cabins);
-            }
-        } catch (error) {
-            console.error("Error obteniendo todas las cabañas:", error);
         }
     };
 
@@ -137,7 +121,6 @@ export const Cabañas = () => {
 
     // Obtener todas las cabañas al cargar la página
     useEffect(() => {
-        obtenerTodasLasCabañas();
         obtenerServicios();
     }, []);
 
@@ -147,7 +130,7 @@ export const Cabañas = () => {
                 <Buscador
                     setFiltros={setFiltros}
                     filtros={filtros}
-                    todasLasCabañas={todasLasCabañas}
+                    todasLasCabañas={cabañas}
                     cabañas={cabañas}
                     servicios={servicios}
                 />

@@ -62,7 +62,7 @@ export const Preguntas = () => {
     }
 
     return (
-        <div id="preguntas" className="w-4/6 m-auto sm:px-6 lg:px-20 py-4 mb-6">
+        <div id="preguntas" className="w-full md:w-5/6 lg:w-3/6 m-auto p-4 mb-6">
             <div className="m-auto pb-4 ">
                 {preguntas.length > 0 && (
                     <div className="text-center mb-12">
@@ -86,8 +86,8 @@ export const Preguntas = () => {
                                         
                                     >
                                         <div className="flex items-center">
-                                            <FaCommentDots className="text-lime-600 mr-3 text-lg" />
-                                            <h3 className="text-lg font-medium text-gray-800">
+                                            <FaCommentDots className="text-lime-600 mr-3 text-lg size-6 absolute" />
+                                            <h3 className="text-lg font-medium text-gray-800 pl-8">
                                                 {pregunta.pregunta}
                                             </h3>
                                         </div>

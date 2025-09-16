@@ -28,7 +28,7 @@ export default function Header() {
 
   return (
     <header className='fixed w-full p-2 z-50'>
-      <div className='flex items-center gap-6 sticky top-0 justify-between w-5/6 mx-auto p-3 bg-white rounded-xl animate-fade-top'>
+      <div className='flex items-center gap-6 sticky top-0 justify-between w-full md:w-5/6 mx-auto p-3 bg-white rounded-xl animate-fade-top'>
         <Link to="/">
           <h1 className='font-bold text-sm sm:text-xl flex items-center'>
             <RiLeafFill className='text-lime-600 justify-center mr-1 h-8 w-8' />
@@ -36,35 +36,41 @@ export default function Header() {
             <span className='text-slate-700 text-sm sm:text-xl'>Cachi</span>
           </h1>
         </Link>
-        {isHomePage && (
-          <ul className='relative flex items-center gap-1'>
-            <>
-              <a href="#eventos" className="text-slate-600 hidden sm:inline font-medium">
-                <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                  <li>Eventos</li>
-                </div>
-              </a>
 
-              <a href="#ubicacion" className="text-slate-600 hidden sm:inline font-medium">
-                <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                  <li>Ubicación</li>
-                </div>
-              </a>
+        <ul className='relative flex items-center gap-1'>
+          <>
+            <a href="/#reservar" className="text-slate-600 hidden sm:inline font-medium">
+              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                <li>Buscar Cabaña</li>
+              </div>
+            </a>
 
-              <a href="#preguntas" className="text-slate-600 hidden sm:inline font-medium">
-                <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                  <li>Preguntas</li>
-                </div>
-              </a>
+            <a href="/#eventos" className="text-slate-600 hidden sm:inline font-medium">
+              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                <li>Eventos</li>
+              </div>
+            </a>
 
-              <a href="#contacto" className="text-slate-600 hidden sm:inline font-medium">
-                <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                  <li>Contacto</li>
-                </div>
-              </a>
-            </>
-          </ul>
-        )}
+            <a href="/#ubicacion" className="text-slate-600 hidden sm:inline font-medium">
+              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                <li>Ubicación</li>
+              </div>
+            </a>
+
+            <a href="/#preguntas" className="text-slate-600 hidden sm:inline font-medium">
+              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                <li>Preguntas</li>
+              </div>
+            </a>
+
+            <a href="/#contacto" className="text-slate-600 hidden sm:inline font-medium">
+              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                <li>Contacto</li>
+              </div>
+            </a>
+          </>
+        </ul>
+
 
         <div>
           <button onClick={handleToggle} className="text-slate-700 sm:hidden p-1 rounded-lg flex items-center justify-center bg-slate-300 active:bg-slate-400">
@@ -82,7 +88,7 @@ export default function Header() {
               <p className="relative text-lime-600 font-bold text-sm hidden sm:inline">
                 {auth.name}
               </p>
-              <div className='hidden sm:inline'>
+              <div className='hidden lg:inline sixe-10'>
                 {auth.image ? (
                   <img src={auth.image} alt="Perfil" className="w-10 h-10 rounded-full border border-gray-300 shadow-sm" />
                 ) : (

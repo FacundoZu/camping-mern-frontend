@@ -67,14 +67,12 @@ export const Register = () => {
                 </div>
               </div>
             </div>
-            <Link to="/" className="absolute bottom-5 left-6 w-10 h-10 bg-lime-600 hover:bg-lime-700 rounded-full flex items-center justify-center">
+          </div>
+          {/* Formulario */}
+          <div className="w-full relative max-w-md mx-auto">
+          <Link to="/login" className="absolute -top-[6rem] w-10 h-10 bg-lime-600 hover:bg-lime-700 rounded-full flex items-center justify-center">
               <FaArrowLeft className="w-6 h-6 text-white" />
             </Link>
-          </div>
-
-          {/* Formulario */}
-          <div className="w-full max-w-md mx-auto">
-
             <form onSubmit={guardarUsuario} className="space-y-4">
 
               {/* Nombre + Teléfono */}
@@ -220,7 +218,7 @@ export const Register = () => {
               {/* Botón principal */}
               <button
                 type="submit"
-                className="mt-4 w-full bg-lime-600 hover:bg-lime-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 shadow-md"
+                className="mt-4 w-full bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white py-3 rounded-lg font-semibold transition-all duration-300 shadow-md"
               >
                 {isLoading ? "Registrando..." : "Registrarse"}
               </button>

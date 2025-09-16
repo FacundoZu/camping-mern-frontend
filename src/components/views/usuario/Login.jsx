@@ -40,8 +40,12 @@ export const Login = () => {
     <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       <div className="flex items-center justify-center min-h-screen sm:p-4">
         <div className="w-full p-4 sm:p-0 sm:max-w-2xl lg:max-w-6xl grid h-[80vh] lg:grid-cols-2 items-center bg-white rounded-3xl shadow-2xl border border-gray-100 animate-fade-in">
+
           {/* Formulario */}
           <div className="relative">
+            <Link to="/" className="absolute -top-[6.6rem] left-[4.2rem] w-10 h-10 bg-lime-600 hover:bg-lime-700 rounded-full flex items-center justify-center">
+              <FaArrowLeft className="w-6 h-6 text-white" />
+            </Link>
             <div className="w-full max-w-md mx-auto">
               <h1 className="text-3xl font-bold text-gray-800 text-center">Iniciar sesión</h1>
               <p className="text-gray-500 text-center mb-6">
@@ -94,7 +98,7 @@ export const Login = () => {
                 {/* Botón iniciar sesión */}
                 <button
                   type="submit"
-                  className="mt-4 w-full bg-lime-600 hover:bg-lime-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 shadow-md"
+                  className="mt-4 w-full bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white py-3 rounded-lg font-semibold transition-all duration-300 shadow-md"
                 >
                   {isLoading ? "Iniciando..." : "Iniciar sesión"}
                 </button>
@@ -126,10 +130,6 @@ export const Login = () => {
                 </Link>
               </div>
             </div>
-
-            <Link to="/" className="absolute -bottom-16 left-6 w-10 h-10 bg-lime-600 hover:bg-lime-700 rounded-full flex items-center justify-center">
-              <FaArrowLeft className="w-6 h-6 text-white" />
-            </Link>
 
           </div>
           {/* Panel lateral con imagen */}
