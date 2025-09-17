@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Global } from '../helpers/Global';
 import { Peticion } from '../helpers/Peticion';
-import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaClock, FaTimes } from 'react-icons/fa';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Thumbs, EffectFade } from 'swiper/modules';
+
 
 export const Actividades = () => {
     const [actividades, setActividades] = useState([]);
@@ -29,12 +29,14 @@ export const Actividades = () => {
         fetchActivities();
     }, []);
 
-    const openPopup = (activity) => {
-        setSelectedActivity(activity);
+    const openPopup = (activity, index) => {
+        setSelectedActivity({ ...activity, index });
+        document.body.style.overflow = 'hidden';
     };
 
     const closePopup = () => {
         setSelectedActivity(null);
+        document.body.style.overflow = 'unset';
     };
 
     if (loading) {
@@ -58,40 +60,45 @@ export const Actividades = () => {
                 <p className="mt-3 text-gray-500">Selecciona una actividad para ver más información</p>
             </div>
             {actividades.length > 0 ? (
-                <Swiper
-                    modules={[Navigation, Pagination, Thumbs, EffectFade]}
-                    slidesPerView={1}
-                    spaceBetween={30}
-                    pagination={{ clickable: true }}
-                    navigation
-                    className="h-[350px] md:h-[700px] overflow-hidden w-11/12"
-                >
-                    {actividades.map((actividad, index) => (
-                        <SwiperSlide
-                            key={index}
-                            onClick={() => openPopup(actividad)}
-                            className="relative cursor-pointer group overflow-hidden rounded-2xl"
-                        >
-                            <img
-                                className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 aspect-video"
-                                src={actividad.imagen}
-                                alt={actividad.titulo}
-                                loading="lazy"
-                            />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 mx-auto">
+                    {actividades.map((actividad, index) => {
+                        const isSelected = selectedActivity?.index === index;
+                        return (
+                            <motion.div
+                                key={index}
+                                layoutId={`activity-${index}`}
+                                onClick={() => openPopup(actividad, index)}
+                                className="relative cursor-pointer group rounded-2xl shadow-lg hover:shadow-xl"
+                            >
+                                {/* Imagen de la card */}
+                                <div className="relative h-48 sm:h-56 lg:h-64">
+                                    <img
+                                        className="object-cover w-full h-full rounded-2xl transform group-hover:scale-110 transition-transform"
+                                        src={actividad.imagen}
+                                        alt={actividad.titulo}
+                                        loading="lazy"
+                                    />
+                                </div>
 
-                            <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 sm:p-6 md:px-8 md:py-14 transition-all duration-500 group-hover:from-black/90 group-hover:via-black/60">
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-extrabold text-white mb-2 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                                    {actividad.titulo}
-                                </h3>
-                                <p className="text-gray-200 text-xs sm:text-sm md:text-base line-clamp-2 transform translate-y-2 group-hover:translate-y-0 transition-all duration-700 delay-100">
-                                    {actividad.descripcion.length > 100
-                                        ? actividad.descripcion.substring(0, 100) + "..."
-                                        : actividad.descripcion}
-                                </p>
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+                                {/* Contenido de la card */}
+                                {!isSelected && (
+                                    <div
+                                        className="absolute bottom-0 w-full p-4 sm:p-5"
+                                    >
+                                        <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-2 transform translate-y-1 group-hover:translate-y-0 transition-all">
+                                            {actividad.titulo}
+                                        </h3>
+                                        <p className="text-gray-200 text-xs sm:text-sm line-clamp-2 transform translate-y-2 group-hover:translate-y-0 transition-all">
+                                            {actividad.descripcion.length > 80
+                                                ? actividad.descripcion.substring(0, 80) + "..."
+                                                : actividad.descripcion}
+                                        </p>
+                                    </div>
+                                )}
+                            </motion.div>
+                        )
+                    })}
+                </div>
             ) : (
                 <div className="text-center py-12">
                     <div className="text-gray-400 mb-4">
@@ -108,54 +115,84 @@ export const Actividades = () => {
                 </div>
             )}
 
-            {/* Popup */}
-            {selectedActivity && (
-                <div onClickCapture={closePopup} className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black bg-opacity-50 animate-fade-in-4">
+            {/* Modal con animación */}
+            <AnimatePresence>
+                {selectedActivity && (
                     <div
-                        className="relative bg-white w-full max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto rounded-lg sm:rounded-xl shadow-2xl"
+                        className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black bg-opacity-50"
+                        exit={{ opacity: 0 }}
+                        onClick={closePopup}
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                            <div className="relative h-48 sm:h-64 md:h-full">
-                                <img
-                                    className="w-full h-full object-cover"
-                                    src={selectedActivity.imagen}
-                                    alt={selectedActivity.titulo}
-                                />
-                            </div>
-                            <div className="p-4 sm:p-6 md:p-8">
-                                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
-                                    {selectedActivity.titulo}
-                                </h2>
-                                <div className="prose prose-sm sm:prose-lg text-gray-600 mb-4 sm:mb-6">
-                                    <p>{selectedActivity.descripcion}</p>
+                        <motion.div
+                            className="relative bg-white w-full max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[90vh] rounded-lg sm:rounded-xl shadow-2xl"
+                            layoutId={`activity-${selectedActivity.index}`}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Botón de cerrar */}
+                            <button
+                                className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-700 hover:text-gray-900 rounded-full p-2 shadow-lg"
+                                onClick={closePopup}
+                            >
+                                <FaTimes className="w-5 h-5" />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                                {/* Imagen con animación compartida */}
+                                <div className="relative h-48 sm:h-64 md:h-full">
+                                    <img
+                                        className="w-full h-full object-cover rounded-t-lg md:rounded-l-lg md:rounded-tr-none z-40"
+                                        src={selectedActivity.imagen}
+                                        alt={selectedActivity.titulo}
+                                    />
                                 </div>
-                                <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                                    {selectedActivity.duracion && (
-                                        <div className="flex items-start">
-                                            <FaClock className="text-lime-500 mt-1 mr-3 flex-shrink-0" />
-                                            <div>
-                                                <p className="text-sm text-gray-500">Duración</p>
-                                                <p className="font-medium text-gray-800">{selectedActivity.duracion}</p>
+                                <div>
+                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 p-4">
+                                        {selectedActivity.titulo}
+                                    </h2>
+
+                                    <div
+                                        className="text-gray-600 mb-4 sm:mb-6 px-4"
+                                        initial={{ y: 15, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ delay: 0.25, duration: 0.3 }}
+                                    >
+                                        <p>
+                                            {selectedActivity.descripcion}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        className="space-y-3 sm:space-y-4 mb-6 sm:mb-8"
+                                    >
+                                        {selectedActivity.duracion && (
+                                            <div className="flex items-start">
+                                                <FaClock className="text-lime-500 mt-1 mr-3 flex-shrink-0" />
+                                                <div>
+                                                    <p className="text-sm text-gray-500">Duración</p>
+                                                    <p className="font-medium text-gray-800">
+                                                        {selectedActivity.duracion}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                                    {selectedActivity.ubicacion && (
-                                        <div className="flex items-start">
-                                            <FaMapMarkerAlt className="text-lime-500 mt-1 mr-3 flex-shrink-0" />
-                                            <div>
-                                                <p className="text-sm text-gray-500">Ubicación</p>
-                                                <p className="font-medium text-gray-800">{selectedActivity.ubicacion}</p>
+                                        )}
+                                        {selectedActivity.ubicacion && (
+                                            <div className="flex items-start">
+                                                <FaMapMarkerAlt className="text-lime-500 mt-1 mr-3 flex-shrink-0" />
+                                                <div>
+                                                    <p className="text-sm text-gray-500">Ubicación</p>
+                                                    <p className="font-medium text-gray-800">
+                                                        {selectedActivity.ubicacion}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
-
-                </div>
-            )}
-
+                )}
+            </AnimatePresence>
         </div>
     );
 };
