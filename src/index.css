@@ -20,6 +20,10 @@
   @apply w-full bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl text-center inline-block;
 }
 
+.botton-submit-2 {
+  @apply flex items-center gap-2 mx-auto bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl text-center;
+}
+
 .error-msg {
   @apply text-red-500 p-2 font-bold text-sm;
 }

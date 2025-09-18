@@ -83,7 +83,7 @@ export default function Header() {
 
           {auth && !loading ? (
 
-            <div onClick={handleToggle} className="flex items-center gap-4 cursor-pointer">
+            <Link to="/perfil" className="flex items-center gap-4 cursor-pointer">
 
               <p className="relative text-lime-600 font-bold text-sm hidden sm:inline">
                 {auth.name}
@@ -96,7 +96,7 @@ export default function Header() {
                 )}
               </div>
 
-            </div>
+            </Link>
           ) : (
             <ul className='relative flex items-center'>
               <Link to="/login" className="text-lime-600 font-bold hidden sm:inline transition duration-200 pr-2">

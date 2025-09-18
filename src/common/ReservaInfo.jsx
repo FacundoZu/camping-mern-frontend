@@ -115,7 +115,8 @@ const ReservaInfo = ({
                 fechaInicio,
                 fechaFinal,
                 precioTotal,
-                guestInfo: isGuest ? guestInfo : null
+                guestInfo: isGuest ? guestInfo : null,
+                usuarioId: auth?.id || null
             });
 
             if (reservaResponse.datos.status !== "success") {
