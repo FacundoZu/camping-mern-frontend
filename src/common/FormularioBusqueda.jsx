@@ -46,6 +46,10 @@ const FormularioBusqueda = () => {
         return `${formatDateLong(today)} — ${formatDateLong(tomorrow)}`;
     };
 
+    const closeCalendar = () => {
+        setShowCalendar(false);
+    };
+
     const dateRangeConfig = {
         locale: es,
         showDateDisplay: false,
@@ -118,6 +122,17 @@ const FormularioBusqueda = () => {
                                     className="p-2 text-sm text-center sm:text-base rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-400 cursor-pointer w-full placeholder-gray-400"
                                 />
                             </div>
+
+                            {showCalendar && (
+                                <div ref={calendarRef} className="absolute z-10 mt-10 bg-white px-3 rounded-md shadow-lg">
+                                    <DateRange
+                                        {...dateRangeConfig}
+                                        editableDateInputs={true}
+                                        onChange={handleSelect}
+                                        ranges={state}
+                                    />
+                                </div>
+                            )}
 
                             {/* Viajeros */}
                             <div className="flex flex-col w-full relative">
@@ -224,17 +239,6 @@ const FormularioBusqueda = () => {
                             </button>
                         </div>
                     </form>
-
-                    {showCalendar && (
-                        <div ref={calendarRef} className="absolute z-10 my-2 bg-white px-3 rounded-md shadow-lg">
-                            <DateRange
-                                {...dateRangeConfig}
-                                editableDateInputs={true}
-                                onChange={handleSelect}
-                                ranges={state}
-                            />
-                        </div>
-                    )}
                 </section>
             </div>
         </div>

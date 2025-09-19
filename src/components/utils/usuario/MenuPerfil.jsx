@@ -23,7 +23,7 @@ export const MenuPerfil = ({ handleToggle = null }) => {
     };
 
     return (
-        <div onClick={handleToggle} onMouseLeave={handleToggle} className='absolute top-20 right-2 bg-white rounded-xl p-3 z-50 shadow-lg animate-fade-top block sm:hidden'>
+        <div onClick={handleToggle} onMouseLeave={handleToggle} className='absolute top-20 right-2 bg-white rounded-xl p-3 z-50 shadow-lg animate-fade-top block'>
             {auth ? (
                 <div className='flex flex-col'>
                     <div className='flex items-center pb-3'>

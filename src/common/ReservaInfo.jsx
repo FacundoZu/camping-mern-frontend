@@ -92,6 +92,10 @@ const ReservaInfo = ({
             newErrors.telefono = 'Por favor ingresa un número de teléfono válido';
         }
 
+        if (guestInfo.adultos < 1) {
+            newErrors.adultos = 'Debes seleccionar al menos un adulto';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -248,13 +252,13 @@ const ReservaInfo = ({
                                 Nombre completo *
                             </label>
                             <div className="relative">
-                                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                                <FaUser className="absolute left-3 top-[1.15rem] text-gray-400" />
                                 <input
                                     type="text"
                                     name="nombre"
                                     value={guestInfo.nombre}
                                     onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all ${errors.nombre ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                    className={`w-full pl-10 pr-4 py-3 border rounded-xl ${errors.nombre ? 'border-red-300 bg-red-50' : 'border-gray-300'
                                         }`}
                                     placeholder="Ingresa tu nombre completo"
                                 />
@@ -272,13 +276,13 @@ const ReservaInfo = ({
                                 Correo electrónico *
                             </label>
                             <div className="relative">
-                                <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                                <FaEnvelope className="absolute left-3 top-[1.15rem] text-gray-400" />
                                 <input
                                     type="email"
                                     name="email"
                                     value={guestInfo.email}
                                     onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all ${errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                    className={`w-full pl-10 pr-4 py-3 border rounded-xl ${errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
                                         }`}
                                     placeholder="tu@email.com"
                                 />
@@ -296,16 +300,17 @@ const ReservaInfo = ({
                                 Número de teléfono *
                             </label>
                             <div className="relative">
-                                <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="tel"
-                                    name="telefono"
-                                    value={guestInfo.telefono}
-                                    onChange={handleChange}
-                                    className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all ${errors.telefono ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                                        }`}
-                                    placeholder="+54 9 11 1234-5678"
-                                />
+                                    <FaPhone className="absolute left-3 top-[1.15rem] text-gray-400" />
+                                    <input
+                                        type="tel"
+                                        name="telefono"
+                                        value={guestInfo.telefono}
+                                        onChange={handleChange}
+                                        className={`w-full pl-10 pr-4 py-3 border rounded-xl ${errors.telefono ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                            }`}
+                                        placeholder="+54 9 11 1234-5678"
+                                    />
+
                                 {errors.telefono && (
                                     <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
                                         <FaTimes className="text-xs" />
@@ -313,6 +318,40 @@ const ReservaInfo = ({
                                     </p>
                                 )}
                             </div>
+                        </div>
+                        {/* cantidad de adultos */}
+                        <div className='inline-block w-1/2 pr-4'>
+                            <label htmlFor="adultos" className='block text-gray-700 font-medium mb-2 text-center'>Adultos</label>
+                            <input
+                                type="number"
+                                name="adultos"
+                                min={0}
+                                defaultValue={0}
+                                value={guestInfo.adultos}
+                                onChange={handleChange}
+                                required
+                                className='pl-5 py-3 w-full border  rounded-xl'
+                            />
+                            {errors.adultos && (
+                                <div className='absolute translate-y-1/2 flex items-center gap-1 bg-red-500 text-white text-xs rounded-lg px-3 py-1 shadow-lg'>
+                                    <FaTimes className="text-xs" />
+                                    {errors.adultos}
+                                </div>
+                            )}
+                        </div>
+                        {/* cantidad de niños */}
+                        <div className="inline-block w-1/2 pl-4">
+                            <label htmlFor="ninos" className='block text-gray-700 font-medium mb-2 text-center'>Niños</label>
+                            <input
+                                type="number"
+                                name="ninos"
+                                min={0}
+                                defaultValue={0}
+                                value={guestInfo.ninos}
+                                onChange={handleChange}
+                                required
+                                className='pl-5 py-3 w-full border rounded-xl'
+                            />
                         </div>
                     </div>
                 </div>

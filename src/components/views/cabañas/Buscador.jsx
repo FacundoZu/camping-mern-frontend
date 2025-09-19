@@ -206,7 +206,7 @@ export const Buscador = ({ setFiltros, cabañas, filtros, servicios }) => {
                     </div>
                 )}
 
-                <div className="flex justify-between items-center">
+                <div className="flex md:flex-col flex-row justify-between items-center">
                     <span className="text-sm sm:text-base">Adultos</span>
                     <div className="flex items-center space-x-3">
                         <button
@@ -228,7 +228,7 @@ export const Buscador = ({ setFiltros, cabañas, filtros, servicios }) => {
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center">
+                <div className="flex md:flex-col flex-row justify-between items-center">
                     <span className="text-sm sm:text-base">Niños</span>
                     <div className="flex items-center space-x-3">
                         <button
@@ -249,43 +249,6 @@ export const Buscador = ({ setFiltros, cabañas, filtros, servicios }) => {
                         </button>
                     </div>
                 </div>
-
-                {/* <div className="flex flex-col">
-                    <label htmlFor="adultos" className="text-sm font-medium mb-1 mx-auto">
-                        Adultos
-                    </label>
-                    <select
-                        name="adultos"
-                        value={formulario.adultos}
-                        onChange={manejarCambios}
-                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-lime-500 cursor-pointer text-center"
-                    >
-                        <option value="0" className="">-</option>
-                        {opcionesCapacidad.map((capacidad) => (
-                            <option key={capacidad} value={capacidad}>
-                                {capacidad}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="ninos" className="text-sm font-medium mb-1 mx-auto">
-                        Niños
-                    </label>
-                    <select
-                        name="ninos"
-                        value={formulario.ninos}
-                        onChange={manejarCambios}
-                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-lime-500 cursor-pointer text-center"
-                    >
-                        <option value="0">-</option>
-                        {[...Array(10)].map((_, i) => (
-                            <option key={i} value={i}>
-                                {i}
-                            </option>
-                        ))}
-                    </select>
-                </div> */}
 
                 {/* Select Habitaciones */}
                 <div className="flex items-center border border-gray-300 rounded-md">

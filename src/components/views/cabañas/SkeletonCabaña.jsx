@@ -2,9 +2,9 @@ import React from 'react';
 
 export const SkeletonCabaña = () => {
     return (
-        <div className="flex flex-col rounded-lg my-4 bg-white shadow-md lg:flex-row animate-pulse">
+        <div className="flex flex-col rounded-lg my-1 bg-white shadow-md lg:flex-row animate-pulse">
             {/* Imagen principal */}
-            <div className="w-full lg:w-1/3 bg-gray-200 rounded-l-md"></div>
+            <div className="w-full lg:w-1/3 bg-gray-200 rounded-md"></div>
 
             {/* Contenido */}
             <div className="p-4 flex-1 w-full">
@@ -15,13 +15,6 @@ export const SkeletonCabaña = () => {
                 <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
                 <div className="h-3 bg-gray-200 rounded w-2/3 mb-4"></div>
 
-                {/* Imágenes adicionales */}
-                <div className="grid grid-cols-3 gap-2 mt-4">
-                    <div className="w-full h-32 bg-gray-200 rounded-md"></div>
-                    <div className="w-full h-32 bg-gray-200 rounded-md"></div>
-                    <div className="w-full h-32 bg-gray-200 rounded-md"></div>
-                </div>
-
                 {/* Detalles (personas, habitaciones, baños) */}
                 <div className="flex m-2 gap-2">
                     <div className="h-6 bg-gray-200 rounded w-1/4"></div>
@@ -31,7 +24,7 @@ export const SkeletonCabaña = () => {
 
                 {/* Servicios */}
                 <div className='flex'>
-                    <div className="flex gap-4 m-2">
+                    <div className="flex gap-4 m-2 ml-4">
                         <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>
                         <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>
                         <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>

@@ -28,16 +28,16 @@ export default function Header() {
 
   return (
     <header className='fixed w-full p-2 z-50'>
-      <div className='flex items-center gap-6 sticky top-0 justify-between w-full md:w-5/6 mx-auto p-3 bg-white rounded-xl animate-fade-top'>
+      <div className='flex items-center gap-6 sticky top-0 justify-between w-full lg:w-5/6 mx-auto p-3 bg-white rounded-xl animate-fade-top'>
         <Link to="/">
-          <h1 className='font-bold text-sm sm:text-xl flex items-center'>
+          <h1 className='font-bold text-sm md:text-xl flex items-center'>
             <RiLeafFill className='text-lime-600 justify-center mr-1 h-8 w-8' />
-            <span className='text-slate-500 text-sm sm:text-xl'>Camping</span>
-            <span className='text-slate-700 text-sm sm:text-xl'>Cachi</span>
+            <span className='text-slate-500 text-sm md:text-xl'>Camping</span>
+            <span className='text-slate-700 text-sm md:text-xl'>Cachi</span>
           </h1>
         </Link>
 
-        <ul className='relative flex items-center gap-1'>
+        <ul className='relative flex items-center text-xs lg:text-base gap-1'>
           <>
             <a href="/#reservar" className="text-slate-600 hidden sm:inline font-medium">
               <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
@@ -83,7 +83,7 @@ export default function Header() {
 
           {auth && !loading ? (
 
-            <Link to="/perfil" className="flex items-center gap-4 cursor-pointer">
+            <button onClick={handleToggle} className="flex items-center gap-4 cursor-pointer">
 
               <p className="relative text-lime-600 font-bold text-sm hidden sm:inline">
                 {auth.name}
@@ -96,7 +96,7 @@ export default function Header() {
                 )}
               </div>
 
-            </Link>
+            </button>
           ) : (
             <ul className='relative flex items-center'>
               <Link to="/login" className="text-lime-600 font-bold hidden sm:inline transition duration-200 pr-2">

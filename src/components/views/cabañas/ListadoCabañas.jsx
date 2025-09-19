@@ -34,11 +34,11 @@ export const ListadoCabañas = ({ cabañas, cargando, checkIn, checkOut }) => {
                                 key={cabaña._id}
                                 className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
                             >
-                                <div className="flex flex-col lg:flex-row bg-white gap-4">
+                                <div className="flex bg-white gap-4">
                                     {/* Imagen */}
-                                    <div className="lg:w-1/3 relative h-64 lg:h-auto">
+                                    <div className="lg:w-1/3 relative">
                                         {!imagenesCargadas[cabaña._id] && (
-                                            <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg"></div>
+                                            <div className="absolute inset-0 bg-gray-200 w-full h-full animate-pulse rounded-lg"></div>
                                         )}
                                         <img
                                             src={cabaña.imagenPrincipal}
