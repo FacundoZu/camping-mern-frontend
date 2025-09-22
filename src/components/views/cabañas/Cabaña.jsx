@@ -148,7 +148,7 @@ export const Cabaña = () => {
                 comment,
                 user: auth.id,
                 cabin: cabaña._id,
-            });
+            }, false, "include");
 
             if (result.datos?.success) {
                 setComentarios(prev => [...prev, result.datos.review]);
@@ -170,10 +170,10 @@ export const Cabaña = () => {
 
     const handleUpdateReview = async (reviewId, updatedData) => {
         try {
-            const result = await Peticion(`${Global.url}reviews/updateReview/${reviewId}`, "PUT", {
-                rating: updatedData.rating,
-                comment: updatedData.comment,
-            });
+            console.log(updatedData)
+            const result = await Peticion(`${Global.url}reviews/updateReview/${reviewId}`, "POST", updatedData, false, "include");
+
+            console.log(result)
 
             if (result.datos?.success) {
                 setComentarios(prev =>
