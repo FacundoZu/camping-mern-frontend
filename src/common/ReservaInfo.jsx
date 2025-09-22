@@ -300,16 +300,16 @@ const ReservaInfo = ({
                                 Número de teléfono *
                             </label>
                             <div className="relative">
-                                    <FaPhone className="absolute left-3 top-[1.15rem] text-gray-400" />
-                                    <input
-                                        type="tel"
-                                        name="telefono"
-                                        value={guestInfo.telefono}
-                                        onChange={handleChange}
-                                        className={`w-full pl-10 pr-4 py-3 border rounded-xl ${errors.telefono ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                                            }`}
-                                        placeholder="+54 9 11 1234-5678"
-                                    />
+                                <FaPhone className="absolute left-3 top-[1.15rem] text-gray-400" />
+                                <input
+                                    type="tel"
+                                    name="telefono"
+                                    value={guestInfo.telefono}
+                                    onChange={handleChange}
+                                    className={`w-full pl-10 pr-4 py-3 border rounded-xl ${errors.telefono ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                        }`}
+                                    placeholder="+54 9 11 1234-5678"
+                                />
 
                                 {errors.telefono && (
                                     <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
