@@ -52,7 +52,7 @@ export default function VisitasRecientes() {
 
     if (visitedCabañas.length > 0)
         return (
-            <div className="m-auto w-full px-20 pb-6 pt-6">
+            <div className="m-auto w-full px-5 md:px-20 pb-6 pt-6">
                 <div className="text-center mb-12">
                     <h2 className="text-4xl font-bold inline-flex items-center">
                         Cabañas vistas recientemente

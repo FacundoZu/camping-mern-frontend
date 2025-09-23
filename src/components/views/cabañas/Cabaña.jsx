@@ -353,7 +353,7 @@ export const Cabaña = () => {
                 <div className="3 gap-8">
                     {/* Calendario de reservas */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
+                        <div className="bg-white rounded-2xl shadow-lg lg:p-8 mb-8">
                             <CalendarioReservas
                                 reservas={reservas}
                                 onReservar={handleReservar}

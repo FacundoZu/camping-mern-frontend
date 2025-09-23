@@ -93,7 +93,7 @@ export const Comentarios = ({ review, isEditable, onEdit }) => {
                                 onClick={() => setIsEditing(true)}
                                 className="flex items-center gap-2 text-lime-600 hover:text-lime-700 font-medium text-sm transition-colors p-2 hover:bg-lime-50 rounded-lg"
                             >
-                                <FaEdit className="text-xs" />
+                                <FaEdit className="size-6" />
                                 <span className="hidden sm:inline">Editar</span>
                             </button>
                         )}
@@ -147,7 +147,7 @@ export const Comentarios = ({ review, isEditable, onEdit }) => {
             </div>
 
             {/* Contenido del comentario */}
-            <div className="ml-16">
+            <div className="lg:ml-16">
                 {!isEditing ? (
                     <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
                         <p className="text-gray-800 leading-relaxed">

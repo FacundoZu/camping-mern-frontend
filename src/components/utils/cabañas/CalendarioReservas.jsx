@@ -195,7 +195,7 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
   return (
     <div className="w-full space-y-6">
       {/* Header con toggle para móvil */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between p-4 md:px-0">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-lime-100 rounded-lg">
             <FaCalendarAlt className="text-lime-600 text-lg" />
@@ -212,30 +212,29 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
         {getStatusIcon()}
         <span className="font-semibold">{getStatusMessage()}</span>
         {minimoDias > 1 && (
-          <span className="text-xs bg-lime-100 text-lime-700 px-2 py-1 rounded-full ml-auto">
+          <span className="text-xs text-center bg-lime-100 text-lime-700 px-2 py-1 rounded-full ml-auto">
             Mínimo {minimoDias} {minimoDias === 1 ? 'día' : 'días'}
           </span>
         )}
       </div>
 
       {/* Layout principal */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-6 w-full">
         {/* Calendario */}
-        <div className="lg:col-span-2">
-          <div className="bg-white border border-gray-200 rounded-2xl p-4 lg:p-6 shadow-sm">
+        <div className="col-span-1 lg:col-span-2">
+          <div className="bg-white border border-gray-200 rounded-2xl md:p-4 lg:p-6 shadow-sm ">
             <div className="flex justify-center">
               <DateRangePicker
                 ranges={[rangoSeleccionado]}
                 onChange={handleSelect}
-                direction="horizontal"
+                direction="vertical"
                 locale={es}
                 minDate={new Date()}
                 rangeColors={["#65a30d"]}
                 showDateDisplay={false}
                 showMonthAndYearPickers={false}
                 className="custom-date-range-picker"
-                disabledDates={fechasReservadas}
-                showSelectionPreview={true}
+                disabledDates={fechasReservadas}   
               />
             </div>
             {/* Leyenda del calendario */}
@@ -259,7 +258,7 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
         </div>
 
         {/* Panel de información y reserva */}
-        <div className="lg:col-span-1">
+        <div className="col-span-1">
           <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-6">
             {fechaInicioSeleccionada && fechaFinSeleccionada ? (
               <div className="space-y-6">
