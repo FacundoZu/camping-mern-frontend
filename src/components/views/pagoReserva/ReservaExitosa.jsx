@@ -17,7 +17,7 @@ const ReservaExitosa = () => {
     const confirmarReserva = async () => {
       try {
         const paymentId = searchParams.get('payment_id');
-        const tempId = searchParams.get('tempId');
+        const tempId = searchParams.get('external_reference');
 
         if (!paymentId || !tempId) {
           throw new Error('Faltan parámetros para confirmar la reserva');
