@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Global } from '../../../../helpers/Global';
 import { Peticion } from '../../../../helpers/Peticion';
-import { jsPDF } from "jspdf";
-import { FaRegFilePdf } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+import { motion, AnimatePresence } from "framer-motion";
+import { BotonPDFUsuarios } from "./BotonPDFUsuarios";
 
 export const AdminUsuarios = () => {
     const [usuarios, setUsuarios] = useState([]);
@@ -18,7 +18,7 @@ export const AdminUsuarios = () => {
 
     useEffect(() => {
         const obtenerUsuarios = async () => {
-            let url = `${Global.url}user/getAllUsers?page=${pagina}&limit=10`;
+            let url = `${Global.url}user/getAllUsers?page=${pagina}&limit=9`;
 
             if (filtros.name) url += `&name=${filtros.name}`;
             if (filtros.email) url += `&email=${filtros.email}`;
@@ -73,76 +73,34 @@ export const AdminUsuarios = () => {
     };
 
     const generarPDF = () => {
-        const doc = new jsPDF();
-        doc.setFontSize(16);
-        doc.setTextColor(40, 40, 40);
-
-        doc.setFont("helvetica", "bold");
-        doc.text("Lista de Usuarios", 105, 15, null, null, "center");
-
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(60, 60, 60);
-        doc.text(`Total de Usuarios: ${todosLosUsuarios.length}`, 10, 30);
-        const totalAdmins = todosLosUsuarios.filter((usuario) => usuario.role === "admin").length;
-        doc.text(`Total de Admins: ${totalAdmins}`, 10, 40);
-        doc.text(`Total de Clientes: ${todosLosUsuarios.length - totalAdmins}`, 10, 50);
-
-        doc.setDrawColor(200, 200, 200);
-        doc.line(10, 55, 200, 55);
-
-        let yPosition = 65;
-
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(40, 40, 40);
-        doc.text("Nombre", 10, yPosition);
-        doc.text("Email", 80, yPosition);
-        doc.text("Rol", 150, yPosition);
-
-        doc.line(10, yPosition + 2, 200, yPosition + 2);
-
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(60, 60, 60);
-        yPosition += 10;
-
-        todosLosUsuarios.forEach((usuario) => {
-            if (yPosition > 280) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            doc.text(usuario.name, 10, yPosition);
-            doc.text(usuario.email, 80, yPosition);
-            doc.text(usuario.role, 150, yPosition);
-            yPosition += 10;
-        });
-
-        const pdfBlob = doc.output("blob");
-        const url = URL.createObjectURL(pdfBlob);
-        window.open(url, "_blank");
+        generarPDFUsuarios(todosLosUsuarios, "Lista de Usuarios");
     };
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-lg max-w-screen-xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold text-gray-800">Gestión de Usuarios</h2>
-                <div className="flex space-x-4">
+        <div className="p-6 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto mt-6">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h2 className="text-3xl font-bold text-gray-800">Gestión de Usuarios</h2>
+                <div className="flex flex-wrap gap-3">
+                    <BotonPDFUsuarios filtros={filtros} sortRole={sortRole} />
                     <button
-                        onClick={generarPDF}
-                        className="flex items-center px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 transition duration-200"
+                        onClick={cambiarOrdenRol}
+                        className="px-4 py-2 bg-lime-600 text-white rounded-lg hover:bg-lime-700 transition-all duration-200"
                     >
-                        <FaRegFilePdf className="mr-2" size={20} /> Generar
+                        Ordenar por Rol: {sortRole === 'asc' ? 'Admin' : 'Gerente'}
                     </button>
                 </div>
             </div>
 
-            <div className="mb-6">
+            {/* Filtros */}
+            <div className="flex flex-wrap gap-4 mb-6">
                 <input
                     type="text"
                     name="name"
                     value={filtros.name}
                     onChange={manejarFiltro}
                     placeholder="Buscar por Nombre"
-                    className="px-4 py-2 border rounded mr-4"
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500 outline-none transition-all"
                 />
                 <input
                     type="text"
@@ -150,57 +108,75 @@ export const AdminUsuarios = () => {
                     value={filtros.email}
                     onChange={manejarFiltro}
                     placeholder="Buscar por Correo"
-                    className="px-4 py-2 border rounded mr-4"
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500 outline-none transition-all"
                 />
-                <button
-                    onClick={cambiarOrdenRol}
-                    className="px-4 py-2 bg-lime-600 text-white rounded mb-4"
-                >
-                    Ordenar por Rol: {sortRole === 'asc' ? 'Admin' : 'Gerente'}
-                </button>
             </div>
 
-            <table className="w-full bg-gray-100 rounded-lg overflow-hidden shadow-md">
-                <thead>
-                    <tr>
-                        <th className="py-3 px-4">Nombre</th>
-                        <th className="py-3 px-4">Correo</th>
-                        <th className="py-3 px-4">Rol</th>
-                        <th className="py-3 px-4">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {usuarios.map((usuario) => (
-                        <tr key={usuario.id || usuario._id} className="bg-white border-b hover:bg-gray-100 transition duration-200">
-                            <td className="py-3 px-4 text-gray-700">{usuario.name}</td>
-                            <td className="py-3 px-4 text-gray-700">{usuario.email}</td>
-                            <td className="py-3 px-4 text-gray-700 capitalize text-center" style={{ color: usuario.role === 'admin' ? 'red' : 'green' }}>
-                                {usuario.role}
-                            </td>
-                            <td className=" text-center">
-                                <div className="flex items-center justify-center">
-                                    <Link to={`/admin/EditarUsuario/${usuario.id || usuario._id}`} title="Editar" className="flex items-center justify-center text-gray-700 py-2 px-2 rounded-full hover:bg-gray-300 mr-2 transition duration-200">
-                                        <MdModeEdit size={20} />
-                                    </Link>
-                                </div>
-                            </td>
+            {/* Tabla */}
+            <div className="overflow-x-auto max-h-[600px] min-h-[600px]">
+                <table className="w-full max-h-[600px] min-w-[600px] bg-gray-50 rounded-lg shadow-md overflow-hidden">
+                    <thead className="bg-gray-200">
+                        <tr>
+                            <th className="py-3 px-4 text-left text-gray-700">Nombre</th>
+                            <th className="py-3 px-4 text-left text-gray-700">Correo</th>
+                            <th className="py-3 px-4 text-center text-gray-700">Rol</th>
+                            <th className="py-3 px-4 text-center text-gray-700">Acciones</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <AnimatePresence>
+                            {usuarios.map((usuario) => (
+                                <motion.tr
+                                    key={usuario.id || usuario._id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="bg-white border-b hover:bg-gray-100 transition-colors"
+                                >
+                                    <td className="py-3 px-4 text-gray-700">{usuario.name}</td>
+                                    <td className="py-3 px-4 text-gray-700">{usuario.email}</td>
+                                    <td className="py-3 px-4 text-center">
+                                        <span
+                                            className={`px-3 py-1 rounded-full text-sm font-medium ${usuario.role === "admin"
+                                                ? "bg-red-100 text-red-700"
+                                                : "bg-green-100 text-green-700"
+                                                }`}
+                                        >
+                                            {usuario.role}
+                                        </span>
+                                    </td>
+                                    <td className="py-3 px-4 text-center">
+                                        <Link
+                                            to={`/admin/EditarUsuario/${usuario.id || usuario._id}`}
+                                            title="Editar"
+                                            className="inline-flex items-center justify-center text-gray-700 p-2 rounded-full hover:bg-gray-200 transition-all"
+                                        >
+                                            <MdModeEdit size={20} />
+                                        </Link>
+                                    </td>
+                                </motion.tr>
+                            ))}
+                        </AnimatePresence>
+                    </tbody>
+                </table>
+            </div>
 
-            <div className="flex justify-center mt-6">
+            {/* Paginación */}
+            <div className="flex justify-center items-center mt-6 space-x-2">
                 <button
                     onClick={() => cambiarPagina(pagina - 1)}
-                    className="px-4 py-2 bg-gray-300 rounded-l"
+                    className="px-4 py-2 bg-gray-200 rounded-l-lg hover:bg-gray-300 transition-all"
                     disabled={pagina === 1}
                 >
                     <RiArrowLeftSLine size={20} />
                 </button>
-                <span className="px-4 py-2">{pagina} de {totalPages}</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 font-medium">
+                    {pagina} de {totalPages}
+                </span>
                 <button
                     onClick={() => cambiarPagina(pagina + 1)}
-                    className="px-4 py-2 bg-gray-300 rounded-r"
+                    className="px-4 py-2 bg-gray-200 rounded-r-lg hover:bg-gray-300 transition-all"
                     disabled={pagina === totalPages}
                 >
                     <RiArrowRightSLine size={20} />
