@@ -124,7 +124,7 @@ const FormularioBusqueda = () => {
                             </div>
 
                             {showCalendar && (
-                                <div ref={calendarRef} className="absolute z-10 mt-10 bg-white px-3 rounded-md shadow-lg">
+                                <div ref={calendarRef} className="absolute z-10 top-16 bg-white px-3 rounded-md shadow-lg">
                                     <DateRange
                                         {...dateRangeConfig}
                                         editableDateInputs={true}
