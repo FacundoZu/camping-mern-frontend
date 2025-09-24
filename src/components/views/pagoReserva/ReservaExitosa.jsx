@@ -28,8 +28,6 @@ const ReservaExitosa = () => {
           paymentId
         });
 
-        console.log(response);
-
         if (response.datos.status === 'success') {
           setReserva(response.datos.reserva);
         } else {
