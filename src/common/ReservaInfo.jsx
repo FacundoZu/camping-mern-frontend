@@ -18,6 +18,7 @@ import {
     BsPersonFill,
     BsClock
 } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 
 const ReservaInfo = ({
     isOpen,
@@ -124,7 +125,7 @@ const ReservaInfo = ({
             });
 
             if (reservaResponse.datos.status !== "success") {
-                throw new Error(reservaResponse.datos.message || "Error al crear reserva temporal");
+                toast.error(reservaResponse.datos.message);
             }
 
             // 2. Crear preferencia de pago en el backend
@@ -147,10 +148,11 @@ const ReservaInfo = ({
             if (mpResponse.datos.init_point) {
                 window.location.href = mpResponse.datos.init_point;
             } else {
-                throw new Error("No se recibió URL de pago de Mercado Pago");
+                toast.error(`Error en el proceso de pago, inténtelo de nuevo más tarde`);
+                setIsProcessing(false);
             }
         } catch (error) {
-            alert(`Error en el proceso de pago`);
+            toast.error(`Error en el proceso de pago, inténtelo de nuevo más tarde`);
             setIsProcessing(false);
         }
     };

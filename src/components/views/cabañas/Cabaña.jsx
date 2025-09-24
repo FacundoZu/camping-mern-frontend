@@ -74,7 +74,6 @@ export const Cabaña = () => {
         } catch (err) {
             setError("Error al cargar los datos de la cabaña.");
             setLoading(false);
-            console.error(err);
         }
     };
 
@@ -159,7 +158,6 @@ export const Cabaña = () => {
                 });
             }
         } catch (err) {
-            console.error("Error al agregar reseña:", err);
             setModal({
                 show: true,
                 title: 'Error',
@@ -170,10 +168,7 @@ export const Cabaña = () => {
 
     const handleUpdateReview = async (reviewId, updatedData) => {
         try {
-            console.log(updatedData)
             const result = await Peticion(`${Global.url}reviews/updateReview/${reviewId}`, "POST", updatedData, false, "include");
-
-            console.log(result)
 
             if (result.datos?.success) {
                 setComentarios(prev =>
@@ -190,7 +185,6 @@ export const Cabaña = () => {
                 });
             }
         } catch (err) {
-            console.error("Error al actualizar reseña:", err);
             setModal({
                 show: true,
                 title: 'Error',

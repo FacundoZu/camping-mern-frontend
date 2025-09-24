@@ -6,12 +6,12 @@ import { Global } from '../../../helpers/Global';
 import { FaRegCheckCircle, FaCalendarAlt, FaArrowLeft } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 const ReservaExitosa = () => {
   const [searchParams] = useSearchParams();
   const [reserva, setReserva] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const confirmarReserva = async () => {
@@ -20,7 +20,8 @@ const ReservaExitosa = () => {
         const tempId = searchParams.get('external_reference');
 
         if (!paymentId || !tempId) {
-          throw new Error('Faltan parámetros para confirmar la reserva');
+          toast.error('Faltan parámetros para confirmar la reserva');
+          return;
         }
 
         const response = await Peticion(`${Global.url}reservation/confirmReservation`, 'POST', {
@@ -31,10 +32,10 @@ const ReservaExitosa = () => {
         if (response.datos.status === 'success') {
           setReserva(response.datos.reserva);
         } else {
-          throw new Error(response.datos.message || 'Error al confirmar reserva');
+          toast.error(response.datos.mensaje || 'Error al confirmar reserva');
         }
       } catch (err) {
-        setError(err.message);
+        toast.error(err.message);
       } finally {
         setLoading(false);
       }
@@ -55,20 +56,23 @@ const ReservaExitosa = () => {
     </div>
   );
 
-  if (error) return (
+  if (!reserva) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 text-center">
         <div className="flex justify-center mb-4">
           <MdErrorOutline className="h-12 w-12 text-red-500 animate-pulse" />
         </div>
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Error en la reserva</h2>
-        <p className="text-red-500 mb-4">{error}</p>
+        <p className="text-red-500 mb-4">Error al confirmar reserva</p>
         <button
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200"
+          onClick={() => window.location.href = '/'}
+          className="flex items-center mx-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200"
         >
-          Intentar nuevamente
-        </button>
+          <FaArrowLeft className='mr-2' />
+          <p>
+                Volver al inicio
+              </p>
+            </button>
       </div>
     </div>
   );
@@ -102,10 +106,11 @@ const ReservaExitosa = () => {
                       {new Date(reserva.fechaFinal).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </span>
                   </p>
+
                   <p className="flex items-center text-gray-600">
                     <IoHome className="h-5 w-5 mr-2 text-lime-500" />
                     <span className='font-medium'>
-                      {reserva.paymentDetails.description}
+                      {reserva.paymentDetails?.description ? reserva.paymentDetails.description : 'Cabaña'}
                     </span>
                   </p>
                 </div>
