@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Peticion } from '../../../../helpers/Peticion';
 import { Global } from '../../../../helpers/Global';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { PiUsersThreeFill, PiToiletBold } from "react-icons/pi";
@@ -206,6 +206,9 @@ export const AdminCrearCabaña = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
         >
+            <motion.div className="flex justify-between items-center mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                <Link to="/admin/cabañas" className="text-lime-600 hover:text-lime-700 transition duration-200">Volver al listado</Link>
+            </motion.div>
             <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-8"

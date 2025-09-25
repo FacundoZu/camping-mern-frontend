@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Peticion } from '../../../../helpers/Peticion';
 import { Global } from '../../../../helpers/Global';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -243,9 +243,13 @@ export const AdminEditarCabaña = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
         >
+            <motion.div className="flex justify-between items-center mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                <Link to="/admin/cabañas" className="text-lime-600 hover:text-lime-700 transition duration-200">Volver al listado</Link>
+            </motion.div>
             <motion.form onSubmit={handleSubmit} className="space-y-8">
                 <h2 className="text-3xl font-bold text-center text-slate-700 mb-2">
                     Editar Cabaña
+                
                 </h2>
 
                 {/* Campos básicos */}

@@ -5,11 +5,9 @@ import { es } from 'date-fns/locale';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Global } from '../../../../helpers/Global';
 import { Peticion } from '../../../../helpers/Peticion';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const locales = {
-    es,
-};
-
+const locales = { es };
 const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -22,10 +20,7 @@ const obtenerUsuarioPorId = async (usuarioId) => {
     try {
         const urlUser = `${Global.url}user/profile/${usuarioId}`;
         const response = await Peticion(urlUser, "GET", '', false, 'include');
-
-        if (response.datos.status === 'success') {
-            return response.datos.user.email;
-        }
+        if (response.datos.status === 'success') return response.datos.user.email;
         return 'Usuario desconocido';
     } catch (error) {
         console.error('Error al obtener usuario:', error);
@@ -43,47 +38,54 @@ export const CalendarioConReservas = ({ reservas }) => {
                 return;
             }
 
+            const cacheUsuarios = {};
             const eventosFormateados = await Promise.all(reservas.map(async (reserva) => {
-                const emailUsuario = await obtenerUsuarioPorId(reserva.usuarioId);
+                if (!cacheUsuarios[reserva.usuarioId]) {
+                    cacheUsuarios[reserva.usuarioId] = await obtenerUsuarioPorId(reserva.usuarioId);
+                }
 
                 return {
                     title: `Reservado`,
-                    usuario: emailUsuario,
+                    usuario: cacheUsuarios[reserva.usuarioId],
                     start: new Date(reserva.fechaInicio),
                     end: new Date(reserva.fechaFinal),
                     allDay: true,
                 };
             }));
+
             setEventos(eventosFormateados);
         };
 
         obtenerEventos();
     }, [reservas]);
 
-    const eventStyleGetter = (event) => {
-        const style = {
-            backgroundColor: '#47569',
-            borderRadius: '5px',
-            opacity: 0.8,
+    const eventStyleGetter = (event) => ({
+        style: {
+            backgroundColor: '#34D399',
+            borderRadius: '8px',
+            opacity: 0.9,
             color: 'white',
-            border: '0px',
+            padding: '2px 5px',
+            border: '1px solid #22C55E',
             display: 'block',
-        };
-        return {
-            style,
-        };
-    };
+            fontSize: '0.85rem',
+        }
+    });
 
-    const renderEventContent = (event) => {
-
-        return (
-            <div>
+    const renderEventContent = (event) => (
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
                 <strong>{event.title}</strong>
                 <br />
-                <span>Usuario: {event.event.usuario}</span>
-            </div>
-        );
-    };
+                <span style={{ fontSize: '0.75rem' }}>Usuario: {event.event.usuario}</span>
+            </motion.div>
+        </AnimatePresence>
+    );
 
     return (
         <div className="container mx-auto p-6 max-w-5xl">
@@ -99,23 +101,14 @@ export const CalendarioConReservas = ({ reservas }) => {
                         defaultView="month"
                         culture="es"
                         messages={{
-                            next: 'Sig',
-                            previous: 'Ant',
-                            today: 'Hoy',
-                            month: 'Mes',
-                            week: 'Semana',
-                            day: 'Día',
-                            agenda: 'Agenda',
-                            date: 'Fecha',
-                            time: 'Hora',
-                            event: 'Evento',
-                            noEventsInRange: 'No hay eventos en este rango.',
+                            next: 'Sig', previous: 'Ant', today: 'Hoy',
+                            month: 'Mes', week: 'Semana', day: 'Día', agenda: 'Agenda',
+                            date: 'Fecha', time: 'Hora', event: 'Evento',
+                            noEventsInRange: 'No hay eventos en este rango.'
                         }}
                         eventPropGetter={eventStyleGetter}
                         selectable={false}
-                        components={{
-                            event: renderEventContent,
-                        }}
+                        components={{ event: renderEventContent }}
                     />
                 </div>
             </div>
