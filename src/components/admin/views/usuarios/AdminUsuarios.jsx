@@ -77,7 +77,12 @@ export const AdminUsuarios = () => {
     };
 
     return (
-        <div className="p-6 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto mt-6">
+        <motion.div
+            className="p-6 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto mt-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <h2 className="text-3xl font-bold text-gray-800">Gestión de Usuarios</h2>
@@ -184,6 +189,6 @@ export const AdminUsuarios = () => {
             </div>
 
             {cargando && <p className="text-center text-gray-500 mt-4">Cargando usuarios...</p>}
-        </div>
+        </motion.div>
     );
 };

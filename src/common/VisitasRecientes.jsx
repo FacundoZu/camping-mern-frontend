@@ -55,7 +55,7 @@ export default function VisitasRecientes() {
             <div className="m-auto w-full px-5 md:px-20 pb-6 pt-6">
                 <div className="text-center mb-12">
                     <h2 className="text-4xl font-bold inline-flex items-center">
-                        Cabañas vistas recientemente
+                        Cabañas viste recientemente
                     </h2>
                     <p className="mt-3 text-gray-500">Selecciona una cabaña para ver más información</p>
                 </div>
