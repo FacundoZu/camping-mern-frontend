@@ -24,6 +24,10 @@
   @apply flex items-center gap-2 mx-auto bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl text-center;
 }
 
+.create-edit-input-button {
+  @apply w-full px-4 py-2 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none
+}
+
 .error-msg {
   @apply text-red-500 p-2 font-bold text-sm;
 }

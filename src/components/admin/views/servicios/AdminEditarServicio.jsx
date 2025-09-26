@@ -97,7 +97,7 @@ export const AdminEditarServicio = () => {
     return (
         <div className="flex justify-center items-center min-h-[100dvh] p-6">
             <motion.div
-                className="p-6 bg-white rounded-lg shadow-lg mx-auto"
+                className="p-6 bg-white rounded-lg shadow-lg w-full sm:w-1/2 md:w-2/3 lg:w-1/2"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
