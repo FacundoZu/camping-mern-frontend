@@ -206,9 +206,6 @@ export const AdminCrearCabaña = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
         >
-            <motion.div className="flex justify-between items-center mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-                <Link to="/admin/cabañas" className="text-lime-600 hover:text-lime-700 transition duration-200">Volver al listado</Link>
-            </motion.div>
             <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-8"
@@ -236,7 +233,7 @@ export const AdminCrearCabaña = () => {
                                 name={field}
                                 value={formulario[field]}
                                 onChange={handleChange}
-                                className="px-4 py-3 h-28 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 shadow-sm"
+                                className="create-edit-input-button"
                                 required
                             />
                         ) : (
@@ -246,7 +243,7 @@ export const AdminCrearCabaña = () => {
                                 value={formulario[field]}
                                 onChange={handleChange}
                                 required
-                                className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 shadow-sm"
+                                className="create-edit-input-button"
                             />
                         )}
                     </motion.div>
@@ -413,23 +410,31 @@ export const AdminCrearCabaña = () => {
                 </motion.div>
 
                 {/* Submit */}
-                <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-lime-600 hover:bg-lime-700 disabled:bg-lime-700/50 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all"
-                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                >
-                    {isSubmitting ? (
-                        <div className="flex items-center justify-center gap-3">
-                            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                            </svg>
-                            Creando...
-                        </div>
-                    ) : "Crear Cabaña"}
-                </motion.button>
+                <div className="flex items-center gap-4">
+                    <motion.button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="bg-lime-600 hover:bg-lime-700 disabled:bg-lime-700/50 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all"
+                        whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                        whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                    >
+                        {isSubmitting ? (
+                            <div className="flex items-center justify-center gap-3">
+                                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                Creando...
+                            </div>
+                        ) : "Crear Cabaña"}
+                    </motion.button>
+                    <Link
+                        to={"/admin/cabañas"}
+                        className="text-lime-600 font-medium hover:underline"
+                    >
+                        Volver
+                    </Link>
+                </div>
             </motion.form>
         </motion.div>
     );

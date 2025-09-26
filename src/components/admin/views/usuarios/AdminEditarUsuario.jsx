@@ -109,7 +109,7 @@ export const AdminEditarUsuario = () => {
             id="rol"
             value={rol}
             onChange={(e) => setRol(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none"
+            className="create-edit-input-button"
           >
             <option value="admin">Admin</option>
             <option value="gerente">Gerente</option>

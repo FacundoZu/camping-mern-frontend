@@ -110,7 +110,7 @@ export const AdminEditarServicio = () => {
                             type="text"
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                            className="create-edit-input-button"
                             required
                         />
                     </div>
@@ -185,7 +185,7 @@ export const AdminEditarServicio = () => {
                                     type="url"
                                     value={imagen}
                                     onChange={(e) => setImagen(e.target.value)}
-                                    className="w-full px-4 py-2 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    className="create-edit-input-button"
                                     placeholder="https://example.com/imagen.jpg"
                                     required
                                 />
@@ -198,7 +198,7 @@ export const AdminEditarServicio = () => {
                         <textarea
                             value={descripcion}
                             onChange={(e) => setDescripcion(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                            className="create-edit-input-button"
                             required
                         />
                     </div>
