@@ -89,7 +89,7 @@ export const AdminCabaña = () => {
         >
             {/* Header */}
             <div className="flex justify-between items-center mb-6 border-b pb-3">
-                <h2 className="text-3xl font-bold text-gray-800">Gestión de Cabañas</h2>
+                <h2 className="text-3xl font-bold text-gray-800"> 🏠 Gestión de Cabañas</h2>
                 <div className="flex gap-3">
                     <Link
                         to='/admin/CrearCabaña'

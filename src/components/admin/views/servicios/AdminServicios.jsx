@@ -56,7 +56,7 @@ export const AdminServicios = () => {
             {/* Encabezado */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-3 gap-3">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center sm:text-left">
-                    Gestión de Servicios
+                    📊 Gestión de Servicios
                 </h2>
                 <Link
                     to='/admin/CrearServicio'
@@ -66,7 +66,7 @@ export const AdminServicios = () => {
                     Nuevo Servicio
                 </Link>
             </div>
-    
+
             {/* Tabla responsive */}
             <div className="overflow-x-auto">
                 <table className="w-full bg-gray-100 rounded-lg shadow-md text-sm sm:text-base">
@@ -113,11 +113,10 @@ export const AdminServicios = () => {
                                                         ? cambiarEstado(servicio._id, 'Deshabilitado')
                                                         : cambiarEstado(servicio._id, 'Habilitado')
                                                 }
-                                                className={`flex items-center justify-center text-white py-2 px-3 rounded transition duration-200 text-sm sm:text-base ${
-                                                    servicio.estado === 'Habilitado'
-                                                        ? 'bg-lime-500 hover:bg-lime-700'
-                                                        : 'bg-red-500 hover:bg-red-700'
-                                                }`}
+                                                className={`flex items-center justify-center text-white py-2 px-3 rounded transition duration-200 text-sm sm:text-base ${servicio.estado === 'Habilitado'
+                                                    ? 'bg-lime-500 hover:bg-lime-700'
+                                                    : 'bg-red-500 hover:bg-red-700'
+                                                    }`}
                                             >
                                                 {servicio.estado === 'Habilitado' ? (
                                                     <>
@@ -137,9 +136,9 @@ export const AdminServicios = () => {
                     </tbody>
                 </table>
             </div>
-    
+
             {cargando && <p className="text-center text-gray-500 mt-4">Cargando servicios...</p>}
         </motion.div>
     );
-    
+
 };

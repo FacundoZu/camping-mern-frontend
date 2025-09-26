@@ -85,7 +85,7 @@ export const AdminUsuarios = () => {
         >
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h2 className="text-3xl font-bold text-gray-800">Gestión de Usuarios</h2>
+                <h2 className="text-3xl font-bold text-gray-800">👥 Gestión de Usuarios</h2>
                 <div className="flex flex-wrap gap-3">
                     <BotonPDFUsuarios filtros={filtros} sortRole={sortRole} />
                     <button

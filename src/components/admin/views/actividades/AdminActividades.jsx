@@ -54,7 +54,7 @@ export const AdminActividades = () => {
             {/* Encabezado */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-3 gap-3">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center sm:text-left">
-                    Gestión de Actividades
+                    🏊 Gestión de Actividades
                 </h2>
                 <Link
                     to="/admin/CrearActividad"
