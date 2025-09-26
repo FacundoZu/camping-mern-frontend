@@ -231,6 +231,9 @@ const AdminVerCabaña = () => {
                         <p><strong>Habitaciones:</strong> {cabaña.cantidadHabitaciones}</p>
                         <p><strong>Baños:</strong> {cabaña.cantidadBaños}</p>
                         <hr />
+                        <p> {añoSeleccionado}</p>
+                        <p><strong>Reservas:</strong> {reservas.filter(r => new Date(r.fechaInicio).getFullYear() === añoSeleccionado).length}</p>
+                        <hr />
                         <p className="text-lg font-semibold text-gray-800">
                             <span className="text-gray-600 font-bold">Ganancias Totales Anual: </span>
                             <span className="text-lime-600">${gananciasTotales.toLocaleString("es-ES", { minimumFractionDigits: 2 })}</span>

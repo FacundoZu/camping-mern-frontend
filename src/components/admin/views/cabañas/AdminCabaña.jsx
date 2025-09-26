@@ -82,7 +82,7 @@ export const AdminCabaña = () => {
 
     return (
         <motion.div
-            className="p-6 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto mt-6"
+            className="p-6 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto mt-10"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -186,17 +186,17 @@ export const AdminCabaña = () => {
                                                         : cambiarEstado(cabaña._id, 'Disponible')
                                                 }
                                                 className={`flex items-center px-3 py-2 rounded-lg text-white shadow transition ${cabaña.estado === 'Disponible'
-                                                    ? 'bg-red-500 hover:bg-red-600'
-                                                    : 'bg-lime-600 hover:bg-lime-700'
+                                                    ? 'bg-lime-500 hover:bg-lime-600'
+                                                    : 'bg-red-500 hover:bg-red-600'
                                                     }`}
                                             >
                                                 {cabaña.estado === 'Disponible' ? (
                                                     <>
-                                                        <MdOutlineDisabledByDefault className="mr-1" size={18} /> Deshabilitar
+                                                        <FaRegCheckSquare className="mr-1" size={18} /> Habilitada
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <FaRegCheckSquare className="mr-1" size={18} /> Habilitar
+                                                        <MdOutlineDisabledByDefault className="mr-1" size={18} /> Deshabilitada
                                                     </>
                                                 )}
                                             </button>
