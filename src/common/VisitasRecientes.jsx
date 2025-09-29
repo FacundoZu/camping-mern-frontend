@@ -5,6 +5,7 @@ import { Global } from '../helpers/Global';
 import { Link } from 'react-router-dom';
 import { PiToiletBold, PiUsersThreeFill } from 'react-icons/pi';
 import { MdOutlineBedroomChild } from 'react-icons/md';
+import { FaStar } from 'react-icons/fa';
 
 export default function VisitasRecientes() {
     const { auth } = useAuth();
@@ -22,9 +23,16 @@ export default function VisitasRecientes() {
                     false,
                     'include'
                 );
-
-                if (datos) {
-                    setVisitedCabañas(datos);
+                const cabañas = datos.map((cabaña) => {
+                    const promedioRating = cabaña.comentarios.reduce((total, comentario) => total + comentario.rating, 0) / cabaña.comentarios.length;
+                    return {
+                        ...cabaña,
+                        promedioRating: promedioRating ? promedioRating : 0,
+                        reviews: cabaña.comentarios.length,
+                    };
+                });
+                if (cabañas) {
+                    setVisitedCabañas(cabañas);
                 }
             } finally {
                 setLoading(false);
@@ -55,14 +63,14 @@ export default function VisitasRecientes() {
             <div className="m-auto w-full px-5 md:px-20 pb-6 pt-6">
                 <div className="text-center mb-12">
                     <h2 className="text-4xl font-bold inline-flex items-center">
-                        Cabañas viste recientemente
+                        Cabañas que viste recientemente
                     </h2>
                     <p className="mt-3 text-gray-500">Selecciona una cabaña para ver más información</p>
                 </div>
 
                 <ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
                     {visitedCabañas.map((cabaña) => (
-                        <li key={cabaña._id} className="group relative rounded-2xl shadow-lg overflow-hidden">
+                        <li key={cabaña._id} className="group relative rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-500">
                             <Link to={`/cabaña/${cabaña._id}`}>
                                 {/* Imagen */}
                                 <div className="relative h-72 w-full overflow-hidden">
@@ -80,21 +88,37 @@ export default function VisitasRecientes() {
                                         <h3 className="text-xl font-semibold mb-2 drop-shadow-md">
                                             {cabaña.nombre}
                                         </h3>
-                                        <div className="flex gap-4 text-sm">
-                                            <p className="flex items-center gap-1">
-                                                <PiUsersThreeFill className="text-lime-400" />
-                                                {cabaña.cantidadPersonas}
-                                            </p>
-                                            <p className="flex items-center gap-1">
-                                                <MdOutlineBedroomChild className="text-lime-400" />
-                                                {cabaña.cantidadHabitaciones}
-                                            </p>
-                                            <p className="flex items-center gap-1">
-                                                <PiToiletBold className="text-lime-400" />
-                                                {cabaña.cantidadBaños}
-                                            </p>
+                                        <div className="flex justify-between gap-4 text-sm">
+                                            <div className="flex gap-2">
+                                                <p className="flex items-center gap-1">
+                                                    <PiUsersThreeFill className="text-lime-400 size-4" />
+                                                    {cabaña.cantidadPersonas}
+                                                </p>
+                                                <p className="flex items-center gap-1">
+                                                    <MdOutlineBedroomChild className="text-lime-400 size-4" />
+                                                    {cabaña.cantidadHabitaciones}
+                                                </p>
+                                                <p className="flex items-center gap-1">
+                                                    <PiToiletBold className="text-lime-400 size-4" />
+                                                    {cabaña.cantidadBaños}
+                                                </p>
+                                            </div>
+                                            <div className="flex flex-col items-center">
+                                                <div className="flex items-center mb-1 border-lime-100 border-1">
+                                                    {Array.from({ length: 5 }, (_, index) => (
+                                                        <FaStar
+                                                            key={index}
+                                                            className={`size-4 ${index < Math.round(cabaña.promedioRating) ? "text-yellow-500" : "text-gray-300"}`}
+                                                        />
+                                                    ))}
+                                                    <span className="ml-2 font-semibold text-white">{cabaña.promedioRating.toFixed(1)}</span>
+                                                </div>
+                                                <span className="text-sm text-white">{cabaña.reviews || 0} opiniones</span>
+                                            </div>
                                         </div>
+
                                     </div>
+
                                 </div>
                             </Link>
                         </li>

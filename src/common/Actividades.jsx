@@ -68,12 +68,12 @@ export const Actividades = () => {
                                 key={index}
                                 layoutId={`activity-${index}`}
                                 onClick={() => openPopup(actividad, index)}
-                                className="relative cursor-pointer group rounded-2xl shadow-lg hover:shadow-xl"
+                                className="relative cursor-pointer group rounded-2xl shadow-lg hover:shadow-xl "
                             >
                                 {/* Imagen de la card */}
                                 <div className="relative h-48 sm:h-56 lg:h-64">
                                     <img
-                                        className="object-cover w-full h-full rounded-2xl transform group-hover:scale-110 transition-transform"
+                                        className="object-cover w-full h-full rounded-2xl transform group-hover:scale-110 transition-transform duration-500"
                                         src={actividad.imagen}
                                         alt={actividad.titulo}
                                         loading="lazy"

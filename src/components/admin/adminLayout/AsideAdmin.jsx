@@ -6,6 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { RiLeafFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import { MdDashboardCustomize } from "react-icons/md";
 
 const AsideAdmin = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // móvil
@@ -35,7 +36,7 @@ const AsideAdmin = () => {
                 `}
             >
                 <div className="flex flex-col h-full justify-between p-4">
-                    
+
                     {/* Header con botón expand/collapse */}
                     <div>
                         <div className="flex items-center justify-between mb-6">
@@ -59,7 +60,7 @@ const AsideAdmin = () => {
                             >
                                 {isExpanded ? <FiChevronLeft /> : <FiChevronRight />}
                             </button>
-                            
+
                         </div>
                         <hr />
                         {/* Navegación */}
@@ -73,7 +74,7 @@ const AsideAdmin = () => {
                                                 className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FiHome className="h-6 w-6" />
+                                                <MdDashboardCustomize className="h-6 w-6" />
                                                 {isExpanded && <span>Dashboard</span>}
                                             </Link>
                                         </li>
