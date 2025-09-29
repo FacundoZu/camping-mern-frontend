@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Global } from '../../../helpers/Global';
 import useAuth from '../../../hooks/useAuth';
 import { Peticion } from '../../../helpers/Peticion';
-import { PerfilImagen } from './../../utils/usuario/PerfilImagen';
 import { Loading } from './../../utils/usuario/Loading';
 import { EditarPerfil } from './../../utils/usuario/EditarPerfilForm';
 import { Detalleperfil } from './../../utils/usuario/DetallePerfil';
 import { Link } from 'react-router-dom';
+import { RiShareBoxLine } from "react-icons/ri";
 
 export const Perfil = () => {
   const { auth, setAuth } = useAuth();
@@ -93,19 +93,28 @@ export const Perfil = () => {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Mis Reservas</h2>
 
           {reservas && reservas.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2">
               {reservas.map(reserva => (
                 reserva.cabaniaId.estado === 'Disponible' && (
                   <div
                     key={reserva._id}
                     className="flex flex-col p-6 bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200"
                   >
-                    <h3 className="text-lg font-bold text-gray-700 mb-2">
-                      {reserva.cabaniaId.nombre}
-                    </h3>
+                    <div className='flex justify-between items-center'>
+                      <h3 className="text-lg font-bold text-gray-700 mb-2">
+                        {reserva.cabaniaId.nombre}
+                      </h3>
+                      <Link
+                        to={`/cabaña/${reserva.cabaniaId._id}`}
+                        className="flex bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white font-semibold py-2 px-2 rounded-xl shadow-lg hover:shadow-xl"
+                      >
+                        <RiShareBoxLine />
+                      </Link>
+                    </div>
+
 
                     <p className="text-sm text-gray-600">
-                      <strong>Reservaste el:</strong> {new Date(reserva.fechaCreacion).toLocaleDateString()}
+                      <strong>Reservaste el:</strong> {new Date(reserva.createdAt).toLocaleDateString()}
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Inicio:</strong> {new Date(reserva.fechaInicio).toLocaleDateString()}
@@ -133,13 +142,6 @@ export const Perfil = () => {
                     <p className="text-lg font-semibold text-gray-800 mt-4">
                       Precio Total: ${reserva.precioTotal.toFixed(2)}
                     </p>
-
-                    <Link
-                      to={`/cabaña/${reserva.cabaniaId._id}`}
-                      className="mt-4 bg-lime-600 text-white text-center py-2 rounded-lg hover:bg-lime-700 transition-colors"
-                    >
-                      Ver Cabaña
-                    </Link>
                   </div>
                 )
               ))}
