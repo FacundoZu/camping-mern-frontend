@@ -39,6 +39,15 @@ export const Actividades = () => {
         document.body.style.overflow = 'unset';
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+    };
+
     if (loading) {
         return (
             <div className="relative w-full min-h-[500px] bg-gray-100 flex items-center justify-center">
@@ -145,8 +154,8 @@ export const Actividades = () => {
                                         alt={selectedActivity.titulo}
                                     />
                                 </div>
-                                <div>
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 p-4">
+                                <div className='flex flex-col justify-between'>
+                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 p-4">
                                         {selectedActivity.titulo}
                                     </h2>
 
@@ -162,28 +171,28 @@ export const Actividades = () => {
                                     </div>
 
                                     <div
-                                        className="space-y-3 sm:space-y-4 mb-6 sm:mb-8"
+                                        className="flex gap-4 px-4 mb-4 w-full justify-between"
                                     >
-                                        {selectedActivity.duracion && (
-                                            <div className="flex items-start">
-                                                <FaClock className="text-lime-500 mt-1 mr-3 flex-shrink-0" />
-                                                <div>
-                                                    <p className="text-sm text-gray-500">Duración</p>
-                                                    <p className="font-medium text-gray-800">
-                                                        {selectedActivity.duracion}
-                                                    </p>
+                                        {selectedActivity.fechaInicio && (
+                                            <div className="flex flex-col">
+                                                <div className='flex items-center gap-2'>
+                                                    <FaClock className="text-lime-500" />
+                                                    <p className="text-sm text-gray-500">Fecha de inicio</p>
                                                 </div>
+                                                <p className="text-sm font-medium text-gray-800">
+                                                    {formatDate(selectedActivity.fechaInicio)}
+                                                </p>
                                             </div>
                                         )}
-                                        {selectedActivity.ubicacion && (
-                                            <div className="flex items-start">
-                                                <FaMapMarkerAlt className="text-lime-500 mt-1 mr-3 flex-shrink-0" />
-                                                <div>
-                                                    <p className="text-sm text-gray-500">Ubicación</p>
-                                                    <p className="font-medium text-gray-800">
-                                                        {selectedActivity.ubicacion}
-                                                    </p>
+                                        {selectedActivity.fechaFinal && (
+                                            <div className="flex flex-col">
+                                                <div className='flex items-center gap-2'>
+                                                    <FaClock className="text-lime-500" />
+                                                    <p className="text-sm text-gray-500">Fecha de finalización</p>
                                                 </div>
+                                                <p className="text-sm font-medium text-gray-800">
+                                                    {formatDate(selectedActivity.fechaFinal)}
+                                                </p>
                                             </div>
                                         )}
                                     </div>
