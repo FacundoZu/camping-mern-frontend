@@ -17,14 +17,14 @@ export const Detalleperfil = ({ usuario, handleToggelEdit }) => {
         <PerfilImagen image={usuario.image} />
         <button
           onClick={handleToggelEdit}
-          className="botton-submit-2"
+          className="botton-submit-2 shadow-md"
         >
           <FaEdit /> Editar perfil
         </button>
       </div>
 
       {/* Columna derecha: info de usuario */}
-      <div className="md:col-span-2 bg-gray-50 rounded-xl shadow-sm p-6 space-y-6">
+      <div className="md:col-span-2 bg-gray-50 rounded-xl shadow-md p-6 space-y-6">
         {campos.map((campo, index) => (
           <div key={index} className="flex items-center gap-3 border-b border-gray-200 pb-3">
             <div className="text-xl">{campo.icon}</div>

@@ -9,6 +9,10 @@ import { MdOutlineBedroomChild, MdOutlineDisabledByDefault } from "react-icons/m
 import { HiMiniCalendarDays } from "react-icons/hi2";
 import { toast } from 'react-toastify';
 
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
 export const AdminCrearCabaña = () => {
     const [modelos, setModelos] = useState([]);
     const [disponibilidades, setDisponibilidades] = useState([]);
@@ -24,8 +28,32 @@ export const AdminCrearCabaña = () => {
         cantidadHabitaciones: 1,
         estado: '',
         servicios: [],
-        minimoDias: 1
+        minimoDias: 1,
+        ubicacion: null,
     });
+
+    // Ubicacion
+    const markerIcon = new L.Icon({
+        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+    });
+
+    const LocationPicker = ({ onLocationSelect }) => {
+        useMapEvents({
+            click(e) {
+                onLocationSelect(e.latlng);
+            },
+        });
+        return null;
+    };
+
+    const handleLocationSelect = (latlng) => {
+        setFormulario({
+            ...formulario,
+            ubicacion: latlng,
+        });
+    };
 
     // Imagen principal: { id, file, previewUrl }
     const [imagenPrincipal, setImagenPrincipal] = useState(null);
@@ -168,9 +196,19 @@ export const AdminCrearCabaña = () => {
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        const ubicacion = formulario.ubicacion
+            ? {
+                type: "Point",
+                coordinates: [
+                    formulario.ubicacion.lng,
+                    formulario.ubicacion.lat
+                ],
+                direccion: formulario.direccion || ""
+            }
+            : null
         try {
             const url = Global.url + "cabin/create";
-            const { datos } = await Peticion(url, "POST", formulario, false, 'include');
+            const { datos } = await Peticion(url, "POST", { ...formulario, ubicacion }, false, 'include');
 
             if (datos?.status === 'success') {
                 const cabinId = datos.cabin._id || datos.cabin.id || datos.cabin._id;
@@ -408,6 +446,51 @@ export const AdminCrearCabaña = () => {
                         </AnimatePresence>
                     </div>
                 </motion.div>
+
+                {/* Mapa para seleccionar ubicación */}
+                <div className="mt-4">
+                    <h3 className="font-semibold mb-2">Seleccionar ubicación (opcional)</h3>
+                    <MapContainer
+                        center={[-25.1217, -66.1653]}
+                        zoom={13}
+                        style={{ height: "300px", width: "100%" }}
+                    >
+                        <TileLayer
+                            attribution='&copy; OpenStreetMap'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <LocationPicker onLocationSelect={handleLocationSelect} />
+                        {formulario.ubicacion && (
+                            <Marker
+                                position={[formulario.ubicacion.lat, formulario.ubicacion.lng]}
+                                icon={markerIcon}
+                            />
+                        )}
+                    </MapContainer>
+
+                    {formulario.ubicacion && (
+                        <p className="mt-2 text-sm text-gray-600">
+                            📍 Lat: {formulario.ubicacion.lat.toFixed(5)}, Lng:{" "}
+                            {formulario.ubicacion.lng.toFixed(5)}
+                        </p>
+                    )}
+                </div>
+                <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700">Dirección (opcional)</label>
+                    <input
+                        type="text"
+                        name="direccion"
+                        value={formulario.direccion || ""}
+                        onChange={(e) =>
+                            setFormulario({
+                                ...formulario,
+                                direccion: e.target.value,
+                            })
+                        }
+                        className="mt-1 p-2 border rounded-md w-full"
+                        placeholder="Ej: Ruta 40 km 15, San Carlos"
+                    />
+                </div>
 
                 {/* Submit */}
                 <div className="flex items-center gap-4">
