@@ -260,13 +260,6 @@ export const Cabaña = () => {
                                             </span>
                                         </div>
                                     )}
-
-                                    {cabaña.ubicacion && (
-                                        <div className="flex items-center gap-2 text-gray-600">
-                                            <PiMapPinFill className="text-lime-500" />
-                                            <span>{cabaña.ubicacion}</span>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
 
@@ -357,6 +350,22 @@ export const Cabaña = () => {
                         </div>
                     </div>
                 </div>
+
+                {cabaña?.ubicacion?.coordinates &&
+                    cabaña.ubicacion.coordinates.length === 2 &&
+                    !isNaN(cabaña.ubicacion.coordinates[0]) &&
+                    !isNaN(cabaña.ubicacion.coordinates[1]) && (
+                        <div className="w-full h-[300px] md:h-[400px] lg:h-[500px] mb-6 rounded-lg overflow-hidden bg-gray-100">
+                            <iframe
+                                src={`https://www.google.com/maps?q=${cabaña.ubicacion.coordinates[1]},${cabaña.ubicacion.coordinates[0]}&hl=es;z=15&output=embed`}
+                                className="w-full h-full border-0"
+                                allowFullScreen
+                                loading="lazy"
+                                title={`Mapa de ${cabaña.nombre}`}
+                            ></iframe>
+                        </div>
+                    )}
+
 
                 {/* Sección de comentarios */}
                 <ComentariosList
