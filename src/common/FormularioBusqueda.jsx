@@ -72,7 +72,7 @@ const FormularioBusqueda = () => {
             checkOut: hasSelectedDates && state[0].endDate ? formatDate(state[0].endDate) : '',
             adultos: cantidadAdultos,
             ninos: cantidadNinos,
-            habitaciones: cantidadHabitaciones
+            habitaciones: cantidadHabitaciones,
         }).toString();
 
         navigate(`/cabañas?${queryParams}`);

@@ -151,19 +151,6 @@ export const Buscador = ({ setFiltros, cabañas, filtros, servicios }) => {
         actualizarOpcionesDinamicas();
     }, [formulario.adultos, formulario.ninos, formulario.habitaciones, formulario.baños, formulario.puntuacion]);
 
-    useEffect(() => {
-        setFormulario((prev) => ({
-            ...prev,
-            habitaciones: "0",
-            baños: "0"
-        }));
-        setFiltros((prev) => ({
-            ...prev,
-            habitaciones: "0",
-            baños: "0"
-        }));
-    }, [formulario.adultos, formulario.ninos]);
-
 
     useEffect(() => {
         const handleClickOutside = (event) => {
