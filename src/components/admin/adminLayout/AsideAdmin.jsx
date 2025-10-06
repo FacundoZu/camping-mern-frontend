@@ -7,10 +7,11 @@ import { RiLeafFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { MdDashboardCustomize } from "react-icons/md";
+import AdminNotifications from "../common/AdminNotifications";
 
 const AsideAdmin = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // móvil
-    const [isExpanded, setIsExpanded] = useState(true); // desktop
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+    const [isExpanded, setIsExpanded] = useState(true);
     const { auth } = useAuth();
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -62,6 +63,7 @@ const AsideAdmin = () => {
                             </button>
 
                         </div>
+                        <AdminNotifications isExpanded={isExpanded}/>
                         <hr className="pb-2" />
                         {/* Navegación */}
                         <nav>
@@ -149,6 +151,7 @@ const AsideAdmin = () => {
                             </ul>
                         </nav>
                     </div>
+
 
                     {/* Perfil */}
                     <div className="border-t border-gray-700 pt-4">

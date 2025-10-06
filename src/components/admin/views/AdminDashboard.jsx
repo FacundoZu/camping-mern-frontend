@@ -181,7 +181,7 @@ export const AdminDashboard = () => {
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <h3 className="text-gray-600">Ingresos Estimados</h3>
-          <p className="text-3xl font-bold text-amber-600">${estadisticas.ingresosTotales.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-amber-600">${Number(estadisticas.ingresosTotales || 0).toLocaleString()}</p>
         </div>
       </div>
 
@@ -195,7 +195,7 @@ export const AdminDashboard = () => {
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center">
             <h3 className="text-gray-600">Personas</h3>
-            <p className="text-3xl font-bold text-blue-500">{campersStats.totalPersonas + campersStats.totalNiños}</p>
+            <p className="text-3xl font-bold text-blue-500">{Number((campersStats.totalPersonas || 0) + (campersStats.totalNiños || 0))}</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center">
             <h3 className="text-gray-600">Vehículos</h3>
@@ -207,11 +207,11 @@ export const AdminDashboard = () => {
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center">
             <h3 className="text-gray-600">Promedio Estancia</h3>
-            <p className="text-3xl font-bold text-purple-500">{campersStats.promedioEstancia} días</p>
+            <p className="text-3xl font-bold text-purple-500">{Number(campersStats.promedioEstancia || 0)} días</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center">
             <h3 className="text-gray-600">Ingresos Estimados</h3>
-            <p className="text-3xl font-bold text-amber-600">${campersStats.totalIngresos}</p>
+            <p className="text-3xl font-bold text-amber-600">${Number(campersStats.totalIngresos || 0).toLocaleString()}</p>
           </div>
         </div>
       </div>

@@ -20,9 +20,11 @@ export const Peticion = async (url, metodo, datosGuardar = "", archivos = false,
     if (metodo === "POST" || metodo === "PUT") {
         if (archivos) {
             opciones.body = datosGuardar
-        } else {
+        } else if (datosGuardar) {
             opciones.body = JSON.stringify(datosGuardar),
                 opciones.headers = { "Content-Type": "application/json" }
+        } else {
+            opciones.body = null
         }
     }
 
