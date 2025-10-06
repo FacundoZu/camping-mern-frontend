@@ -19,6 +19,7 @@ export const AdminDashboard = () => {
   const [metodosPago, setMetodosPago] = useState({});
   const [añosDisponibles, setAñosDisponibles] = useState([]);
   const [añoSeleccionado, setAñoSeleccionado] = useState(new Date().getFullYear());
+  const [campersStats, setCampersStats] = useState({});
 
   useEffect(() => {
     const obtenerDatos = async () => {
@@ -28,6 +29,10 @@ export const AdminDashboard = () => {
 
       let urlReservas = Global.url + "reservation/getAllReservations";
       const { datos: reservasData } = await Peticion(urlReservas, "GET", '', false, 'include');
+
+      let urlCampers = Global.url + "camper/getCampersStats";
+      const { datos: campersStats } = await Peticion(urlCampers, "GET", '', false, 'include');
+      setCampersStats(campersStats);
 
       // --- obtener años únicos ---
       const años = [
@@ -53,7 +58,7 @@ export const AdminDashboard = () => {
       reservasFiltradas.forEach(reserva => {
         const fecha = new Date(reserva.fechaInicio);
         reservasPorMes[fecha.getMonth()]++;
-        
+
         if (reserva.cabaniaId && reservasCountPorCabaña[reserva.cabaniaId._id] !== undefined) {
           reservasCountPorCabaña[reserva.cabaniaId._id]++;
         }
@@ -77,14 +82,26 @@ export const AdminDashboard = () => {
 
   const dataReservasMensuales = {
     labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    datasets: [{
-      label: 'Reservas',
-      data: reservasMensuales,
-      borderColor: '#36A2EB',
-      backgroundColor: 'rgba(54,162,235,0.2)',
-      tension: 0.3,
-    }],
+    datasets: [
+      {
+        label: 'Reservas',
+        data: reservasMensuales,
+        borderColor: '#36A2EB',
+        backgroundColor: 'rgba(54,162,235,0.2)',
+        tension: 0.3,
+        yAxisID: 'y1',
+      },
+      {
+        label: 'Acampantes',
+        data: campersStats.campersPorMes || new Array(12).fill(0),
+        borderColor: '#FF6384',
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        tension: 0.3,
+        yAxisID: 'y2',
+      }
+    ],
   };
+
 
   const dataReservasPorCabaña = {
     labels: cabañas.map(c => c.nombre),
@@ -106,6 +123,24 @@ export const AdminDashboard = () => {
   const opcionesGrafico = {
     maintainAspectRatio: false,
     plugins: { legend: { position: 'bottom' } },
+  };
+
+  const opcionesGraficoReserva = {
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: {
+      y1: {
+        type: 'linear',
+        position: 'left',
+        title: { display: true, text: 'Reservas' },
+      },
+      y2: {
+        type: 'linear',
+        position: 'right',
+        title: { display: true, text: 'Acampantes' },
+        grid: { drawOnChartArea: false },
+      },
+    },
   };
 
   return (
@@ -150,11 +185,43 @@ export const AdminDashboard = () => {
         </div>
       </div>
 
+      {/* Sección Acampantes */}
+      <div className="my-10">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">🏕️ Acampantes</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="bg-white p-4 rounded-lg shadow text-center">
+            <h3 className="text-gray-600">Total Acampantes</h3>
+            <p className="text-3xl font-bold text-lime-600">{campersStats.totalCampers}</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center">
+            <h3 className="text-gray-600">Personas</h3>
+            <p className="text-3xl font-bold text-blue-500">{campersStats.totalPersonas + campersStats.totalNiños}</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center">
+            <h3 className="text-gray-600">Vehículos</h3>
+            <p className="text-3xl font-bold text-gray-700">{campersStats.totalVehiculos}</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center">
+            <h3 className="text-gray-600">Motorhomes</h3>
+            <p className="text-3xl font-bold text-red-500">{campersStats.totalMotorhomes}</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center">
+            <h3 className="text-gray-600">Promedio Estancia</h3>
+            <p className="text-3xl font-bold text-purple-500">{campersStats.promedioEstancia} días</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center">
+            <h3 className="text-gray-600">Ingresos Estimados</h3>
+            <p className="text-3xl font-bold text-amber-600">${campersStats.totalIngresos}</p>
+          </div>
+        </div>
+      </div>
+
+
       {/* Gráfico principal */}
       <div className="bg-white rounded-lg shadow p-4 mb-8">
         <h3 className="text-xl font-semibold mb-4">Reservas Mensuales</h3>
         <div style={{ height: '300px' }}>
-          <Line data={dataReservasMensuales} options={opcionesGrafico} />
+          <Line data={dataReservasMensuales} options={opcionesGraficoReserva} />
         </div>
       </div>
 
