@@ -34,6 +34,8 @@ import ReservaPendiente from '../components/views/pagoReserva/ReservaPendiente'
 import { ResetPassword } from '../components/views/usuario/ResetPassword'
 import { NewPasswordView } from '../components/views/usuario/NewPasswordView'
 import { NewPasswordForm } from '../components/utils/auth/NewPasswordForm'
+import AdminAcampantes from '../components/admin/views/acampantes/AdminAcampantes'
+import AdminCrearAcampante from '../components/admin/views/acampantes/AdminCrearAcampante'
 
 export const Routing = () => {
   return (
@@ -70,6 +72,9 @@ export const Routing = () => {
           <Route path="/admin/servicios" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminServicios /></PrivateRoute>} />
           <Route path="/admin/CrearServicio" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearServicio /></PrivateRoute>} />
           <Route path="/admin/EditarServicio/:id" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminEditarServicio /></PrivateRoute>} />
+
+          <Route path="/admin/acampantes" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminAcampantes /></PrivateRoute>} />
+          <Route path="/admin/CrearAcampante" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearAcampante /></PrivateRoute>} />
 
           <Route path="/admin/actividades" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminActividades /></PrivateRoute>} />
           <Route path="/admin/CrearActividad" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearActividad /></PrivateRoute>} />

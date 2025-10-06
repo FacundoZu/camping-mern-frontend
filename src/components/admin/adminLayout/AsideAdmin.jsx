@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
     FiMenu, FiX, FiHome, FiUsers, FiSettings, FiActivity, FiHelpCircle, FiChevronLeft, FiChevronRight
 } from "react-icons/fi";
-import { FaUser } from "react-icons/fa";
+import { FaCampground, FaUser } from "react-icons/fa";
 import { RiLeafFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
@@ -62,7 +62,7 @@ const AsideAdmin = () => {
                             </button>
 
                         </div>
-                        <hr />
+                        <hr className="pb-2" />
                         {/* Navegación */}
                         <nav>
                             <ul className="space-y-2">
@@ -90,6 +90,7 @@ const AsideAdmin = () => {
                                         </li>
                                     </>
                                 )}
+                                <hr />
                                 {(auth.role === "admin" || auth.role === "gerente") && (
                                     <>
                                         <li>
@@ -110,6 +111,16 @@ const AsideAdmin = () => {
                                             >
                                                 <FiSettings className="h-6 w-6" />
                                                 {isExpanded && <span>Servicios</span>}
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/admin/acampantes"
+                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                onClick={() => setIsSidebarOpen(false)}
+                                            >
+                                                <FaCampground className="h-6 w-6" />
+                                                {isExpanded && <span>Acampantes</span>}
                                             </Link>
                                         </li>
                                         <li>
@@ -155,7 +166,10 @@ const AsideAdmin = () => {
                                 <FaUser className="w-9 h-9 p-1 rounded-full border border-gray-300 shadow-sm text-gray-400" />
                             )}
                             {isExpanded && (
-                                <p className="text-lime-500 font-medium text-sm truncate">{auth.name}</p>
+                                <div>
+                                    <p className="text-lime-500 font-medium text-sm truncate">{auth.name}</p>
+                                    <p className="text-gray-400 font-medium text-sm truncate">{auth.role}</p>
+                                </div>
                             )}
                         </Link>
                     </div>
