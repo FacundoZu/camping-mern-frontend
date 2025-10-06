@@ -46,7 +46,7 @@ export const MenuPerfil = ({ handleToggle = null }) => {
 
                     <hr />
 
-                    {auth && auth.role == "admin" &&
+                    {auth && (auth.role == "admin" || auth.role == "gerente") &&
                         <Link to='/admin/dashboard' className="menu-perfil-item">
                             <MdDashboardCustomize className='mr-1 text-slate-500 h-4 w-4' />
                             Dashboard

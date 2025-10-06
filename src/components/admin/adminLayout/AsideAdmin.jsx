@@ -88,9 +88,9 @@ const AsideAdmin = () => {
                                                 {isExpanded && <span>Usuarios</span>}
                                             </Link>
                                         </li>
+                                        <hr />
                                     </>
                                 )}
-                                <hr />
                                 {(auth.role === "admin" || auth.role === "gerente") && (
                                     <>
                                         <li>
@@ -105,22 +105,23 @@ const AsideAdmin = () => {
                                         </li>
                                         <li>
                                             <Link
-                                                to="/admin/servicios"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
-                                                onClick={() => setIsSidebarOpen(false)}
-                                            >
-                                                <FiSettings className="h-6 w-6" />
-                                                {isExpanded && <span>Servicios</span>}
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
                                                 to="/admin/acampantes"
                                                 className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
                                                 <FaCampground className="h-6 w-6" />
                                                 {isExpanded && <span>Acampantes</span>}
+                                            </Link>
+                                        </li>
+                                        <hr />
+                                        <li>
+                                            <Link
+                                                to="/admin/servicios"
+                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                onClick={() => setIsSidebarOpen(false)}
+                                            >
+                                                <FiSettings className="h-6 w-6" />
+                                                {isExpanded && <span>Servicios</span>}
                                             </Link>
                                         </li>
                                         <li>

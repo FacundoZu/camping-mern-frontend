@@ -60,7 +60,7 @@ export const Routing = () => {
         <Route path="/reserva-pendiente" element={<ReservaPendiente />} />
 
         <Route element={<PrivateRoute requiredRoles={['admin', 'gerente']}><LayoutAdmin /></PrivateRoute>}>
-          <Route path="/admin/dashboard" element={<PrivateRoute requiredRoles={['admin']}><AdminDashboard /></PrivateRoute>} />
+          <Route path="/admin/dashboard" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminDashboard /></PrivateRoute>} />
           <Route path="/admin/cabañas" element={<AdminCabaña />} />
           <Route path="/admin/CrearCabaña" element={<AdminCrearCabaña />} />
           <Route path="/admin/EditarCabaña/:id" element={<AdminEditarCabaña />} />
