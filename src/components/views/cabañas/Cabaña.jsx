@@ -5,22 +5,15 @@ import { Global } from '../../../helpers/Global';
 import {
     PiUsersThreeFill,
     PiToiletBold,
-    PiStarFill,
-    PiMapPinFill
+    PiStarFill
 } from "react-icons/pi";
 import {
-    MdOutlineBedroomChild,
-    MdArrowBack,
-    MdShare,
-    MdFavorite,
-    MdFavoriteBorder
+    MdOutlineBedroomChild
 } from "react-icons/md";
-import { FaCalendarAlt, FaCheckCircle } from "react-icons/fa";
 import { BsCurrencyDollar } from "react-icons/bs";
 import ComentariosList from '../../../components/utils/cabañas/ComentariosList.jsx';
 import { CalendarioReservas } from '../../../components/utils/cabañas/CalendarioReservas.jsx';
 import { CabañaSwiper } from '../../../components/utils/cabañas/CabañaSwiper.jsx';
-import { CalendarioModal } from '../../../components/utils/cabañas/CalendarioModal.jsx';
 import Modal from '../../../common/Modal.jsx';
 import ReservaInfo from '../../../common/ReservaInfo.jsx';
 import useAuth from '../../../hooks/useAuth';
@@ -78,18 +71,24 @@ export const Cabaña = () => {
 
     useEffect(() => {
         fetchData();
+    }, [id]);
+
+    useEffect(() => {
+        if (!cabaña) return;
 
         const timer = setTimeout(async () => {
-            if (cabaña) {
+            try {
                 await Peticion(`${Global.url}user/registerVisit`, "POST", {
                     userId: auth?.id || null,
                     cabinId: id
-                });
+                }, false, "include");
+            } catch (error) {
+                console.error("Error registrando visita:", error);
             }
         }, 5000);
 
         return () => clearTimeout(timer);
-    }, [id]);
+    }, [cabaña, id, auth?.id]);
 
     const handleReservar = (fechas) => {
         const diasDeEstancia = (new Date(fechas.fechaFinal) - new Date(fechas.fechaInicio)) / (1000 * 60 * 60 * 24) + 1;
@@ -128,8 +127,8 @@ export const Cabaña = () => {
                 return;
             }
 
-            const reservaPasada = datos.reservas.some(reserva =>
-                new Date(reserva.fechaFinal) < new Date()
+            const reservaPasada = datos.reservas.some(
+                (reserva) => new Date(reserva.fechaFinal) < new Date()
             );
 
             if (!reservaPasada) {
@@ -141,22 +140,45 @@ export const Cabaña = () => {
                 return;
             }
 
-            const result = await Peticion(`${Global.url}reviews/createReview`, "POST", {
-                rating,
-                comment,
-                user: auth.id,
-                cabin: cabaña._id,
-            }, false, "include");
+            const result = await Peticion(
+                `${Global.url}reviews/createReview`,
+                "POST",
+                {
+                    rating,
+                    comment,
+                    user: auth.id,
+                    cabin: cabaña._id,
+                },
+                false,
+                "include"
+            );
 
             if (result.datos?.success) {
-                setComentarios(prev => [...prev, result.datos.review]);
+                // 🔄 Refrescamos las reviews desde el servidor
+                const updatedReviews = await Peticion(
+                    `${Global.url}reviews/getReviewsByCabin/${cabaña._id}`,
+                    "GET",
+                    null,
+                    false,
+                    "include"
+                );
+
+                setComentarios(updatedReviews.datos?.reviews || []);
+
                 setModal({
                     show: true,
                     title: 'Éxito',
                     message: '¡Gracias por dejar tu comentario!'
                 });
+            } else {
+                setModal({
+                    show: true,
+                    title: 'Error',
+                    message: result.datos?.message || 'No se pudo crear la reseña.'
+                });
             }
         } catch (err) {
+            console.error("Error al crear la reseña:", err);
             setModal({
                 show: true,
                 title: 'Error',

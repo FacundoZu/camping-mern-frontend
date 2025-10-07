@@ -94,7 +94,7 @@ const AdminNotifications = ({ isExpanded }) => {
                                     </button>
                                     <Link to={`/admin/VerCabaña/${n.cabaniaId}`}>
                                         <button className="text-blue-500 hover:text-blue-600 text-xs ml-2 rounded-lg border border-blue-500 px-2 py-[0.15rem] mt-2">
-                                            Ver cabaña
+                                            Ver
                                         </button>
                                     </Link>
                                     <small className="text-gray-400 flex text-xs mt-2">
