@@ -5,7 +5,7 @@ import { addDays, isBefore, isWithinInterval, differenceInDays } from "date-fns"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../../../hooks/useAuth";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { formatDate, parseDate } from "../../../helpers/ParseDate";
@@ -13,15 +13,13 @@ import {
   FaCalendarAlt,
   FaCheckCircle,
   FaExclamationTriangle,
-  FaClock,
-  FaUsers,
-  FaBed,
-  FaHome
+  FaClock
 } from "react-icons/fa";
 import { BsCurrencyDollar, BsCalendar2Check, BsInfoCircle } from "react-icons/bs";
 import { MdDateRange, MdEventAvailable, MdBlock } from "react-icons/md";
 
 export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minimoDias }) => {
+  const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const { auth } = useAuth();
   const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
@@ -234,7 +232,7 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
                 showDateDisplay={false}
                 showMonthAndYearPickers={false}
                 className="custom-date-range-picker"
-                disabledDates={fechasReservadas}   
+                disabledDates={fechasReservadas}
               />
             </div>
             {/* Leyenda del calendario */}
@@ -346,9 +344,9 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
                       onClick={handleReservar}
                       disabled={hayConflicto || isLoading}
                       className={`w-full font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl ${hayConflicto || isLoading
-                          ? "bg-gray-400 cursor-not-allowed text-white"
-                          : "bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white"
-                      }`}
+                        ? "bg-gray-400 cursor-not-allowed text-white"
+                        : "bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white"
+                        }`}
                     >
                       Confirmar reserva
                     </button>
@@ -357,8 +355,8 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
                       onClick={handleReservar}
                       disabled={hayConflicto || isLoading}
                       className={`w-full font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl ${hayConflicto || isLoading
-                          ? "bg-gray-400 cursor-not-allowed text-white"
-                          : "bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white"
+                        ? "bg-gray-400 cursor-not-allowed text-white"
+                        : "bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white"
                         }`}
                     >
                       {isLoading ? (
@@ -380,6 +378,15 @@ export const CalendarioReservas = ({ reservas, onReservar, precioPorNoche, minim
                     </button>
                   )}
                 </div>
+
+                {(auth?.role === "admin" || auth?.role === "gerente") && (
+                  <Link
+                    to={`/admin/reserva/${id}?checkIn=${checkIn}&checkOut=${checkOut}`}
+                    className="w-full bg-blue-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:bg-blue-600 hover:scale-[1.02] shadow-lg hover:shadow-xl block text-center"
+                  >
+                    Registrar pago en efectivo
+                  </Link>
+                )}
 
                 {/* Información adicional */}
                 <div className="border-t pt-4">

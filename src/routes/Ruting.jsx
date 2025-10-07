@@ -36,6 +36,8 @@ import { NewPasswordView } from '../components/views/usuario/NewPasswordView'
 import { NewPasswordForm } from '../components/utils/auth/NewPasswordForm'
 import AdminAcampantes from '../components/admin/views/acampantes/AdminAcampantes'
 import AdminCrearAcampante from '../components/admin/views/acampantes/AdminCrearAcampante'
+import AdminCrearReserva from '../components/admin/views/reserva/AdminCrearReserva'
+
 
 export const Routing = () => {
   return (
@@ -60,29 +62,32 @@ export const Routing = () => {
         <Route path="/reserva-pendiente" element={<ReservaPendiente />} />
 
         <Route element={<PrivateRoute requiredRoles={['admin', 'gerente']}><LayoutAdmin /></PrivateRoute>}>
-          <Route path="/admin/dashboard" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminDashboard /></PrivateRoute>} />
+
+          <Route path="/admin/dashboard" element={<PrivateRoute requiredRoles={['admin']}><AdminDashboard /></PrivateRoute>} />
+          <Route path="/admin/usuarios" element={<PrivateRoute requiredRoles={['admin']}><AdminUsuarios /></PrivateRoute>} />
+          <Route path="/admin/EditarUsuario/:id" element={<PrivateRoute requiredRoles={['admin']}><AdminEditarUsuario /></PrivateRoute>} />
+
           <Route path="/admin/cabañas" element={<AdminCabaña />} />
           <Route path="/admin/CrearCabaña" element={<AdminCrearCabaña />} />
           <Route path="/admin/EditarCabaña/:id" element={<AdminEditarCabaña />} />
           <Route path="/admin/VerCabaña/:id" element={<AdminVerCabaña />} />
 
-          <Route path="/admin/usuarios" element={<PrivateRoute requiredRoles={['admin']}><AdminUsuarios /></PrivateRoute>} />
-          <Route path="/admin/EditarUsuario/:id" element={<PrivateRoute requiredRoles={['admin']}><AdminEditarUsuario /></PrivateRoute>} />
+          <Route path="/admin/acampantes" element={<AdminAcampantes />} />
+          <Route path="/admin/CrearAcampante" element={<AdminCrearAcampante />} />
 
-          <Route path="/admin/servicios" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminServicios /></PrivateRoute>} />
-          <Route path="/admin/CrearServicio" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearServicio /></PrivateRoute>} />
-          <Route path="/admin/EditarServicio/:id" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminEditarServicio /></PrivateRoute>} />
+          <Route path="/admin/reserva/:id" element={<AdminCrearReserva />} />
 
-          <Route path="/admin/acampantes" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminAcampantes /></PrivateRoute>} />
-          <Route path="/admin/CrearAcampante" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearAcampante /></PrivateRoute>} />
+          <Route path="/admin/servicios" element={<AdminServicios />} />
+          <Route path="/admin/CrearServicio" element={<AdminCrearServicio />} />
+          <Route path="/admin/EditarServicio/:id" element={<AdminEditarServicio />} />
 
-          <Route path="/admin/actividades" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminActividades /></PrivateRoute>} />
-          <Route path="/admin/CrearActividad" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearActividad /></PrivateRoute>} />
-          <Route path="/admin/EditarActividad/:id" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminEditarActividad /></PrivateRoute>} />
+          <Route path="/admin/actividades" element={<AdminActividades />} />
+          <Route path="/admin/CrearActividad" element={<AdminCrearActividad />} />
+          <Route path="/admin/EditarActividad/:id" element={<AdminEditarActividad />} />
 
-          <Route path="/admin/preguntas" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminPreguntas /></PrivateRoute>} />
-          <Route path="/admin/CrearPregunta" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminCrearPregunta /></PrivateRoute>} />
-          <Route path="/admin/EditarPregunta/:id" element={<PrivateRoute requiredRoles={['admin', 'gerente']}><AdminEditarPregunta /></PrivateRoute>} />
+          <Route path="/admin/preguntas" element={<AdminPreguntas />} />
+          <Route path="/admin/CrearPregunta" element={<AdminCrearPregunta />} />
+          <Route path="/admin/EditarPregunta/:id" element={<AdminEditarPregunta />} />
         </Route>
 
       </Routes>

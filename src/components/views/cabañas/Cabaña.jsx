@@ -36,7 +36,6 @@ export const Cabaña = () => {
     const [comentarios, setComentarios] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isFavorite, setIsFavorite] = useState(false);
 
     // Estado para reserva
     const [reservaData, setReservaData] = useState({
