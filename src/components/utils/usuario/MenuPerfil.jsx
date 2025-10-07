@@ -47,7 +47,7 @@ export const MenuPerfil = ({ handleToggle = null }) => {
                     <hr />
 
                     {auth && (auth.role == "admin" || auth.role == "gerente") &&
-                        <Link to='/admin/dashboard' className="menu-perfil-item">
+                        <Link to={auth.role == "admin" ? '/admin/dashboard' : '/admin/cabañas'} className="menu-perfil-item">
                             <MdDashboardCustomize className='mr-1 text-slate-500 h-4 w-4' />
                             Dashboard
                         </Link>
@@ -68,35 +68,35 @@ export const MenuPerfil = ({ handleToggle = null }) => {
                 <div className='flex flex-col'>
                     <ul className='relative flex flex-col items-center'>
 
-                    <a href="/#reservar" className="menu-item">
-                        <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                            <li>Buscar Cabaña</li>
-                        </div>
-                    </a>
+                        <a href="/#reservar" className="menu-item">
+                            <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                                <li>Buscar Cabaña</li>
+                            </div>
+                        </a>
 
-                    <a href="/#eventos" className="menu-item">
-                        <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                            <li>Eventos</li>
-                        </div>
-                    </a>
+                        <a href="/#eventos" className="menu-item">
+                            <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                                <li>Eventos</li>
+                            </div>
+                        </a>
 
-                    <a href="/#ubicacion" className="menu-item">
-                        <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                            <li>Ubicación</li>
-                        </div>
-                    </a>
+                        <a href="/#ubicacion" className="menu-item">
+                            <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                                <li>Ubicación</li>
+                            </div>
+                        </a>
 
-                    <a href="/#preguntas" className="menu-item">
-                        <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                            <li>Preguntas</li>
-                        </div>
-                    </a>
+                        <a href="/#preguntas" className="menu-item">
+                            <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                                <li>Preguntas</li>
+                            </div>
+                        </a>
 
-                    <a href="/#contacto" className="menu-item">
-                        <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                            <li>Contacto</li>
-                        </div>
-                    </a>
+                        <a href="/#contacto" className="menu-item">
+                            <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                                <li>Contacto</li>
+                            </div>
+                        </a>
                     </ul>
                     <hr />
                     <div className='flex items-center py-2 px-2'>
