@@ -50,14 +50,19 @@ const AdminNotifications = ({ isExpanded }) => {
         <div className="relative" ref={asideRef}>
             <button
                 onClick={() => setOpen(!open)}
-                className="flex w-full gap-2 items-center p-2 mb-4 hover:bg-gray-800 rounded-lg transition"
+                className="flex w-full gap-2 items-center p-2 mb-4 hover:bg-gray-300 rounded-lg transition"
             >
-                <FiBell className="h-6 w-6" />
+                <FiBell className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                 {isExpanded && <span className="text-sm font-medium">Notificaciones</span>}
                 {unreadCount > 0 && (
-                    <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                        {unreadCount}
-                    </span>
+                    isExpanded ? (
+                        <span className={`ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full ${isExpanded ? "" : "hidden"}`}>
+                            {unreadCount}
+                        </span>
+                    ) : (
+                        <span className={`ml-auto absolute bg-red-500 text-xs size-2 rounded-full right-2 top-2 ${isExpanded ? "hidden" : ""}`}>
+                        </span>
+                    )
                 )}
             </button>
 

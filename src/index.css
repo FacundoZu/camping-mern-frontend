@@ -24,6 +24,14 @@
   @apply flex items-center gap-2 mx-auto bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl text-center;
 }
 
+.dashboard-button {
+  @apply flex justify-start items-center gap-4 mx-auto p-2 hover:bg-gray-300 rounded-md transition-all;
+}
+
+.dashboard-icon {
+  @apply h-6 w-6;
+}
+
 .create-edit-input-button {
   @apply w-full px-4 py-2 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none
 }

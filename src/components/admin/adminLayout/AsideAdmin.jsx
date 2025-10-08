@@ -21,7 +21,7 @@ const AsideAdmin = () => {
         <>
             {/* Botón toggle móvil */}
             <button
-                className={`text-2xl p-3 text-white fixed top-4 z-50 bg-gray-800 rounded-lg transition-all duration-300 ease-in-out lg:hidden
+                className={`text-2xl p-3 fixed top-4 z-50 bg-gray-200 rounded-lg transition-all duration-300 ease-in-out lg:hidden
                 ${isSidebarOpen ? "left-60" : "left-4"}`}
                 onClick={toggleSidebar}
             >
@@ -30,7 +30,7 @@ const AsideAdmin = () => {
 
             {/* Sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-40 bg-gray-900 text-white transform transition-all duration-300 ease-in-out
+                className={`fixed inset-y-0 left-0 z-40 bg-gray-100 transform transition-all duration-300 ease-in-out
                 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
                 lg:translate-x-0 lg:static lg:flex-shrink-0
                 ${isExpanded ? "w-64" : "w-20"} 
@@ -40,31 +40,31 @@ const AsideAdmin = () => {
 
                     {/* Header con botón expand/collapse */}
                     <div>
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center mb-4">
                             <Link
                                 to="/"
-                                className="flex items-center hover:bg-gray-800 p-2 rounded-md transition-all"
+                                className="flex items-center hover:bg-gray-300 p-2 rounded-md transition-all w-full mr-2"
                                 onClick={() => setIsSidebarOpen(false)}
                             >
                                 <RiLeafFill className="text-lime-600 h-8 w-8" />
                                 {isExpanded && (
                                     <>
-                                        <span className="text-slate-200 font-bold">Camping</span>
-                                        <span className="text-slate-400 font-semibold">Cachi</span>
+                                        <span className="text-slate-800 font-bold">Camping</span>
+                                        <span className="text-slate-800 font-semibold">Cachi</span>
                                     </>
                                 )}
                             </Link>
                             {/* Botón expand/collapse solo en desktop */}
                             <button
                                 onClick={toggleExpand}
-                                className="hidden lg:block p-2 rounded-md bg-gray-900 hover:bg-gray-800 transition-all duration-300 ease-in-out"
+                                className="hidden lg:block p-2 rounded-md bg-gray-200 hover:bg-gray-300 transition-all duration-300 ease-in-out"
                             >
                                 {isExpanded ? <FiChevronLeft /> : <FiChevronRight />}
                             </button>
 
                         </div>
                         <AdminNotifications isExpanded={isExpanded}/>
-                        <hr className="pb-2" />
+                        <hr className="border-gray-400 mb-2" />
                         {/* Navegación */}
                         <nav>
                             <ul className="space-y-2">
@@ -73,24 +73,24 @@ const AsideAdmin = () => {
                                         <li>
                                             <Link
                                                 to="/admin/dashboard"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <MdDashboardCustomize className="h-6 w-6" />
+                                                <MdDashboardCustomize className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Dashboard</span>}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 to="/admin/usuarios"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FiUsers className="h-6 w-6" />
+                                                <FiUsers className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Usuarios</span>}
                                             </Link>
                                         </li>
-                                        <hr />
+                                        <hr className="border-gray-400"/>
                                     </>
                                 )}
                                 {(auth.role === "admin" || auth.role === "gerente") && (
@@ -98,61 +98,61 @@ const AsideAdmin = () => {
                                         <li>
                                             <Link
                                                 to="/admin/cabañas"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FiHome className="h-6 w-6" />
+                                                <FiHome className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Cabañas</span>}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 to="/admin/acampantes"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FaCampground className="h-6 w-6" />
+                                                <FaCampground className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Acampantes</span>}
                                             </Link>
                                         </li>
-                                        <hr />
+                                        <hr className="border-gray-400" />
                                         <li>
                                             <Link
                                                 to="/admin/servicios"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FiSettings className="h-6 w-6" />
+                                                <FiSettings className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Servicios</span>}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 to="/admin/actividades"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FiActivity className="h-6 w-6" />
+                                                <FiActivity className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Actividades</span>}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 to="/admin/preguntas"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <FiHelpCircle className="h-6 w-6" />
+                                                <FiHelpCircle className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Preguntas</span>}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 to="/admin/cupones"
-                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                className="dashboard-button"
                                                 onClick={() => setIsSidebarOpen(false)}
                                             >
-                                                <RiCoupon3Line className="h-6 w-6" />
+                                                <RiCoupon3Line className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
                                                 {isExpanded && <span>Cupones</span>}
                                             </Link>
                                         </li>
@@ -164,25 +164,25 @@ const AsideAdmin = () => {
 
 
                     {/* Perfil */}
-                    <div className="border-t border-gray-700 pt-4">
+                    <div className="border-t border-gray-400 pt-4">
                         <Link
                             to="/perfil"
-                            className="flex items-center gap-3 hover:bg-gray-800 p-2 rounded-md transition-all"
+                            className="flex items-center gap-3 hover:bg-gray-300 p-2 rounded-md transition-all"
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             {auth.image ? (
                                 <img
                                     src={auth.image}
                                     alt="Perfil"
-                                    className="w-10 h-10 rounded-full border border-gray-300 shadow-sm"
+                                    className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
                                 />
                             ) : (
                                 <FaUser className="w-9 h-9 p-1 rounded-full border border-gray-300 shadow-sm text-gray-400" />
                             )}
                             {isExpanded && (
                                 <div>
-                                    <p className="text-lime-500 font-medium text-sm truncate">{auth.name}</p>
-                                    <p className="text-gray-400 font-medium text-sm truncate">{auth.role}</p>
+                                    <p className="text-lime-600 font-medium text-sm truncate">{auth.name}</p>
+                                    <p className="text-gray-600 font-medium text-sm truncate">{auth.role}</p>
                                 </div>
                             )}
                         </Link>
