@@ -3,7 +3,7 @@ import {
     FiMenu, FiX, FiHome, FiUsers, FiSettings, FiActivity, FiHelpCircle, FiChevronLeft, FiChevronRight
 } from "react-icons/fi";
 import { FaCampground, FaUser } from "react-icons/fa";
-import { RiLeafFill } from "react-icons/ri";
+import { RiCoupon3Line, RiLeafFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { MdDashboardCustomize } from "react-icons/md";
@@ -144,6 +144,16 @@ const AsideAdmin = () => {
                                             >
                                                 <FiHelpCircle className="h-6 w-6" />
                                                 {isExpanded && <span>Preguntas</span>}
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/admin/cupones"
+                                                className="flex items-center gap-2 p-2 hover:bg-gray-800 rounded-md transition-all"
+                                                onClick={() => setIsSidebarOpen(false)}
+                                            >
+                                                <RiCoupon3Line className="h-6 w-6" />
+                                                {isExpanded && <span>Cupones</span>}
                                             </Link>
                                         </li>
                                     </>

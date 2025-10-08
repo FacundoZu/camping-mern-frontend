@@ -37,6 +37,8 @@ import { NewPasswordForm } from '../components/utils/auth/NewPasswordForm'
 import AdminAcampantes from '../components/admin/views/acampantes/AdminAcampantes'
 import AdminCrearAcampante from '../components/admin/views/acampantes/AdminCrearAcampante'
 import AdminCrearReserva from '../components/admin/views/reserva/AdminCrearReserva'
+import { AdminCrearCupon } from '../components/admin/views/cupones/AdminCrearCupon'
+import { AdminCupones } from '../components/admin/views/cupones/AdminCupones'
 
 
 export const Routing = () => {
@@ -88,6 +90,9 @@ export const Routing = () => {
           <Route path="/admin/preguntas" element={<AdminPreguntas />} />
           <Route path="/admin/CrearPregunta" element={<AdminCrearPregunta />} />
           <Route path="/admin/EditarPregunta/:id" element={<AdminEditarPregunta />} />
+
+          <Route path="/admin/cupones" element={<AdminCupones />} />
+          <Route path="/admin/CrearCupon" element={<AdminCrearCupon />} />
         </Route>
 
       </Routes>
