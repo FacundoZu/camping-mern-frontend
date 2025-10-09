@@ -406,6 +406,7 @@ export const Cabaña = () => {
                 fechaInicio={reservaData.fechaInicio}
                 fechaFinal={reservaData.fechaFinal}
                 precioTotal={reservaData.precioTotal}
+                setReservaData={setReservaData}
             />
 
             <Modal

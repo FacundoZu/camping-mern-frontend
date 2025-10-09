@@ -135,7 +135,7 @@ export const Login = () => {
           {/* Panel lateral con imagen */}
           <div className="hidden lg:block relative w-full h-full">
             <img
-              src="https://images.pexels.com/photos/2033933/pexels-photo-2033933.jpeg"
+              src="src/assets/login.webp"
               alt="Camping"
               className="w-full h-full object-cover absolute top-0 left-0 rounded-r-3xl"
             />

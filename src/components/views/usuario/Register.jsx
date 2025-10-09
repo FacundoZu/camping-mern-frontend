@@ -49,7 +49,7 @@ export const Register = () => {
         <div className="w-full p-4 sm:p-0 sm:max-w-2xl lg:max-w-6xl grid h-[80vh] lg:grid-cols-2 items-center bg-white rounded-3xl shadow-2xl border border-gray-100 animate-fade-in">
           {/* Panel lateral */}
           <div className="hidden lg:block relative w-full h-full">
-            <img src="https://images.pexels.com/photos/1368382/pexels-photo-1368382.jpeg" alt="" className="w-full h-full object-cover absolute top-0 left-0 rounded-l-3xl" />
+            <img src="src/assets/register.webp" alt="" className="w-full h-full object-cover absolute top-0 left-0 rounded-l-3xl" />
             <div className="relative p-12 h-full">
               <div className="space-y-8 ">
                 <div className="flex items-center gap-4">

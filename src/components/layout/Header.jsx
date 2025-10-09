@@ -51,15 +51,15 @@ export default function Header() {
               </div>
             </a>
 
-            <a href="/#ubicacion" className="text-slate-600 hidden sm:inline font-medium">
-              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
-                <li>Ubicación</li>
-              </div>
-            </a>
-
             <a href="/#preguntas" className="text-slate-600 hidden sm:inline font-medium">
               <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
                 <li>Preguntas</li>
+              </div>
+            </a>
+
+            <a href="/#ubicacion" className="text-slate-600 hidden sm:inline font-medium">
+              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+                <li>Ubicación</li>
               </div>
             </a>
 

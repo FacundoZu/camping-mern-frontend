@@ -10,7 +10,7 @@ import { MdDashboardCustomize } from "react-icons/md";
 import AdminNotifications from "../common/AdminNotifications";
 
 const AsideAdmin = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(true);
     const { auth } = useAuth();
 
@@ -63,7 +63,7 @@ const AsideAdmin = () => {
                             </button>
 
                         </div>
-                        <AdminNotifications isExpanded={isExpanded}/>
+                        <AdminNotifications isExpanded={isExpanded} />
                         <hr className="border-gray-400 mb-2" />
                         {/* Navegación */}
                         <nav>
@@ -90,7 +90,7 @@ const AsideAdmin = () => {
                                                 {isExpanded && <span>Usuarios</span>}
                                             </Link>
                                         </li>
-                                        <hr className="border-gray-400"/>
+                                        <hr className="border-gray-400" />
                                     </>
                                 )}
                                 {(auth.role === "admin" || auth.role === "gerente") && (
@@ -146,16 +146,18 @@ const AsideAdmin = () => {
                                                 {isExpanded && <span>Preguntas</span>}
                                             </Link>
                                         </li>
-                                        <li>
-                                            <Link
-                                                to="/admin/cupones"
-                                                className="dashboard-button"
-                                                onClick={() => setIsSidebarOpen(false)}
-                                            >
-                                                <RiCoupon3Line className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
-                                                {isExpanded && <span>Cupones</span>}
-                                            </Link>
-                                        </li>
+                                        {auth.role === "admin" && (
+                                            <li>
+                                                <Link
+                                                    to="/admin/cupones"
+                                                    className="dashboard-button"
+                                                    onClick={() => setIsSidebarOpen(false)}
+                                                >
+                                                    <RiCoupon3Line className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
+                                                    {isExpanded && <span>Cupones</span>}
+                                                </Link>
+                                            </li>
+                                        )}
                                     </>
                                 )}
                             </ul>

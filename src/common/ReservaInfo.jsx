@@ -27,7 +27,8 @@ const ReservaInfo = ({
     auth,
     fechaInicio,
     fechaFinal,
-    precioTotal
+    precioTotal,
+    setReservaData
 }) => {
     const [guestInfo, setGuestInfo] = useState({
         nombre: auth?.name || '',
@@ -38,12 +39,62 @@ const ReservaInfo = ({
     const [errors, setErrors] = useState({});
     const [step, setStep] = useState(1); // 1: Info, 2: Payment
     const [isVisible, setIsVisible] = useState(false);
+    const [couponCode, setCouponCode] = useState('');
+    const [discount, setDiscount] = useState(0);
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [precioOriginal, setPrecioOriginal] = useState(precioTotal);
+
+    useEffect(() => {
+        setPrecioOriginal(precioTotal);
+        setDiscount(0);
+        setAppliedCoupon(null);
+    }, [isOpen]);
 
     useEffect(() => {
         if (isOpen) {
             setIsVisible(true);
         }
     }, [isOpen]);
+
+    const handleApplyCoupon = async () => {
+        if (!couponCode.trim()) {
+            toast.warning("Ingresa un código de cupón");
+            return;
+        }
+
+        try {
+            const response = await Peticion(`${Global.url}cupon/validate`, 'POST', { code: couponCode }, false);
+            const data = response.datos;
+
+            if (data.valid && discount == 0) {
+                let descuentoAplicado = 0;
+
+                if (data.discountType === "percentage") {
+                    descuentoAplicado = (precioOriginal * data.discountValue) / 100;
+                } else {
+                    descuentoAplicado = data.discountValue;
+                }
+
+                // Nuevo precio con descuento
+                const nuevoTotal = Math.max(precioOriginal - descuentoAplicado, 0);
+
+                // Actualizamos estados
+                setDiscount(descuentoAplicado);
+                setReservaData(prev => ({ ...prev, precioTotal: nuevoTotal }));
+                setAppliedCoupon({ code: couponCode, type: data.discountType, value: data.discountValue });
+
+                toast.success(`Cupón aplicado correctamente`);
+            } else {
+                if (discount == 0) {
+                    toast.error(data.message || "Cupón inválido o expirado");
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Error al validar el cupón");
+        }
+    };
+
 
     const handleClose = () => {
         setIsVisible(false);
@@ -225,9 +276,19 @@ const ReservaInfo = ({
                             {cantidadDeDias} {cantidadDeDias === 1 ? 'día' : 'días'} × ${precioPorDia.toFixed(0)}
                         </span>
                         <span className="font-medium text-gray-900">
-                            ${precioTotal.toLocaleString()}
+                            ${precioOriginal.toLocaleString()}
                         </span>
                     </div>
+
+                    {appliedCoupon && (
+                        <div className="flex items-center justify-between mt-2 text-sm text-green-600">
+                            <FaCheckCircle className="text-green-600" />
+                            <span>
+                                Cupón <strong>{appliedCoupon.code}</strong> aplicado. Descuento: -${discount}
+                            </span>
+                        </div>
+                    )}
+
 
                     <div className="border-t border-gray-200 pt-3">
                         <div className="flex justify-between items-center">
@@ -239,6 +300,28 @@ const ReservaInfo = ({
                     </div>
                 </div>
             </div>
+
+            {/* CUPÓN DE DESCUENTO */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6">
+                <h4 className="font-bold text-lg text-gray-900 mb-4">Cupón de descuento</h4>
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        placeholder="Ingresa tu código"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                        className="flex-1 border border-gray-300 rounded-xl px-4 py-2"
+                    />
+                    <button
+                        onClick={handleApplyCoupon}
+                        type="button"
+                        className="botton-submit-2"
+                    >
+                        Aplicar
+                    </button>
+                </div>
+            </div>
+
 
             {/* Formulario para invitados */}
             {isGuest && (
