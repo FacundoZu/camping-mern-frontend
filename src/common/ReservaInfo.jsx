@@ -173,7 +173,7 @@ const ReservaInfo = ({
                 precioTotal,
                 guestInfo: isGuest ? guestInfo : null,
                 usuarioId: auth?.id || null,
-                cupon: appliedCoupon.code
+                cupon: appliedCoupon ? appliedCoupon.code : null
             });
 
             if (reservaResponse.datos.status !== "success") {

@@ -51,6 +51,7 @@ export const Cabañas = () => {
             ...(filtros.servicios && { servicios: filtros.servicios }),
         };
 
+
         try {
             const { datos } = await Peticion(url, "GET", paramsPeticion, true, "include");
 
