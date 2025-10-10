@@ -72,10 +72,6 @@ export const AdminUsuarios = () => {
         setSortRole((prevSortRole) => (prevSortRole === 'asc' ? 'desc' : 'asc'));
     };
 
-    const generarPDF = () => {
-        generarPDFUsuarios(todosLosUsuarios, "Lista de Usuarios");
-    };
-
     return (
         <motion.div
             className="p-6 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto mt-10"
@@ -145,7 +141,7 @@ export const AdminUsuarios = () => {
                                         <span
                                             className={`px-3 py-1 rounded-full text-sm font-medium ${usuario.role === "admin"
                                                 ? "bg-red-100 text-red-700"
-                                                : "bg-green-100 text-green-700"
+                                                : usuario.role === "gerente" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
                                                 }`}
                                         >
                                             {usuario.role}

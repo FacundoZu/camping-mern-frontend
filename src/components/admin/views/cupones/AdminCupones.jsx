@@ -4,18 +4,13 @@ import { Global } from "../../../../helpers/Global";
 import { Peticion } from "../../../../helpers/Peticion";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
-import useAuth from '../../../../hooks/useAuth';
 
 import { FiPlusCircle } from "react-icons/fi";
-import { MdOutlineDisabledByDefault, MdDelete } from "react-icons/md";
 import { FaRegCheckSquare } from "react-icons/fa";
 
 export const AdminCupones = () => {
-    const { auth } = useAuth();
     const [cupones, setCupones] = useState([]);
     const [cargando, setCargando] = useState(true);
-    const [modalEliminar, setModalEliminar] = useState({ visible: false, id: null });
-
 
     // Obtener todos los cupones
     useEffect(() => {
@@ -48,21 +43,6 @@ export const AdminCupones = () => {
             toast.error("No se pudo cambiar el estado del cupón");
         }
     };
-
-    const eliminarCupon = async () => {
-        const id = modalEliminar.id;
-        const { datos } = await Peticion(`${Global.url}cupon/${id}`, "DELETE", null, false, "include");
-
-        if (datos.success) {
-            toast.success("Cupón eliminado correctamente");
-            setCupones((prev) => prev.filter((c) => c._id !== id));
-        } else {
-            toast.error("Error al eliminar el cupón");
-        }
-
-        setModalEliminar({ visible: false, id: null }); // cerrar modal
-    };
-
 
     return (
         <motion.div
@@ -118,7 +98,7 @@ export const AdminCupones = () => {
                                             ? `${cupon.discountValue}%`
                                             : `$${cupon.discountValue}`}
                                     </td>
-                                    <td className="py-3 px-4 text-center text-gray-700">{cupon.maxUses - cupon.usedCount}</td>
+                                    <td className="py-3 px-4 text-center text-gray-700">{cupon.maxUses === null ? "sin límite" : cupon.maxUses - cupon.usedCount}</td>
                                     <td className="py-3 px-4 text-gray-700">
                                         {new Date(cupon.expiresAt).toLocaleDateString()}
                                     </td>
@@ -141,17 +121,6 @@ export const AdminCupones = () => {
                                                     </>
                                                 )}
                                             </button>
-
-                                            {auth.role === "admin" && (
-                                                <button
-                                                    onClick={() => setModalEliminar({ visible: true, id: cupon._id })}
-                                                    title="Eliminar"
-                                                    className="flex items-center text-white bg-gray-500 hover:bg-gray-700 py-2 px-3 rounded transition duration-200"
-                                                >
-                                                    <MdDelete size={18} />
-                                                </button>
-
-                                            )}
                                         </div>
                                     </td>
                                 </motion.tr>
@@ -165,42 +134,6 @@ export const AdminCupones = () => {
             {!cargando && cupones.length === 0 && (
                 <p className="text-center text-gray-500 mt-4">No hay cupones disponibles.</p>
             )}
-
-            <AnimatePresence>
-                {modalEliminar.visible && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
-                    >
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                            className="bg-white p-6 rounded-xl shadow-xl w-80 text-center"
-                        >
-                            <h3 className="text-lg font-semibold mb-3 text-gray-800">Confirmar eliminación</h3>
-                            <p className="text-gray-600 mb-6">¿Seguro que deseas eliminar este cupón?</p>
-                            <div className="flex justify-center gap-4">
-                                <button
-                                    onClick={eliminarCupon}
-                                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-                                >
-                                    Eliminar
-                                </button>
-                                <button
-                                    onClick={() => setModalEliminar({ visible: false, id: null })}
-                                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
-                                >
-                                    Cancelar
-                                </button>
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
         </motion.div>
     );
 };
