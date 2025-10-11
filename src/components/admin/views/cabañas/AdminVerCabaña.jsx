@@ -8,6 +8,7 @@ import { jsPDF } from "jspdf";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -21,6 +22,7 @@ const AdminVerCabaña = () => {
     const [reservasMensuales, setReservasMensuales] = useState(Array(12).fill(0));
     const [gananciasTotales, setGananciasTotales] = useState(0);
     const [añosDisponibles, setAñosDisponibles] = useState([]);
+    const [cargandoResumen, setCargandoResumen] = useState(false);
 
     // Obtener cabaña, reservas y comentarios
     const obtenerCabañaYReservas = async () => {
@@ -77,6 +79,22 @@ const AdminVerCabaña = () => {
 
         setReservasMensuales(mensualidades);
         setGananciasTotales(total);
+    };
+
+    const regenerarResumen = async (id) => {
+        try {
+            setCargandoResumen(true);
+            const response = await Peticion(`${Global.url}cabin/regenerateSummary/${id}`, "PUT", '', false, 'include');
+
+            if (response.datos.resumen) {
+                obtenerCabañaYReservas();
+                toast.success('Resumen regenerado correctamente');
+                setCargandoResumen(false);
+            }
+        } catch {
+            console.error('Error al regenerar resumen');
+            setCargandoResumen(false);
+        }
     };
 
     const handleAñoChange = (e) => setAñoSeleccionado(parseInt(e.target.value));
@@ -198,121 +216,201 @@ const AdminVerCabaña = () => {
 
     return (
         <motion.div
-            className="p-6 bg-white rounded-lg shadow-lg max-w-screen-xl mx-auto"
+            className="p-8 bg-white rounded-2xl shadow-xl max-w-screen-xl mx-auto space-y-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            {/* Cabecera */}
-            <motion.div className="flex justify-between items-center mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-                <h2 className="text-2xl font-semibold text-gray-800">Detalles de la Cabaña</h2>
-                <Link to="/admin/cabañas" className="text-lime-600 hover:text-lime-700 transition duration-200">Volver al listado</Link>
+            {/* CABECERA */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-200 pb-4">
+                <h2 className="text-3xl font-bold text-gray-800 tracking-tight">
+                    Detalles de la Cabaña
+                </h2>
+                <Link
+                    to="/admin/cabañas"
+                    className="text-lime-700 hover:text-lime-800 font-medium transition-colors"
+                >
+                    ← Volver al listado
+                </Link>
+            </div>
+
+            {/* BOTONES DE ACCIÓN */}
+            <motion.div
+                className="flex flex-wrap justify-center gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+            >
+                <Link
+                    to={`/admin/EditarCabaña/${id}`}
+                    className="bg-lime-600 hover:bg-lime-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-sm hover:shadow-md"
+                >
+                    Editar Cabaña
+                </Link>
+                <button
+                    onClick={generarPdfCabaña}
+                    className="bg-lime-600 hover:bg-lime-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-sm hover:shadow-md"
+                >
+                    Descargar PDF
+                </button>
+                <button
+                    onClick={generarPdfReservas}
+                    className="bg-lime-600 hover:bg-lime-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-sm hover:shadow-md"
+                >
+                    PDF de Reservas
+                </button>
             </motion.div>
 
-            <hr className="mb-6" />
+            {/* INFORMACIÓN DE LA CABAÑA */}
+            <div className="border border-gray-200 rounded-xl p-6 bg-gray-50">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                    Información General
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-gray-700">
+                    <p><span className="font-semibold text-gray-900">Nombre:</span> {cabaña.nombre}</p>
+                    <p><span className="font-semibold text-gray-900">Precio por noche:</span> ${cabaña.precio}</p>
+                    <p><span className="font-semibold text-gray-900">Estado:</span> {cabaña.estado}</p>
+                    <p><span className="font-semibold text-gray-900">Capacidad:</span> {cabaña.cantidadPersonas} personas</p>
+                    <p><span className="font-semibold text-gray-900">Habitaciones:</span> {cabaña.cantidadHabitaciones}</p>
+                    <p><span className="font-semibold text-gray-900">Baños:</span> {cabaña.cantidadBaños}</p>
+                </div>
 
-            {/* Botones */}
-            <motion.div className="flex mb-6 justify-center space-x-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-                <Link to={`/admin/EditarCabaña/${id}`} className="bg-lime-600 hover:bg-lime-700 text-white rounded-lg p-2">Editar esta Cabaña</Link>
-                <button onClick={generarPdfCabaña} className="bg-lime-600 hover:bg-lime-700 text-white rounded-lg p-2">Descargar PDF de la Cabaña</button>
-                <button onClick={generarPdfReservas} className="bg-lime-600 hover:bg-lime-700 text-white rounded-lg p-2">Descargar PDF de Reservas</button>
-            </motion.div>
+                <div className="mt-6 border-t pt-4">
+                    <p className="text-gray-700 mb-2">{añoSeleccionado}</p>
+                    <p>
+                        <strong>Reservas:</strong>{" "}
+                        {reservas.filter(r => new Date(r.fechaInicio).getFullYear() === añoSeleccionado).length}
+                    </p>
+                    <p className="mt-2 text-lg font-medium text-gray-800">
+                        Ganancias Anuales:{" "}
+                        <span className="text-lime-600 font-semibold">
+                            ${gananciasTotales.toLocaleString("es-ES", { minimumFractionDigits: 2 })}
+                        </span>
+                    </p>
+                </div>
+            </div>
 
-            {/* Información Cabaña */}
-            <motion.div className="flex mb-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <div className="bg-white p-6 border border-gray-300 rounded-lg mx-auto w-full">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4">Información de la Cabaña</h3>
-                    <div className="space-y-2">
-                        <p><strong>Nombre:</strong> {cabaña.nombre}</p>
-                        <p><strong>Precio por Noche:</strong> ${cabaña.precio}</p>
-                        <p><strong>Descripción:</strong> {cabaña.descripcion}</p>
-                        <p><strong>Estado:</strong> {cabaña.estado}</p>
-                        <p><strong>Capacidad:</strong> {cabaña.cantidadPersonas} personas</p>
-                        <p><strong>Habitaciones:</strong> {cabaña.cantidadHabitaciones}</p>
-                        <p><strong>Baños:</strong> {cabaña.cantidadBaños}</p>
-                        <hr />
-                        <p> {añoSeleccionado}</p>
-                        <p><strong>Reservas:</strong> {reservas.filter(r => new Date(r.fechaInicio).getFullYear() === añoSeleccionado).length}</p>
-                        <hr />
-                        <p className="text-lg font-semibold text-gray-800">
-                            <span className="text-gray-600 font-bold">Ganancias Totales Anual: </span>
-                            <span className="text-lime-600">${gananciasTotales.toLocaleString("es-ES", { minimumFractionDigits: 2 })}</span>
-                        </p>
+            {/* FILTRO DE AÑO */}
+
+
+            {/* GRÁFICO */}
+            <div className="mt-4">
+                <div className="flex justify-between text-xl font-semibold text-gray-900 gap-6 p-2">
+                    <h3 className="align-center text-center">
+                        Ingresos por Mes
+                    </h3>
+                    <div className="flex gap-2">
+                        <label htmlFor="año" className="font-semibold">Filtrar por año:</label>
+                        <select
+                            id="año"
+                            value={añoSeleccionado}
+                            onChange={handleAñoChange}
+                            className="rounded-lg px-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        >
+                            {añosDisponibles.map(año => (
+                                <option key={año} value={año}>{año}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
-            </motion.div>
-
-            {/* Selector Año */}
-            <motion.div className="flex justify-center mb-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-                <div className="bg-lime-600 p-4 rounded-lg shadow-md flex items-center">
-                    <label htmlFor="año" className="mr-4 font-semibold text-white">Filtrar por año:</label>
-                    <select
-                        id="año"
-                        value={añoSeleccionado}
-                        onChange={handleAñoChange}
-                        className="border border-gray-300 rounded-lg p-2 bg-white text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
-                    >
-                        {añosDisponibles.map(año => <option key={año} value={año}>{año}</option>)}
-                    </select>
+                <div className="max-w-2xl mx-auto">
+                    <Line
+                        data={dataReservasMensuales}
+                        options={{
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } }
+                        }}
+                    />
                 </div>
-            </motion.div>
-
-            {/* Gráfico */}
-            <motion.div className="mt-8 flex flex-col justify-center items-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-                <h3 className="text-xl font-semibold text-center mb-4">Ingresos por Mes</h3>
-                <div style={{ height: '300px', width: '100%' }} className="flex justify-center items-center">
-                    <div className="w-full max-w-xl">
-                        <Line data={dataReservasMensuales} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
-                    </div>
-                </div>
-            </motion.div>
-
-            {/* Calendario */}
-            <div className="min-h-screen items-center justify-center bg-gray-100 hidden sm:inline">
+            </div>
+            <div className="bg-gray-100 rounded-xl py-6 hidden sm:flex justify-center">
                 <CalendarioConReservas reservas={reservas} />
             </div>
 
-            {/* Comentarios */}
-            <motion.div className="mt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                <h3 className="text-2xl font-bold text-lime-700 mb-6 text-center">Comentarios</h3>
-                <AnimatePresence>
-                    {comentarios.length > 0 ? comentarios.map(comentario => (
-                        <motion.div
-                            key={comentario._id}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -8 }}
-                            layout
-                            className="bg-white border border-gray-200 p-5 rounded-lg shadow-lg mb-5 hover:shadow-xl transition-shadow duration-300"
-                        >
-                            <div className="mb-3">
-                                <p className="text-sm text-gray-500"><strong>Usuario:</strong> {comentario.user?.name || "Usuario desconocido"}</p>
-                            </div>
-                            <div className="flex mb-4">
-                                {Array.from({ length: 5 }, (_, index) => (
-                                    <FaStar key={index} className={`cursor-pointer ${index < comentario.rating ? "text-yellow-500" : "text-gray-300"}`} />
-                                ))}
-                            </div>
-                            <div className="mb-3">
-                                <p className="text-gray-700"><strong>Comentario:</strong> {comentario.comments?.[0]?.text || "Sin comentarios"}</p>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <p className="text-sm"><strong>Estado:</strong> <span className={`font-semibold ${comentario.estado === "Habilitado" ? "text-lime-600" : "text-red-600"}`}>{comentario.estado}</span></p>
+            <motion.div
+                className="space-y-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+            >
+                <h3 className="text-2xl font-bold text-lime-700 text-center">
+                    Comentarios
+                </h3>
+
+                {cabaña.resumenIa && (
+                    <div className="bg-gradient-to-br from-lime-50 to-green-50 border border-lime-100 rounded-xl p-5 shadow-md">
+                        <div className="flex-1 mb-3">
+                            <p className="text-gray-700 italic">“{cabaña.resumenIa}”</p>
+                            <div className="flex justify-end">
                                 <button
-                                    onClick={() => cambiarEstado(comentario._id, comentario.estado)}
-                                    className={`text-sm font-semibold py-2 px-4 rounded transition duration-200 focus:outline-none ${comentario.estado === "Habilitado" ? "bg-red-500 hover:bg-red-600 text-white" : "bg-lime-500 hover:bg-lime-600 text-white"}`}
+                                    onClick={() => regenerarResumen(cabaña._id)}
+                                    className="text-sm font-medium justify-end py-2 px-4 rounded-lg bg-lime-600 hover:bg-lime-700 text-white transition disabled:animate-pulse"
+                                    disabled={cargandoResumen}
                                 >
-                                    {comentario.estado === "Habilitado" ? "Deshabilitar" : "Habilitar"}
+                                    {cargandoResumen ? "Regenerando..." : "Regenerar Resumen"}
                                 </button>
                             </div>
-                        </motion.div>
-                    )) : (
-                        <motion.p className="text-gray-500 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>No hay comentarios para esta cabaña.</motion.p>
+                        </div>
+                    </div>
+                )}
+
+                <AnimatePresence>
+                    {comentarios.length > 0 ? (
+                        comentarios.map((comentario) => (
+                            <motion.div
+                                key={comentario._id}
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
+                            >
+                                <div className="flex justify-between items-center mb-3">
+                                    <p className="text-sm text-gray-500">
+                                        <strong>Usuario:</strong> {comentario.user?.name || "Desconocido"}
+                                    </p>
+                                    <p className={`text-sm font-medium ${comentario.estado === "Habilitado" ? "text-lime-600" : "text-red-600"}`}>
+                                        {comentario.estado}
+                                    </p>
+                                </div>
+
+                                <div className="flex mb-3">
+                                    {Array.from({ length: 5 }).map((_, i) => (
+                                        <FaStar
+                                            key={i}
+                                            className={`h-5 w-5 ${i < comentario.rating ? "text-yellow-500" : "text-gray-300"}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                <p className="text-gray-700 mb-4">{comentario.comments?.[0]?.text || "Sin comentarios"}</p>
+
+                                <div className="text-right">
+                                    <button
+                                        onClick={() => cambiarEstado(comentario._id, comentario.estado)}
+                                        className={`text-sm font-medium py-2 px-4 rounded-lg transition ${comentario.estado === "Habilitado"
+                                            ? "bg-red-500 hover:bg-red-600 text-white"
+                                            : "bg-lime-500 hover:bg-lime-600 text-white"
+                                            }`}
+                                    >
+                                        {comentario.estado === "Habilitado" ? "Deshabilitar" : "Habilitar"}
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ))
+                    ) : (
+                        <motion.p
+                            className="text-gray-500 text-center"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            No hay comentarios para esta cabaña.
+                        </motion.p>
                     )}
                 </AnimatePresence>
             </motion.div>
         </motion.div>
     );
+
 };
 
 export default AdminVerCabaña;

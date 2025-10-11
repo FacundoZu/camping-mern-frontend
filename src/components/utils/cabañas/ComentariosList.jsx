@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaStar, FaUser, FaChartBar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Comentarios } from "./Comentarios";
+import { BsStars } from "react-icons/bs";
+import { BiSolidCommentDetail } from "react-icons/bi";
 
-const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview }) => {
+const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview, resumenIa }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [hoverRating, setHoverRating] = useState(0);
@@ -53,9 +55,9 @@ const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview }) 
         </div>
 
         {/* Resumen de calificaciones */}
-        <div className="grid md:grid-cols-2 gap-6 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
           {/* Promedio */}
-          <div className="text-center md:text-left">
+          <div className="text-center  md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
               <span className="text-4xl font-bold text-gray-800">{averageRating}</span>
               <div className="flex">
@@ -84,19 +86,44 @@ const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview }) 
                     <span>{star}</span>
                     <FaStar className="text-xs text-yellow-400" />
                   </div>
-                  
+
                   <div className="flex-1 bg-gray-200 rounded-full h-2.5 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full transition-all duration-300 ease-out"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
-                  
+
                   <span className="w-8 text-xs text-gray-500 text-right">{count}</span>
                 </div>
               );
             })}
           </div>
+
+
+          {resumenIa && (
+            <div className="col-span-1 md:col-span-2 p-6 bg-gray-50 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex items-center mb-3">
+
+                <h3 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                  <BiSolidCommentDetail className="text-2xl text-lime-500" />
+                  Resumen de opiniones
+                </h3>
+              </div>
+
+              <p className="text-gray-700 leading-relaxed italic">
+                “{resumenIa}”
+              </p>
+
+              <div className="mt-4 text-sm text-gray-500 text-right">
+                <span className="inline-flex items-center gap-1">
+                  Generado automáticamente por IA
+                  <BsStars />
+                </span>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 
@@ -119,7 +146,7 @@ const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview }) 
         !userHasCommented && (
           <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-gray-800 mb-6">Comparte tu experiencia</h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Calificación con estrellas */}
               <div>
@@ -137,11 +164,10 @@ const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview }) 
                       className="p-1 transition-transform hover:scale-110"
                     >
                       <FaStar
-                        className={`text-2xl transition-colors ${
-                          index < (hoverRating || rating) 
-                            ? "text-yellow-400" 
-                            : "text-gray-300 hover:text-yellow-200"
-                        }`}
+                        className={`text-2xl transition-colors ${index < (hoverRating || rating)
+                          ? "text-yellow-400"
+                          : "text-gray-300 hover:text-yellow-200"
+                          }`}
                       />
                     </button>
                   ))}
@@ -181,8 +207,8 @@ const ComentariosList = ({ reviews = [], onAddReview, userId, onUpdateReview }) 
                 disabled={rating === 0 || comment.trim().length < 10}
                 className="w-full bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none"
               >
-                {rating === 0 || comment.trim().length < 10 
-                  ? "Completa tu reseña" 
+                {rating === 0 || comment.trim().length < 10
+                  ? "Completa tu reseña"
                   : "Publicar reseña"
                 }
               </button>

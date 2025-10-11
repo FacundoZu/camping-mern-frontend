@@ -387,10 +387,9 @@ export const Cabaña = () => {
                         </div>
                     )}
 
-
-                {/* Sección de comentarios */}
                 <ComentariosList
                     reviews={comentarios}
+                    resumenIa={cabaña.resumenIa}
                     onAddReview={handleAddReview}
                     onUpdateReview={handleUpdateReview}
                     userId={auth?.id}
