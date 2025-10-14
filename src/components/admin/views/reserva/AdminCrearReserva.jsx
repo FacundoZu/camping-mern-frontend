@@ -7,17 +7,19 @@ import { Global } from "../../../../helpers/Global";
 import { isValid, parse } from "date-fns";
 
 const AdminCrearReserva = () => {
-    const { id } = useParams(); // ID de la cabaña
+    const { id } = useParams();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    const checkIn = searchParams.get("checkIn"); // formato dd-mm-yyyy
+    const checkIn = searchParams.get("checkIn");
     const checkOut = searchParams.get("checkOut");
 
     const [reservaData, setReservaData] = useState({
         nombre: "",
+        apellido: "",
         email: "",
         telefono: "",
+        documento: "",
         fechaInicio: checkIn || "",
         fechaFinal: checkOut || "",
         precioTotal: 0,
@@ -39,7 +41,6 @@ const AdminCrearReserva = () => {
         return isValid(parsed) ? parsed : null;
     };
 
-    // Cargar información de la cabaña y calcular el precio
     useEffect(() => {
         const fetchCabinData = async () => {
             try {
@@ -52,7 +53,6 @@ const AdminCrearReserva = () => {
 
                 setPrecioPorNoche(datos.cabin.precio);
 
-                // Cálculo del total
                 const [diaI, mesI, anioI] = reservaData.fechaInicio.split("-").map(Number);
                 const [diaF, mesF, anioF] = reservaData.fechaFinal.split("-").map(Number);
 
@@ -98,8 +98,10 @@ const AdminCrearReserva = () => {
             fechaFinal: fechaFinalParsed.toISOString(),
             guestInfo: {
                 nombre: reservaData.nombre,
+                apellido: reservaData.apellido,
                 email: reservaData.email,
                 telefono: reservaData.telefono,
+                documento: reservaData.documento,
             },
             metodoPago: reservaData.metodoPago,
             precioTotal: reservaData.precioTotal,
@@ -147,9 +149,20 @@ const AdminCrearReserva = () => {
                             required
                         />
                     </div>
+                    <div>
+                        <label className="block text-gray-700 mb-1 font-medium">Apellido del Cliente</label>
+                        <input
+                            type="text"
+                            name="apellido"
+                            value={reservaData.apellido}
+                            onChange={handleChange}
+                            className="create-edit-input-button"
+                            required
+                        />
+                    </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
+                        <div className="sm:col-span-2">
                             <label className="block text-gray-700 mb-1 font-medium">Email</label>
                             <input
                                 type="email"
@@ -167,6 +180,17 @@ const AdminCrearReserva = () => {
                                 type="text"
                                 name="telefono"
                                 value={reservaData.telefono}
+                                onChange={handleChange}
+                                className="create-edit-input-button"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 mb-1 font-medium">Documento</label>
+                            <input
+                                type="text"
+                                name="documento"
+                                value={reservaData.documento}
                                 onChange={handleChange}
                                 className="create-edit-input-button"
                                 required
