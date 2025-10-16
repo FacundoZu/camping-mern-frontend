@@ -180,6 +180,8 @@ const ReservaInfo = ({
                 toast.error(reservaResponse.datos.message);
             }
 
+            console.log(reservaResponse.datos)
+
             // 2. Crear preferencia de pago en el backend
             const mpResponse = await Peticion(`${Global.url}MP/create-preference`, 'POST', {
                 items: [{
@@ -201,6 +203,7 @@ const ReservaInfo = ({
                 window.location.href = mpResponse.datos.init_point;
             } else {
                 toast.error(`Error en el proceso de pago, inténtelo de nuevo más tarde`);
+                await Peticion(`${Global.url}reservation/deleteTempReservation`, 'POST', { tempId: reservaResponse.datos.tempId });
                 setIsProcessing(false);
             }
         } catch (error) {

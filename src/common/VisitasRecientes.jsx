@@ -23,15 +23,15 @@ export default function VisitasRecientes() {
                     false,
                     'include'
                 );
-                const cabañas = datos.map((cabaña) => {
-                    const promedioRating = cabaña.comentarios.reduce((total, comentario) => total + comentario.rating, 0) / cabaña.comentarios.length;
-                    return {
-                        ...cabaña,
-                        promedioRating: promedioRating ? promedioRating : 0,
-                        reviews: cabaña.comentarios.length,
-                    };
-                });
-                if (cabañas) {
+                if (datos && datos[0] !== null && datos[1] !== null && datos[2] !== null) {
+                    const cabañas = datos.map((cabaña) => {
+                        const promedioRating = cabaña.comentarios.reduce((total, comentario) => total + comentario.rating, 0) / cabaña.comentarios.length;
+                        return {
+                            ...cabaña,
+                            promedioRating: promedioRating ? promedioRating : 0,
+                            reviews: cabaña.comentarios.length,
+                        };
+                    });
                     setVisitedCabañas(cabañas);
                 }
             } finally {
