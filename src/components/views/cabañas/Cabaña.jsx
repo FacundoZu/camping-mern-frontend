@@ -254,13 +254,11 @@ export const Cabaña = () => {
     return (
         <div className="min-h-screen bg-gray-50 pt-20">
             <div className="container mx-auto px-4 py-6 max-w-7xl">
-                {/* Hero Section */}
                 <section className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
 
                     <CabañaSwiper cabaña={cabaña} />
 
                     <div className="p-6 lg:p-8">
-                        {/* Título y rating */}
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
                             <div className="flex-1">
                                 <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
@@ -284,7 +282,6 @@ export const Cabaña = () => {
                                 </div>
                             </div>
 
-                            {/* Precio destacado */}
                             <div className="bg-gradient-to-r from-lime-50 to-green-50 p-6 rounded-2xl border border-lime-200 text-center lg:text-right min-w-max">
                                 <div className="flex items-center justify-center lg:justify-end gap-1 mb-1">
                                     <BsCurrencyDollar className="text-2xl text-lime-600" />
@@ -301,7 +298,6 @@ export const Cabaña = () => {
                             </div>
                         </div>
 
-                        {/* Características principales */}
                         <div className="grid grid-cols-3 gap-4 mb-8">
                             <div className="bg-gray-50 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
                                 <PiUsersThreeFill className="text-3xl text-lime-600 mx-auto mb-2" />
@@ -322,7 +318,6 @@ export const Cabaña = () => {
                     </div>
                 </section>
 
-                {/* Servicios */}
                 {cabaña.servicios && cabaña.servicios.some(s => s.estado === 'Habilitado') && (
                     <section className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
                         <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -357,9 +352,7 @@ export const Cabaña = () => {
                     </section>
                 )}
 
-                {/* Layout responsivo para calendario y comentarios */}
                 <div className="3 gap-8">
-                    {/* Calendario de reservas */}
                     <div className="lg:col-span-2">
                         <div className="bg-white rounded-2xl shadow-lg lg:p-8 mb-8">
                             <CalendarioReservas
@@ -396,7 +389,6 @@ export const Cabaña = () => {
                 />
             </div>
 
-            {/* Modales */}
             <ReservaInfo
                 isOpen={reservaData.showModal}
                 onClose={() => setReservaData(prev => ({ ...prev, showModal: false }))}

@@ -34,8 +34,8 @@ export const ListadoCabañas = ({ cabañas, cargando, checkIn, checkOut }) => {
                                 key={cabaña._id}
                                 className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
                             >
-                                <div className="flex bg-white gap-4">
-                                    {/* Imagen */}
+                                <div className="flex bg-white gap-4 lg:flex-row flex-col">
+                                    
                                     <div className="lg:w-1/3 relative">
                                         {!imagenesCargadas[cabaña._id] && (
                                             <div className="absolute inset-0 bg-gray-200 w-full h-full animate-pulse rounded-lg"></div>
@@ -48,13 +48,10 @@ export const ListadoCabañas = ({ cabañas, cargando, checkIn, checkOut }) => {
                                         />
                                     </div>
 
-                                    {/* Información */}
                                     <div className="p-4 flex-1 flex flex-col justify-between">
                                         <div>
                                             <h2 className="text-2xl font-bold mb-1">{cabaña.nombre}</h2>
                                             <p className="text-gray-600 mb-3 line-clamp-3">{cabaña.descripcion}</p>
-
-                                            {/* Características */}
                                             <div className="flex flex-wrap gap-3 mb-3">
                                                 <span className="flex items-center gap-1 border-b-1 border-lime-100 ">
                                                     <PiUsersThreeFill /> {cabaña.cantidadPersonas} Personas
@@ -68,9 +65,7 @@ export const ListadoCabañas = ({ cabañas, cargando, checkIn, checkOut }) => {
                                             </div>
                                         </div>
 
-                                        {/* Servicios y Rating */}
                                         <div className="flex justify-between items-end mt-4 flex-wrap gap-4">
-                                            {/* Servicios */}
                                             <div className="flex gap-2 overflow-x-auto pb-1">
                                                 {cabaña.servicios.length > 0 ? (
                                                     cabaña.servicios.map((servicio) => (
@@ -90,7 +85,6 @@ export const ListadoCabañas = ({ cabañas, cargando, checkIn, checkOut }) => {
                                                 )}
                                             </div>
 
-                                            {/* Rating */}
                                             <div className="flex flex-col items-center">
                                                 <div className="flex items-center mb-1 border-lime-100 border-1">
                                                     {Array.from({ length: 5 }, (_, index) => (

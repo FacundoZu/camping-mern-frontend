@@ -12,13 +12,10 @@ export const Cabañas = () => {
     const [cargando, setCargando] = useState(true);
     const [servicios, setServicios] = useState([]);
 
-    // Obtener filtros desde la URL o valores por defecto
     const obtenerFiltroDesdeUrl = (param, defaultValue = "") => {
         const value = searchParams.get(param);
         return value !== null ? value : defaultValue;
     };
-
-    // Estado de filtros adaptado
     const [filtros, setFiltros] = useState({
         checkIn: obtenerFiltroDesdeUrl("checkIn"),
         checkOut: obtenerFiltroDesdeUrl("checkOut"),
@@ -29,16 +26,14 @@ export const Cabañas = () => {
         estrellas: obtenerFiltroDesdeUrl("estrellas", "0"),
     });
 
-    // Actualiza la URL cada vez que cambian los filtros
     useEffect(() => {
         const params = new URLSearchParams();
         Object.entries(filtros).forEach(([key, value]) => {
-            if (value && value !== "0") params.set(key, value); // No ponemos filtros vacíos o en cero
+            if (value && value !== "0") params.set(key, value);
         });
         navigate(`?${params.toString()}`, { replace: true });
     }, [filtros, navigate]);
 
-    // Obtener cabañas filtradas desde la API
     const obtenerCabañas = async () => {
         setCargando(true);
         let url = Global.url + "cabin/getActiveCabins";
@@ -87,7 +82,6 @@ export const Cabañas = () => {
                     })
                 );
 
-                // 🔹 Filtrar por disponibilidad y por puntuación mínima
                 const cabañasFiltradas = cabañasConRatings.filter(
                     (cabaña) =>
                         cabaña.promedioRating >= Number(filtros.estrellas || 0)
@@ -102,7 +96,6 @@ export const Cabañas = () => {
         }
     };
 
-    // Obtener filtros dinámicos
     const obtenerServicios = async () => {
         let url = Global.url + "cabin/getServices";
         try {
@@ -115,12 +108,10 @@ export const Cabañas = () => {
         }
     };
 
-    // Ejecutar búsquedas cuando cambian los filtros
     useEffect(() => {
         obtenerCabañas();
     }, [filtros]);
 
-    // Obtener todas las cabañas al cargar la página
     useEffect(() => {
         obtenerServicios();
     }, []);

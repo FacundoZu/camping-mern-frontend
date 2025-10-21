@@ -11,7 +11,7 @@ export const AdminCrearCupon = () => {
     const [discountType, setDiscountType] = useState("percentage");
     const [discountValue, setDiscountValue] = useState("");
     const [maxUses, setMaxUses] = useState("");
-    const [expiresAt, setExpiresAt] = useState("");
+    const [expiresAt, setExpiresAt] = useState(null);
     const navigate = useNavigate();
 
     const crearCupon = async (e) => {

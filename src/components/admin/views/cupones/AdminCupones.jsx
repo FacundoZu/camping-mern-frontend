@@ -12,7 +12,6 @@ export const AdminCupones = () => {
     const [cupones, setCupones] = useState([]);
     const [cargando, setCargando] = useState(true);
 
-    // Obtener todos los cupones
     useEffect(() => {
         const obtenerCupones = async () => {
             const url = `${Global.url}cupon`;
@@ -29,7 +28,7 @@ export const AdminCupones = () => {
     }, []);
 
     const cambiarEstado = async (id, estadoActual) => {
-        const nuevoEstado = !estadoActual; // Cambia el booleano
+        const nuevoEstado = !estadoActual;
         const { datos } = await Peticion(`${Global.url}cupon/${id}`, "POST", null, false, "include");
 
         if (datos) {
@@ -51,7 +50,6 @@ export const AdminCupones = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            {/* Encabezado */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-3 gap-3">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center sm:text-left">
                     🎟️ Gestión de Cupones
@@ -65,7 +63,6 @@ export const AdminCupones = () => {
                 </Link>
             </div>
 
-            {/* Tabla */}
             <div className="overflow-x-auto">
                 <table className="w-full bg-gray-100 rounded-lg shadow-md text-sm sm:text-base">
                     <thead>
@@ -100,7 +97,7 @@ export const AdminCupones = () => {
                                     </td>
                                     <td className="py-3 px-4 text-center text-gray-700">{cupon.maxUses === null ? "sin límite" : cupon.maxUses - cupon.usedCount}</td>
                                     <td className="py-3 px-4 text-gray-700">
-                                        {new Date(cupon.expiresAt).toLocaleDateString()}
+                                        {cupon.expiresAt ? new Date(cupon.expiresAt).toLocaleDateString() : "sin fecha"}
                                     </td>
                                     <td className="py-2 px-2 text-center">
                                         <div className="flex flex-col sm:flex-row items-center justify-center gap-2">

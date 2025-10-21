@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Thumbs, EffectFade } from 'swiper/modules';
+import { Navigation, Thumbs, EffectFade } from 'swiper/modules';
 
 export const CabañaSwiper = ({ cabaña }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -18,17 +18,11 @@ export const CabañaSwiper = ({ cabaña }) => {
 
     return (
         <div className="space-y-4 w-full flex flex-col items-center">
-            {/* Swiper principal */}
             <Swiper
-                modules={[Navigation, Pagination, Thumbs, EffectFade]}
+                modules={[Navigation, Thumbs, EffectFade]}
                 spaceBetween={10}
                 slidesPerView={1}
                 navigation
-                pagination={{ 
-                    clickable: true,
-                    bulletClass: 'swiper-pagination-bullet ',
-                    bulletActiveClass: 'swiper-pagination-bullet-active',
-                }}
                 thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                 effect="coverflow"
                 coverflowEffect={{
@@ -55,7 +49,6 @@ export const CabañaSwiper = ({ cabaña }) => {
                 ))}
             </Swiper>
 
-            {/* Swiper de miniaturas */}
             <Swiper
                 onSwiper={setThumbsSwiper}
                 modules={[Thumbs]}
