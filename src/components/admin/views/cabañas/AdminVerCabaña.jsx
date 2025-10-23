@@ -340,7 +340,7 @@ const AdminVerCabaña = () => {
                 {cabaña.resumenIa && (
                     <div className="bg-gradient-to-br from-lime-50 to-green-50 border border-lime-100 rounded-xl p-5 shadow-md">
                         <div className="flex-1 mb-3">
-                            <p className="text-gray-700 italic">“{cabaña.resumenIa}”</p>
+                            <p className="text-gray-700 italic mb-3">“{cabaña.resumenIa}”</p>
                             <div className="flex justify-end">
                                 <button
                                     onClick={() => regenerarResumen(cabaña._id)}
