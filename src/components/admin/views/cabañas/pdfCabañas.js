@@ -1,9 +1,8 @@
-
 import { jsPDF } from "jspdf";
-
+import autoTable from 'jspdf-autotable';
 
 /**
- * Genera un PDF con la lista de cabañas.
+ * Genera un PDF con la lista de cabañas usando jspdf-autotable.
  * @param {Array} cabañas - Array de cabañas filtradas
  * @param {String} titulo - Título del PDF
  */
@@ -11,27 +10,47 @@ export const generarPDFCabañas = (cabañas, titulo = "Lista de Cabañas") => {
     const doc = new jsPDF();
     doc.setFontSize(18);
     doc.setTextColor(0, 102, 51);
-    doc.text(titulo, 20, 20);
+    doc.text(titulo, 14, 22);
+    const tableColumn = ["ID", "Nombre", "Estado", "Reservas Históricas"];
+    const tableRows = [];
 
-    let yPosition = 30;
+    cabañas.forEach(cabaña => {
+        const cabañaData = [
+            cabaña._id,
+            cabaña.nombre,
+            cabaña.estado,
+            cabaña.reservasHistoricas?.toString() || '0'
+        ];
+        tableRows.push(cabañaData);
+    });
 
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'bold');
-    doc.text('ID', 20, yPosition);
-    doc.text('Nombre', 80, yPosition);
-    doc.text('Estado', 130, yPosition);
-    doc.text('Reservas Históricas', 165, yPosition);
+    autoTable(doc, {
+        head: [tableColumn],
+        body: tableRows,
+        startY: 30,
+        
+        headStyles: {
+            fillColor: [0, 102, 51],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            halign: 'center'
+        },
+        
+        alternateRowStyles: {
+            fillColor: [245, 245, 245]
+        },
+        styles: {
+            cellPadding: 3,
+            fontSize: 10,
+            valign: 'middle'
+        },
 
-    yPosition += 10;
-    doc.setFont('helvetica', 'normal');
-
-    cabañas.forEach((cabaña) => {
-        doc.text(cabaña._id, 20, yPosition);
-        doc.text(cabaña.nombre, 80, yPosition);
-        doc.text(cabaña.estado, 130, yPosition);
-        doc.text(cabaña.reservasHistoricas.toString(), 180, yPosition);
-        yPosition += 10;
+        columnStyles: {
+            0: { cellWidth: 60 },
+            1: { cellWidth: 'auto' },
+            2: { cellWidth: 40, halign: 'center' },
+            3: { cellWidth: 40, halign: 'right' }
+        }
     });
 
     const pdfDataUri = doc.output('bloburl');

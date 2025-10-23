@@ -45,6 +45,20 @@ export const AdminCabaña = () => {
         setCargando(false);
     };
 
+    const obtenerTodasCabañas = async () => {
+
+        let url = `${Global.url}cabin/getCabins`;
+        const { datos } = await Peticion(url, "GET", '', false, 'include');
+        if (datos) {
+            const cabañasConReservas = datos.cabins.map(cabaña => {
+                cabaña.reservasHistoricas = cabaña.reservas ? cabaña.reservas.length : 0;
+                return cabaña;
+            });
+            return cabañasConReservas;
+        }
+        return [];
+    };
+
     useEffect(() => {
         obtenerCabañas();
     }, [page, nombreFiltro, estadoFiltro]);
@@ -62,8 +76,8 @@ export const AdminCabaña = () => {
         }
     };
 
-    const generarPDF = () => {
-        generarPDFCabañas(cabañas);
+    const generarPDF = async () => {
+        generarPDFCabañas(await obtenerTodasCabañas());
     };
 
     const ordenarCabañas = (columna) => {
