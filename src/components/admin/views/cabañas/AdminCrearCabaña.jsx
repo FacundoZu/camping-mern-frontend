@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Peticion } from '../../../../helpers/Peticion';
 import { Global } from '../../../../helpers/Global';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { PiUsersThreeFill, PiToiletBold } from "react-icons/pi";
-import { MdOutlineBedroomChild, MdOutlineDisabledByDefault } from "react-icons/md";
+import { MdOutlineBedroomChild } from "react-icons/md";
 import { HiMiniCalendarDays } from "react-icons/hi2";
 import { toast } from 'react-toastify';
 
@@ -30,6 +30,7 @@ export const AdminCrearCabaña = () => {
         servicios: [],
         minimoDias: 1,
         ubicacion: null,
+        direccion: '',
     });
 
     // Ubicacion

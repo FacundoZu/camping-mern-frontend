@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Peticion } from '../../../../helpers/Peticion';
 import { Global } from '../../../../helpers/Global';
@@ -8,6 +8,10 @@ import { PiUsersThreeFill, PiToiletBold } from "react-icons/pi";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { HiMiniCalendarDays } from "react-icons/hi2";
 import { toast } from 'react-toastify';
+
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 export const AdminEditarCabaña = () => {
     const { id } = useParams();
@@ -27,7 +31,9 @@ export const AdminEditarCabaña = () => {
         cantidadHabitaciones: 1,
         estado: '',
         servicios: [],
-        minimoDias: 1
+        minimoDias: 1,
+        ubicacion: null,
+        direccion: ''
     });
 
     const [imagenPrincipal, setImagenPrincipal] = useState(null);
@@ -60,9 +66,7 @@ export const AdminEditarCabaña = () => {
     const toggleMarkImagen = useCallback((id) => {
         setImagenesAdicionales(prev => prev.map(img => {
             if (img.id === id) {
-                // Solo marcar/desmarcar si es original
                 if (!img.isNew) return { ...img, marked: !img.marked };
-                // Para nuevas, eliminamos completamente
                 return null;
             }
             return img;
@@ -96,6 +100,32 @@ export const AdminEditarCabaña = () => {
         });
     }, [createPreview, nextId]);
 
+    // Ubicacion
+    const markerIcon = new L.Icon({
+        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+    });
+
+    const LocationPicker = ({ onLocationSelect }) => {
+        useMapEvents({
+            click(e) {
+                onLocationSelect(e.latlng);
+            },
+        });
+        return null;
+    };
+
+    const handleLocationSelect = (latlng) => {
+        setFormulario({
+            ...formulario,
+            ubicacion: {
+                type: "Point",
+                coordinates: [latlng.lng, latlng.lat]
+            },
+        });
+    };
+
     // Fetch inicial
     useEffect(() => {
         const fetchData = async () => {
@@ -119,6 +149,8 @@ export const AdminEditarCabaña = () => {
                         estado: cabin.estado,
                         servicios: cabin.servicios.map(s => s._id),
                         minimoDias: cabin.minimoDias,
+                        ubicacion: cabin.ubicacion,
+                        direccion: cabin.direccion
                     });
 
                     // Imagen principal
@@ -435,6 +467,51 @@ export const AdminEditarCabaña = () => {
                         </AnimatePresence>
                     </div>
                 </motion.div>
+
+                {/* Mapa para seleccionar ubicación */}
+                <div className="mt-4">
+                    <h3 className="font-semibold mb-2">Seleccionar ubicación (opcional)</h3>
+                    <MapContainer
+                        center={[-25.1217, -66.1653]}
+                        zoom={13}
+                        style={{ height: "300px", width: "100%" }}
+                    >
+                        <TileLayer
+                            attribution='&copy; OpenStreetMap'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <LocationPicker onLocationSelect={handleLocationSelect} />
+                        {formulario.ubicacion && (
+                            <Marker
+                                position={[formulario.ubicacion?.coordinates[1], formulario.ubicacion?.coordinates[0]]}
+                                icon={markerIcon}
+                            />
+                        )}
+                    </MapContainer>
+
+                    {formulario.ubicacion && (
+                        <p className="mt-2 text-sm text-gray-600">
+                            📍 Lat: {formulario.ubicacion?.coordinates[0]?.toFixed(5)}, Lng:{" "}
+                            {formulario.ubicacion?.coordinates[1]?.toFixed(5)}
+                        </p>
+                    )}
+                </div>
+                <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700">Dirección (opcional)</label>
+                    <input
+                        type="text"
+                        name="direccion"
+                        value={formulario.direccion || ""}
+                        onChange={(e) =>
+                            setFormulario({
+                                ...formulario,
+                                direccion: e.target.value,
+                            })
+                        }
+                        className="mt-1 p-2 border rounded-md w-full"
+                        placeholder="Ej: Ruta 40 km 15, San Carlos"
+                    />
+                </div>
 
                 <div className="flex items-center gap-4">
                     <motion.button
