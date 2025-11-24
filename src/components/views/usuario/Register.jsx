@@ -70,7 +70,7 @@ export const Register = () => {
           </div>
           {/* Formulario */}
           <div className="w-full relative max-w-md mx-auto">
-          <Link to="/login" className="absolute -top-[6rem] w-10 h-10 bg-lime-600 hover:bg-lime-700 rounded-full flex items-center justify-center">
+            <Link to="/login" className="absolute -bottom-[3rem] right-0 w-10 h-10 bg-lime-600 hover:bg-lime-700 rounded-full flex items-center justify-center">
               <FaArrowLeft className="w-6 h-6 text-white" />
             </Link>
             <form onSubmit={guardarUsuario} className="space-y-4">

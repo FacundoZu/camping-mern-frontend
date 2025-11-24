@@ -40,31 +40,31 @@ export default function Header() {
         <ul className='relative flex items-center text-xs lg:text-base gap-1'>
           <>
             <a href="/#reservar" className="text-slate-600 hidden sm:inline font-medium">
-              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+              <div className='flex items-center  rounded-lg p-2 hover:bg-gray-100 hover:shadow-md active:shadow-lg active:bg-gray-200 transition-all duration-400'>
                 <li>Buscar Cabaña</li>
               </div>
             </a>
 
             <a href="/#eventos" className="text-slate-600 hidden sm:inline font-medium">
-              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+              <div className='flex items-center  rounded-lg p-2 hover:bg-gray-100 hover:shadow-md active:shadow-lg active:bg-gray-200 transition-all duration-400'>
                 <li>Eventos</li>
               </div>
             </a>
 
             <a href="/#preguntas" className="text-slate-600 hidden sm:inline font-medium">
-              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+              <div className='flex items-center  rounded-lg p-2 hover:bg-gray-100 hover:shadow-md active:shadow-lg active:bg-gray-200 transition-all duration-400'>
                 <li>Preguntas</li>
               </div>
             </a>
 
             <a href="/#ubicacion" className="text-slate-600 hidden sm:inline font-medium">
-              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+              <div className='flex items-center  rounded-lg p-2 hover:bg-gray-100 hover:shadow-md active:shadow-lg active:bg-gray-200 transition-all duration-400'>
                 <li>Ubicación</li>
               </div>
             </a>
 
             <a href="/#contacto" className="text-slate-600 hidden sm:inline font-medium">
-              <div className='flex items-center border-[1.5px] border-transparent rounded-lg p-2 hover:border-gray-600 transition-all duration-400'>
+              <div className='flex items-center  rounded-lg p-2 hover:bg-gray-100 hover:shadow-md active:shadow-lg active:bg-gray-200 transition-all duration-400'>
                 <li>Contacto</li>
               </div>
             </a>
@@ -100,7 +100,7 @@ export default function Header() {
           ) : (
             <ul className='relative flex items-center'>
               <Link to="/login" className="text-lime-600 font-bold hidden sm:inline transition duration-200 pr-2">
-                <div className='flex items-center border-[1.5px] border-transparent rounded-lg py-2 px-2 hover:border-lime-600 transition-all duration-400'>
+                <div className='flex items-center rounded-lg py-2 px-2 hover:bg-gray-50 hover:shadow-md active:shadow-lg active:bg-gray-200 transition-all duration-400'>
                   <IoLogIn className='mr-1' size={20} />
                   <li>Iniciar sesión</li>
                 </div>
