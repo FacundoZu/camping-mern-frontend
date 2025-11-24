@@ -166,7 +166,7 @@ export const Buscador = ({ setFiltros, cabañas, filtros, servicios }) => {
     }, []);
 
     return (
-        <div className="w-full bg-white p-6 rounded-md">
+        <div className="w-full bg-white py-6 px-2 rounded-md">
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col md:col-span-2">
                     <label htmlFor="fechas" className="text-sm font-medium mb-1 mx-auto">

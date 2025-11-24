@@ -75,10 +75,8 @@ const ReservaInfo = ({
                     descuentoAplicado = data.discountValue;
                 }
 
-                // Nuevo precio con descuento
                 const nuevoTotal = Math.max(precioOriginal - descuentoAplicado, 0);
 
-                // Actualizamos estados
                 setDiscount(descuentoAplicado);
                 setReservaData(prev => ({ ...prev, precioTotal: nuevoTotal }));
                 setAppliedCoupon({ code: couponCode, type: data.discountType, value: data.discountValue });
@@ -115,7 +113,6 @@ const ReservaInfo = ({
         const { name, value } = e.target;
         setGuestInfo(prev => ({ ...prev, [name]: value }));
 
-        // Limpiar error cuando el usuario empiece a escribir
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -165,7 +162,6 @@ const ReservaInfo = ({
     const handlePayment = async () => {
         setIsProcessing(true);
         try {
-            // 1. Crear reserva temporal en el backend
             const reservaResponse = await Peticion(`${Global.url}reservation/tempReservation`, 'POST', {
                 cabaniaId: cabaña._id,
                 fechaInicio,
@@ -182,7 +178,6 @@ const ReservaInfo = ({
 
             console.log(reservaResponse.datos)
 
-            // 2. Crear preferencia de pago en el backend
             const mpResponse = await Peticion(`${Global.url}MP/create-preference`, 'POST', {
                 items: [{
                     title: `Reserva en ${cabaña.nombre}`,
@@ -198,7 +193,6 @@ const ReservaInfo = ({
                 external_reference: reservaResponse.datos.tempId,
             });
 
-            // 3. Si Mercado Pago devolvió la URL de pago → abrir en nueva pestaña
             if (mpResponse.datos.init_point) {
                 window.location.href = mpResponse.datos.init_point;
             } else {

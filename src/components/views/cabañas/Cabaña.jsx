@@ -30,7 +30,6 @@ export const Cabaña = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Estado para reserva
     const [reservaData, setReservaData] = useState({
         fechaInicio: searchParams.get('checkIn'),
         fechaFinal: searchParams.get('checkOut'),
@@ -38,7 +37,6 @@ export const Cabaña = () => {
         showModal: false
     });
 
-    // Estado para modales
     const [modal, setModal] = useState({
         show: false,
         title: '',
@@ -154,7 +152,6 @@ export const Cabaña = () => {
             );
 
             if (result.datos?.success) {
-                // 🔄 Refrescamos las reviews desde el servidor
                 const updatedReviews = await Peticion(
                     `${Global.url}reviews/getReviewsByCabin/${cabaña._id}`,
                     "GET",
@@ -261,7 +258,7 @@ export const Cabaña = () => {
                     <div className="p-6 lg:p-8">
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
                             <div className="flex-1">
-                                <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
+                                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
                                     {cabaña.descripcion}
                                 </h1>
 
