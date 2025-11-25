@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-    FiMenu, FiX, FiHome, FiUsers, FiSettings, FiActivity, FiHelpCircle, FiChevronLeft, FiChevronRight
+    FiMenu, FiX, FiHome, FiUsers, FiSettings, FiActivity, FiHelpCircle, FiChevronLeft, FiChevronRight, FiCalendar
 } from "react-icons/fi";
 import { FaCampground, FaUser } from "react-icons/fa";
 import { RiCoupon3Line, RiLeafFill } from "react-icons/ri";
@@ -115,6 +115,18 @@ const AsideAdmin = () => {
                                                 {isExpanded && <span>Acampantes</span>}
                                             </Link>
                                         </li>
+                                        {auth.role === "admin" && (
+                                            <li>
+                                                <Link
+                                                    to="/admin/reservas"
+                                                    className="dashboard-button"
+                                                    onClick={() => setIsSidebarOpen(false)}
+                                                >
+                                                    <FiCalendar className={`${isExpanded ? "dashboard-icon" : "dashboard-icon mx-auto"}`} />
+                                                    {isExpanded && <span>Reservas</span>}
+                                                </Link>
+                                            </li>
+                                        )}
                                         <hr className="border-gray-400" />
                                         <li>
                                             <Link
