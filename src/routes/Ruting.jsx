@@ -39,6 +39,8 @@ import AdminCrearAcampante from '../components/admin/views/acampantes/AdminCrear
 import AdminCrearReserva from '../components/admin/views/reserva/AdminCrearReserva'
 import { AdminCrearCupon } from '../components/admin/views/cupones/AdminCrearCupon'
 import { AdminCupones } from '../components/admin/views/cupones/AdminCupones'
+import { AdminReservas } from '../components/admin/views/reservas/AdminReservas'
+import AdminVerReserva from '../components/admin/views/reservas/AdminVerReserva'
 
 
 export const Routing = () => {
@@ -93,6 +95,9 @@ export const Routing = () => {
 
           <Route path="/admin/cupones" element={<AdminCupones />} />
           <Route path="/admin/CrearCupon" element={<AdminCrearCupon />} />
+
+          <Route path="/admin/reservas" element={<PrivateRoute requiredRoles={['admin']}><AdminReservas /></PrivateRoute>} />
+          <Route path="/admin/VerReserva/:id" element={<PrivateRoute requiredRoles={['admin']}><AdminVerReserva /></PrivateRoute>} />
         </Route>
 
       </Routes>
